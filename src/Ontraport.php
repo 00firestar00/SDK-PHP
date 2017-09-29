@@ -54,10 +54,10 @@ class Ontraport
      * @param string $siteID
      * @param string $apiKey
      */
-    public function __construct($siteID,$apiKey)
+    public function __construct($siteID, $apiKey, $httpClient = null)
     {
         $this->setCredentials($apiKey, $siteID);
-        $this->setHttpClient();
+        $this->setHttpClient($httpClient);
     }
 
     /**
@@ -74,9 +74,14 @@ class Ontraport
     /**
      * @brief sets HTTP client
      */
-    public function setHttpClient()
+    public function setHttpClient($httpClient=null)
     {
-        $this->_httpClient = new CurlClient($this->_apiKey, $this->_siteID);
+        if ($httpClient === null)
+        {
+            $this->_httpClient = new CurlClient($this->_apiKey, $this->_siteID);
+            return;
+        }
+        $this->_httpClient = $httpClient;
     }
 
     /**
@@ -231,6 +236,3 @@ class Ontraport
         return $this->_apiInstances[$class];
     }
 }
-
-
-

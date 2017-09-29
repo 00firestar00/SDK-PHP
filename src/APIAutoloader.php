@@ -16,7 +16,8 @@ class APIAutoloader
         // Ensure correct path
         if (strpos($className, "\\"))
         {
-            $className = array_pop(explode("\\", $className));
+          $tmp = explode("\\", $className);
+            $className = array_pop($tmp);
         }
 
         $file = dirname(__FILE__) . "/" . $className . '.php';
