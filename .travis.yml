@@ -4,16 +4,11 @@ cache:
   apt: true
 
 PHP:
+  - 5.3
   - 5.4
   - 5.6
   - 7.0
-  - hhvm
   - nightly
-
-matrix:
-  include:
-    - php: 5.3
-      dist: precise
 
 notifications:
   email: false
