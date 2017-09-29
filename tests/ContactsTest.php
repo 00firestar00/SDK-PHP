@@ -22,7 +22,7 @@ class ContactsTest extends TestCase
         }
         else
         {
-            $stub = $this->createMock(CurlClient::class);
+            $stub = $this->createMock("CurlClient");
             $stub->method('httpRequest')
                  ->willReturn(
                      '{"code":0, "data":{"id":"1", "firstname": "unit", "lastname": "test"}}'
