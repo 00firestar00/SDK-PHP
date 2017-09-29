@@ -15,19 +15,16 @@ class ContactsTest extends TestCase
             $stub = $this->getMockBuilder('CurlClient')
                          ->setMethods(array('httpRequest'))
                          ->getMock();
-            $stub->method('httpRequest')
-                     ->willReturn(
-                         '{"code":0, "data":{"id":"1", "firstname": "unit", "lastname": "test"}}'
-                     );
         }
         else
         {
             $stub = $this->createMock("OntraportAPI\CurlClient");
-            $stub->method('httpRequest')
-                 ->willReturn(
-                     '{"code":0, "data":{"id":"1", "firstname": "unit", "lastname": "test"}}'
-                 );
         }
+
+        $stub->method('httpRequest')
+             ->willReturn(
+                 '{"code":0, "data":{"id":"1", "firstname": "unit", "lastname": "test"}}'
+             );
 
         $client = new Ontraport("2_AppID_12345678","Key5678", $stub);
         $requestParams = array(

@@ -32,48 +32,8 @@ class MockClient extends \ONTRAPORTAPI\CurlClient
             $requestParams = http_build_query($requestParams);
         }
 
-        $curlHandle = curl_init();
+        // TODO: Do something other than CURL to get the mock data
 
-        switch(strtolower($method))
-        {
-            case "post":
-                curl_setopt($curlHandle, CURLOPT_POST, 1);
-                curl_setopt($curlHandle, CURLOPT_POSTFIELDS, $requestParams);
-                break;
-
-            case "get":
-                curl_setopt($curlHandle, CURLOPT_HTTPGET, 1);
-                $url = $url."?".$requestParams;
-                break;
-
-            case "put":
-                curl_setopt($curlHandle, CURLOPT_CUSTOMREQUEST, "PUT");
-                curl_setopt($curlHandle, CURLOPT_POSTFIELDS, $requestParams);
-                break;
-
-            case "delete":
-                curl_setopt($curlHandle, CURLOPT_CUSTOMREQUEST, "DELETE");
-                if ($this->_requestHeaders["Content-Type"] == "Content-Type: application/json")
-                {
-                    curl_setopt($curlHandle, CURLOPT_POSTFIELDS, $requestParams);
-                }
-                else
-                {
-                    $url = $url."?".$requestParams;
-                }
-                break;
-        }
-
-        curl_setopt($curlHandle, CURLOPT_URL, $url);
-        curl_setopt($curlHandle, CURLOPT_HTTPHEADER, $this->_requestHeaders);
-        curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curlHandle, CURLOPT_TIMEOUT, 60);
-
-        $result = curl_exec($curlHandle);
-        curl_close($curlHandle);
-
-        unset($this->_requestHeaders["Content-Type"]);
-
-        return $result;
+        return true;
     }
 }
