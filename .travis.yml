@@ -3,8 +3,12 @@ language: php
 cache:
   apt: true
 
-PHP:
+php:
+  - 5.3
+  - 5.4
+  - 5.6
   - 7.0
+  - nightly
 
 notifications:
   email: false
