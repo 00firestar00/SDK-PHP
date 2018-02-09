@@ -101,6 +101,24 @@ class Objects extends BaseApi
     }
 
     /**
+     * @brief Retrieve all objects of type having a particular tag
+     *
+     * @param $requestParams mixed[] Array of parameters to submit with GET request. Either "tag_id" or "tag_name" is required.
+     *                               Possible array keys: "objectID" (required),"tag_id","tag_name","start","range","sort","sortDir",
+     *                                                    "condition","search","searchNotes","group_ids","performAll",
+     *                                                    "externs","listFields"
+     *
+     * @return string JSON formatted response
+     */
+    public function retrieveAllWithTag($requestParams)
+    {
+        $requiredParams = array(
+            "objectID"
+        );
+        return $this->client->request($requestParams, $this->_endpointPlural . "/" . self::TAG, "get", $requiredParams , $options = NULL);
+    }
+
+    /**
      * @brief Retrieves object ID by email.
      *
      * @param $requestParams mixed[] Array of parameters to submit with GET request.
@@ -114,7 +132,7 @@ class Objects extends BaseApi
             "objectID",
             "email"
         );
-        return $this->client->request($requestParams, $this->_endpointPlural . "/" . self::GET_BY_EMAIL, "get", $requiredParams , $options = NULL);
+        return $this->client->request($requestParams, $this->_endpoint . "/" . self::GET_BY_EMAIL, "get", $requiredParams , $options = NULL);
     }
 
     /**

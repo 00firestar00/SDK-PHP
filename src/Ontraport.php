@@ -92,6 +92,17 @@ class Ontraport
         return $this->_httpClient;
     }
 
+    /**
+     * @brief Make an HTTP request
+     *
+     * @param $requestParams
+     * @param string $url
+     * @param string $method
+     * @param array $requiredParams
+     * @param array $options
+     *
+     * @return mixed
+     */
     public function request($requestParams, $url, $method, $requiredParams, $options)
     {
         $client = $this->getHttpClient();
@@ -99,6 +110,16 @@ class Ontraport
 
         return $client->httpRequest($requestParams, $url, $method, $requiredParams, $options);
     }
+
+    /**
+     * @brief gets the last HTTP status code received by the HTTP Client
+     *
+     * @return int
+     */
+     public function getLastStatusCode()
+     {
+         return $this->getHttpClient()->getLastStatusCode();
+     }
 
     /**
      * @brief constructs an api endpoint
@@ -153,6 +174,14 @@ class Ontraport
     public function contact()
     {
         return $this->getApi("Contacts");
+    }
+
+    /**
+     * @return CreditCards
+     */
+    public function creditcard()
+    {
+        return $this->getApi("CreditCards");
     }
 
     /**
