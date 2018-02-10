@@ -270,9 +270,9 @@ class CurlClient
      *
      * @return int
      */
-    public function setLastStatusCode($status_code)
+    public function setLastStatusCode($statusCode)
     {
-        $this->_lastStatusCode = $status_code;
+        $this->_lastStatusCode = $statusCode;
     }
 
     /**

@@ -43,7 +43,7 @@ class Ontraport
      */
     protected $_customObjects = array();
 
-    /*
+    /**
      * @var HttpClient instance
      */
     protected $_httpClient = NULL;
@@ -131,8 +131,7 @@ class Ontraport
      */
     public function buildEndpoint($extendURL)
     {
-        $endpoint = self::REQUEST_URL . "/" . self::API_VERSION . "/" . $extendURL;
-        return $endpoint;
+        return self::REQUEST_URL . "/" . self::API_VERSION . "/" . $extendURL;
     }
 
     /**
