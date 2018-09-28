@@ -44,15 +44,16 @@ class Ontraport
     protected $_customObjects = array();
 
     /**
-     * @var HttpClient instance
+     * @var CurlClient instance
      */
-    protected $_httpClient = NULL;
+    protected $_httpClient;
 
     /**
      * @brief constructs an instance of OntraportAPI
      *
      * @param string $siteID
      * @param string $apiKey
+     * @param CurlClient $httpClient
      */
     public function __construct($siteID, $apiKey, $httpClient = null)
     {
@@ -64,6 +65,7 @@ class Ontraport
      * @brief sets API key credential
      *
      * @param string $apiKey
+     * @param string $siteID
      */
     public function setCredentials($apiKey, $siteID)
     {
@@ -73,14 +75,17 @@ class Ontraport
 
     /**
      * @brief sets HTTP client
+     *
+     * @param CurlClient $httpClient To override the provided CurlClient
      */
-    public function setHttpClient($httpClient=null)
+    public function setHttpClient($httpClient = null)
     {
         if ($httpClient === null)
         {
             $this->_httpClient = new CurlClient($this->_apiKey, $this->_siteID);
             return;
         }
+        $httpClient->setCredentials($this->_apiKey, $this->_siteID);
         $this->_httpClient = $httpClient;
     }
 
@@ -125,7 +130,6 @@ class Ontraport
      * @brief constructs an api endpoint
      *
      * @param string $extendURL
-     * @param string $function
      *
      * @return string
      */
@@ -152,11 +156,7 @@ class Ontraport
         {
             return $this->getApi("CustomObjects", $object);
         }
-
-        else
-        {
-            throw new Exceptions\CustomObjectException();
-        }
+        throw new Exceptions\CustomObjectException();
     }
 
     /**
@@ -229,6 +229,22 @@ class Ontraport
     public function object()
     {
         return $this->getApi("Objects");
+    }
+
+    /**
+     * @return Webhooks
+     */
+    public function webhook()
+    {
+        return $this->getApi("Webhooks");
+    }
+
+    /**
+     * @return Rules
+     */
+    public function rule()
+    {
+        return $this->getApi("Rules");
     }
 
     /**
