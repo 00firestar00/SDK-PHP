@@ -317,4 +317,47 @@ class ContactsTest extends TestCase
 }', $response);
     }
 
+    function testUpdateFields()
+    {
+        $mock_curl = new MockCurlClient();
+        $client = new Ontraport("2_AppID_12345678", "Key5678", $mock_curl);
+        $requestParams = array(json_decode('{
+  "objectID": 0,
+  "name": "string1",
+  "description": "string2",
+  "fields": [
+    [
+      {
+        "alias": "string",
+        "type": "text",
+        "required": 0,
+        "unique": 0,
+        "options": {
+          "add": [
+            "UPDATED!"
+          ],
+          "remove": [
+            "string"
+          ],
+          "replace": [
+            "string"
+          ]
+        }
+      }
+    ]
+  ]
+}'));
+        $response = $client->contact()->updateFields($requestParams);
+        $this->assertEquals('{
+  "code": 0,
+  "data": {
+    "success": {
+      "f1557": "string",
+      "description": "string2"
+    }
+  },
+  "account_id": 50
+}', $response);
+    }
+
 }
