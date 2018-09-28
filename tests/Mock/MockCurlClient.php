@@ -28,6 +28,8 @@ class MockCurlClient extends CurlClient
             return $this->updateSingleContact();
         } elseif ($url === $API_BASE . 'Contacts/meta') {
             return $this->getMeta();
+        } elseif ($url === $API_BASE . 'Contacts/saveorupdate') {
+            return $this->saveOrUpdateContact();
         }
 
         return parent::httpRequest($requestParams, $url, $method, $requiredParams, $options);
@@ -173,6 +175,21 @@ class MockCurlClient extends CurlClient
         }
       }
     }
+  },
+  "account_id": 50
+}';
+    }
+
+    function saveOrUpdateContact()
+    {
+        return '{
+  "code": 0,
+  "data": {
+    "use_utm_names": "false",
+    "firstname": "unitUpdated",
+    "lastname": "updatedLastName",
+    "id": "9",
+    "owner": "1",
   },
   "account_id": 50
 }';
