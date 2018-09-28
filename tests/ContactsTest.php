@@ -63,6 +63,34 @@ class ContactsTest extends TestCase
         $this->assertEquals(json_encode($object_data), $response);
     }
 
+    public function testRetrieveMultiple()
+    {
+        $mock_curl = new MockCurlClient();
+        $client = new Ontraport("2_AppID_12345678", "Key5678", $mock_curl);
+        $requestParams = array(
+        );
+        $response = $client->contact()->retrieveMultiple($requestParams);
+        $this->assertEquals("{
+  \"code\": 0,
+  \"data\": [
+    {
+      \"id\": \"5\",
+      \"owner\": \"1\",
+      \"firstname\": \"Joe\",
+      \"lastname\": \"Johnson\"
+    },
+    {
+      \"id\": \"6\",
+      \"owner\": \"1\",
+      \"firstname\": \"Mike\",
+      \"lastname\": \"Michaels\"
+    }
+  ],
+  \"account_id\": 50,
+  \"misc\": []
+}", $response);
+    }
+
     public function testDeleteSingle()
     {
         $mock_curl = new MockCurlClient();
@@ -201,4 +229,5 @@ class ContactsTest extends TestCase
   "account_id": 50
 }', $response);
     }
+
 }
