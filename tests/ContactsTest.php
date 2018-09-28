@@ -10,7 +10,7 @@ class ContactsTest extends TestCase
     public function testRetrieveSingle()
     {
         $mock_curl = new MockCurlClient();
-        $client = new Ontraport("2_AppID_12345678","Key5678", $mock_curl);
+        $client = new Ontraport("2_AppID_12345678", "Key5678", $mock_curl);
         $requestParams = array(
             "id" => 27
         );
@@ -31,7 +31,7 @@ class ContactsTest extends TestCase
     public function testRetrieveMultiplePaginated()
     {
         $mock_curl = new MockCurlClient();
-        $client = new Ontraport("2_AppID_12345678","Key5678", $mock_curl);
+        $client = new Ontraport("2_AppID_12345678", "Key5678", $mock_curl);
         $requestParams = array(
             "start" => 0,
             "range" => 50,
@@ -66,7 +66,7 @@ class ContactsTest extends TestCase
     public function testDeleteSingle()
     {
         $mock_curl = new MockCurlClient();
-        $client = new Ontraport("2_AppID_12345678","Key5678", $mock_curl);
+        $client = new Ontraport("2_AppID_12345678", "Key5678", $mock_curl);
         $requestParams = array(
             "id" => 2
         );
@@ -80,7 +80,7 @@ class ContactsTest extends TestCase
     public function testDeleteMultiple()
     {
         $mock_curl = new MockCurlClient();
-        $client = new Ontraport("2_AppID_12345678","Key5678", $mock_curl);
+        $client = new Ontraport("2_AppID_12345678", "Key5678", $mock_curl);
         $requestParams = array(
             "id" => 2
         );
@@ -88,6 +88,28 @@ class ContactsTest extends TestCase
         $this->assertEquals('{
   "code": 0,
   "data": "Deleted",
+  "account_id": 50
+}', $response);
+    }
+
+    public function testCreate()
+    {
+        $mock_curl = new MockCurlClient();
+        $client = new Ontraport("2_AppID_12345678", "Key5678", $mock_curl);
+        $requestParams = array(
+            "firstname" => "unit",
+            "lastname" => "test",
+        );
+        $response = $client->contact()->create($requestParams);
+        $this->assertEquals('{
+  "code": 0,
+  "data": {
+    "firstname": "unit",
+    "lastname": "test",
+    "use_utm_names": "false",
+    "id": "8",
+    "owner": "1",
+  },
   "account_id": 50
 }', $response);
     }

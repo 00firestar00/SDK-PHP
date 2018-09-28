@@ -4,21 +4,26 @@
 namespace OntraportAPI\tests\Mock;
 
 use OntraportAPI\CurlClient;
+use OntraportAPI\Ontraport as O;
 
 class MockCurlClient extends CurlClient
 {
+
     public function httpRequest($requestParams, $url, $method, $requiredParams, $options)
     {
-        if ($url === "https://api.ontraport.com/1/Contact" and $method === "get") {
+        $API_BASE = O::REQUEST_URL . '/' . O::API_VERSION . '/';
+        if ($url === $API_BASE . 'Contact' and $method === 'get') {
             return $this->getSingleContact();
-        } elseif ($url === "https://api.ontraport.com/1/Contact" and $method === "delete") {
+        } elseif ($url === $API_BASE . 'Contact' and $method === 'delete') {
             return $this->deleteSingleContact();
-        } elseif ($url === "https://api.ontraport.com/1/Contacts/getInfo") {
+        } elseif ($url === $API_BASE . 'Contacts/getInfo') {
             return $this->getInfo();
-        } elseif ($url === "https://api.ontraport.com/1/Contacts" and $method === "get") {
+        } elseif ($url === $API_BASE . 'Contacts' and $method === 'get') {
             return $this->getMultipleContacts();
-        } elseif ($url === "https://api.ontraport.com/1/Contacts" and $method === "delete") {
+        } elseif ($url === $API_BASE . 'Contacts' and $method === 'delete') {
             return $this->deleteMultipleContacts();
+        } elseif ($url === $API_BASE . 'Contacts' and $method === 'post') {
+            return $this->createSingleContact();
         }
 
         return parent::httpRequest($requestParams, $url, $method, $requiredParams, $options);
@@ -96,6 +101,21 @@ class MockCurlClient extends CurlClient
         return '{
   "code": 0,
   "data": "Deleted",
+  "account_id": 50
+}';
+    }
+
+    function createSingleContact()
+    {
+        return '{
+  "code": 0,
+  "data": {
+    "firstname": "unit",
+    "lastname": "test",
+    "use_utm_names": "false",
+    "id": "8",
+    "owner": "1",
+  },
   "account_id": 50
 }';
     }
