@@ -30,8 +30,10 @@ class MockCurlClient extends CurlClient
             return $this->getMeta();
         } elseif ($url === $API_BASE . 'Contacts/saveorupdate') {
             return $this->saveOrUpdateContact();
-        } elseif ($url === $API_BASE . 'Contacts/fieldeditor' and $method === 'get'){
+        } elseif ($url === $API_BASE . 'Contacts/fieldeditor' and $method === 'get') {
             return $this->retrieveFields();
+        } elseif ($url === $API_BASE . 'Contacts/fieldeditor' and $method === 'post') {
+            return $this->createFields();
         }
 
         return parent::httpRequest($requestParams, $url, $method, $requiredParams, $options);
@@ -236,5 +238,20 @@ class MockCurlClient extends CurlClient
   },
   "account_id": 50
 }';
+    }
+
+    function createFields()
+    {
+        return '{
+  "code": 0,
+  "data": {
+    "success": {
+      "f1557": "string"
+    },
+    "error": []
+  },
+  "account_id": 50
+}';
+
     }
 }
