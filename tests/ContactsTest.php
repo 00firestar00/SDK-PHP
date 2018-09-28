@@ -79,7 +79,17 @@ class ContactsTest extends TestCase
 
     public function testDeleteMultiple()
     {
-
+        $mock_curl = new MockCurlClient();
+        $client = new Ontraport("2_AppID_12345678","Key5678", $mock_curl);
+        $requestParams = array(
+            "id" => 2
+        );
+        $response = $client->contact()->deleteMultiple($requestParams);
+        $this->assertEquals('{
+  "code": 0,
+  "data": "Deleted",
+  "account_id": 50
+}', $response);
     }
 
 }

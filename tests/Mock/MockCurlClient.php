@@ -17,7 +17,7 @@ class MockCurlClient extends CurlClient
             return $this->getInfo();
         } elseif ($url === "https://api.ontraport.com/1/Contacts" and $method === "get") {
             return $this->getMultipleContacts();
-        } elseif ($url === "https://api.ontraport.com/1/Contacts" and $method === "get") {
+        } elseif ($url === "https://api.ontraport.com/1/Contacts" and $method === "delete") {
             return $this->deleteMultipleContacts();
         }
 
