@@ -24,6 +24,10 @@ class MockCurlClient extends CurlClient
             return $this->deleteMultipleContacts();
         } elseif ($url === $API_BASE . 'Contacts' and $method === 'post') {
             return $this->createSingleContact();
+        } elseif ($url === $API_BASE . 'Contacts' and $method === 'put') {
+            return $this->updateSingleContact();
+        } elseif ($url === $API_BASE . 'Contacts/meta') {
+            return $this->getMeta();
         }
 
         return parent::httpRequest($requestParams, $url, $method, $requiredParams, $options);
@@ -115,6 +119,60 @@ class MockCurlClient extends CurlClient
     "use_utm_names": "false",
     "id": "8",
     "owner": "1",
+  },
+  "account_id": 50
+}';
+    }
+
+    function updateSingleContact()
+    {
+        return '{
+  "code": 0,
+  "data": {
+    "attrs": {
+      "firstname": "unitUpdated",
+      "dlm": "1538154601",
+      "id": "8"
+    }
+  },
+  "account_id": 50
+}';
+    }
+
+    function getMeta()
+    {
+        return '{
+  "code": 0,
+  "data": {
+    "0": {
+      "name": "Contact",
+      "fields": {
+        "firstname": {
+          "alias": "First Name",
+          "type": "text",
+          "required": "0",
+          "unique": "0",
+          "editable": "1",
+          "deletable": "0"
+        },
+        "lastname": {
+          "alias": "Last Name",
+          "type": "text",
+          "required": "0",
+          "unique": "0",
+          "editable": "1",
+          "deletable": "0"
+        },
+        "email": {
+          "alias": "Email",
+          "type": "email",
+          "required": "0",
+          "unique": "0",
+          "editable": "1",
+          "deletable": "0"
+        }
+      }
+    }
   },
   "account_id": 50
 }';

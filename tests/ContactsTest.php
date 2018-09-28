@@ -114,4 +114,69 @@ class ContactsTest extends TestCase
 }', $response);
     }
 
+    public function testUpdate()
+    {
+        $mock_curl = new MockCurlClient();
+        $client = new Ontraport("2_AppID_12345678", "Key5678", $mock_curl);
+        $requestParams = array(
+            "id" => 8,
+            "firstname" => "unitUpdated",
+        );
+        $response = $client->contact()->update($requestParams);
+        $this->assertEquals('{
+  "code": 0,
+  "data": {
+    "attrs": {
+      "firstname": "unitUpdated",
+      "dlm": "1538154601",
+      "id": "8"
+    }
+  },
+  "account_id": 50
+}', $response);
+    }
+
+    public function testRetrieveMeta()
+    {
+        {
+            $mock_curl = new MockCurlClient();
+            $client = new Ontraport("2_AppID_12345678", "Key5678", $mock_curl);
+            $response = $client->contact()->retrieveMeta();
+            $this->assertEquals('{
+  "code": 0,
+  "data": {
+    "0": {
+      "name": "Contact",
+      "fields": {
+        "firstname": {
+          "alias": "First Name",
+          "type": "text",
+          "required": "0",
+          "unique": "0",
+          "editable": "1",
+          "deletable": "0"
+        },
+        "lastname": {
+          "alias": "Last Name",
+          "type": "text",
+          "required": "0",
+          "unique": "0",
+          "editable": "1",
+          "deletable": "0"
+        },
+        "email": {
+          "alias": "Email",
+          "type": "email",
+          "required": "0",
+          "unique": "0",
+          "editable": "1",
+          "deletable": "0"
+        }
+      }
+    }
+  },
+  "account_id": 50
+}', $response);
+        }
+    }
 }
