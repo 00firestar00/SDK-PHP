@@ -36,6 +36,8 @@ class MockCurlClient extends CurlClient
             return $this->createFields();
         } elseif ($url === $API_BASE . 'Contacts/fieldeditor' and $method === 'put') {
             return $this->updateFields();
+        } elseif ($url === $API_BASE . 'Contacts/fieldeditor' and $method === 'delete') {
+            return $this->deleteFields();
         }
 
         return parent::httpRequest($requestParams, $url, $method, $requiredParams, $options);
@@ -267,6 +269,15 @@ class MockCurlClient extends CurlClient
       "description": "string2"
     }
   },
+  "account_id": 50
+}';
+    }
+
+    function deleteFields()
+    {
+        return '{
+  "code": 0,
+  "data": "Deleted",
   "account_id": 50
 }';
     }

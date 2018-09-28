@@ -360,4 +360,19 @@ class ContactsTest extends TestCase
 }', $response);
     }
 
+    public function testDeleteFields()
+    {
+        $mock_curl = new MockCurlClient();
+        $client = new Ontraport("2_AppID_12345678", "Key5678", $mock_curl);
+        $requestParams = array(
+            "field" => "f1559"
+        );
+        $response = $client->contact()->deleteFields($requestParams);
+        $this->assertEquals('{
+  "code": 0,
+  "data": "Deleted",
+  "account_id": 50
+}', $response);
+    }
+
 }
