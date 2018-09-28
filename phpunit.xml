@@ -4,4 +4,12 @@
     <testsuite name='All'>
         <directory suffix='.php'>./</directory>
     </testsuite>
+    <logging>
+        <log type="coverage-clover" target="clover.xml"/>
+    </logging>
+    <filter>
+        <whitelist>
+            <directory suffix=".php">./src</directory>
+        </whitelist>
+    </filter>
 </phpunit>
