@@ -59,7 +59,7 @@ class MockCurlClient extends CurlClient
 
     function getInfo()
     {
-        return " {\"code\": 0,
+        return "{\"code\": 0,
                       \"data\": {
                         \"listFields\": [
                           \"fn\",
