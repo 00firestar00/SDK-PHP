@@ -30,6 +30,8 @@ class MockCurlClient extends CurlClient
             return $this->getMeta();
         } elseif ($url === $API_BASE . 'Contacts/saveorupdate') {
             return $this->saveOrUpdateContact();
+        } elseif ($url === $API_BASE . 'Contacts/fieldeditor' and $method === 'get'){
+            return $this->retrieveFields();
         }
 
         return parent::httpRequest($requestParams, $url, $method, $requiredParams, $options);
@@ -190,6 +192,47 @@ class MockCurlClient extends CurlClient
     "lastname": "updatedLastName",
     "id": "9",
     "owner": "1",
+  },
+  "account_id": 50
+}';
+    }
+
+    function retrieveFields()
+    {
+        return '{
+  "code": 0,
+  "data": {
+    "1": {
+      "id": 1,
+      "name": "Contact Information",
+      "description": null,
+      "fields": [
+        [
+          {
+            "id": 198,
+            "alias": "Name",
+            "field": "fn",
+            "type": "mergefield",
+            "required": 0,
+            "unique": 0,
+            "editable": 0,
+            "deletable": 0,
+            "options": "<op:merge field=\'firstname\'>X</op:merge> <op:merge field=\'lastname\'>X</op:merge>"
+          },
+          {
+            "id": 1,
+            "alias": "First Name",
+            "field": "firstname",
+            "type": "text",
+            "required": 0,
+            "unique": 0,
+            "editable": 1,
+            "deletable": 0,
+            "options": ""
+          }
+        ]
+      ]
+    }
   },
   "account_id": 50
 }';

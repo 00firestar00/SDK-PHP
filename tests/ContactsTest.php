@@ -67,8 +67,7 @@ class ContactsTest extends TestCase
     {
         $mock_curl = new MockCurlClient();
         $client = new Ontraport("2_AppID_12345678", "Key5678", $mock_curl);
-        $requestParams = array(
-        );
+        $requestParams = array();
         $response = $client->contact()->retrieveMultiple($requestParams);
         $this->assertEquals("{
   \"code\": 0,
@@ -225,6 +224,51 @@ class ContactsTest extends TestCase
     "lastname": "updatedLastName",
     "id": "9",
     "owner": "1",
+  },
+  "account_id": 50
+}', $response);
+    }
+
+    function testRetrieveFields()
+    {
+        $mock_curl = new MockCurlClient();
+        $client = new Ontraport("2_AppID_12345678", "Key5678", $mock_curl);
+        $requestParams = array();
+        $response = $client->contact()->retrieveFields($requestParams);
+        $this->assertEquals('{
+  "code": 0,
+  "data": {
+    "1": {
+      "id": 1,
+      "name": "Contact Information",
+      "description": null,
+      "fields": [
+        [
+          {
+            "id": 198,
+            "alias": "Name",
+            "field": "fn",
+            "type": "mergefield",
+            "required": 0,
+            "unique": 0,
+            "editable": 0,
+            "deletable": 0,
+            "options": "<op:merge field=\'firstname\'>X</op:merge> <op:merge field=\'lastname\'>X</op:merge>"
+          },
+          {
+            "id": 1,
+            "alias": "First Name",
+            "field": "firstname",
+            "type": "text",
+            "required": 0,
+            "unique": 0,
+            "editable": 1,
+            "deletable": 0,
+            "options": ""
+          }
+        ]
+      ]
+    }
   },
   "account_id": 50
 }', $response);
