@@ -82,4 +82,6 @@ class ObjectType
     const TAG_SUBSCRIBER = 138;
     const CAMPAIGN_BUILDER = 140;
     const DELETED_ORDER = 146;
+    const DEAL = 149;
+    const COMPANY = 150;
 }
