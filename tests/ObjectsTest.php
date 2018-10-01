@@ -203,5 +203,29 @@ class ObjectsTest extends TestCase
 }', $response);
     }
 
+    function testRetrieveAllWithTag()
+    {
+        $mock_curl = new MockCurlClient();
+        $client = new Ontraport("2_AppID_12345678", "Key5678", $mock_curl);
+        $requestParams = array(
+            "objectID" => 0,
+            "tag_name" => "tag_name_here"
+        );
+        $response = $client->object()->retrieveAllWithTag($requestParams);
+        $this->assertEquals('{
+  "code": 0,
+  "data": [
+    {
+      "id": "10",
+      "owner": "1",
+      "firstname": "unit",
+      "lastname": "test",
+    }
+  ],
+  "account_id": 50
+}', $response);
+
+    }
+
 
 }

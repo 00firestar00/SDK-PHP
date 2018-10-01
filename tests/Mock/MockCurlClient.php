@@ -48,6 +48,8 @@ class MockCurlClient extends CurlClient
                 return $this->tagObjectByName();
             } elseif ($url === $API_BASE . 'object/getByEmail' and $method === 'get') {
                 return $this->getObjectByEmail();
+            } elseif ($url === $API_BASE . 'objects/tag' and $method === 'get') {
+                return $this->getObjectsWithTag();
             }
         }
 
@@ -315,6 +317,21 @@ class MockCurlClient extends CurlClient
         return '{
   "code": 0,
   "data": "The tag is now being processed.",
+  "account_id": 50
+}';
+    }
+
+    function getObjectsWithTag(){
+        return '{
+  "code": 0,
+  "data": [
+    {
+      "id": "10",
+      "owner": "1",
+      "firstname": "unit",
+      "lastname": "test",
+    }
+  ],
   "account_id": 50
 }';
     }
