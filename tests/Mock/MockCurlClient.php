@@ -9,38 +9,51 @@ use OntraportAPI\Ontraport as O;
 class MockCurlClient extends CurlClient
 {
 
+
     public function httpRequest($requestParams, $url, $method, $requiredParams, $options)
     {
         $API_BASE = O::REQUEST_URL . '/' . O::API_VERSION . '/';
-        if ($url === $API_BASE . 'Contact' and $method === 'get') {
-            return $this->getSingleContact();
-        } elseif ($url === $API_BASE . 'Contact' and $method === 'delete') {
-            return $this->deleteSingleContact();
-        } elseif ($url === $API_BASE . 'Contacts/getInfo') {
-            return $this->getInfo();
-        } elseif ($url === $API_BASE . 'Contacts' and $method === 'get') {
-            return $this->getMultipleContacts();
-        } elseif ($url === $API_BASE . 'Contacts' and $method === 'delete') {
-            return $this->deleteMultipleContacts();
-        } elseif ($url === $API_BASE . 'Contacts' and $method === 'post') {
-            return $this->createSingleContact();
-        } elseif ($url === $API_BASE . 'Contacts' and $method === 'put') {
-            return $this->updateSingleContact();
-        } elseif ($url === $API_BASE . 'Contacts/meta') {
-            return $this->getMeta();
-        } elseif ($url === $API_BASE . 'Contacts/saveorupdate') {
-            return $this->saveOrUpdateContact();
-        } elseif ($url === $API_BASE . 'Contacts/fieldeditor' and $method === 'get') {
-            return $this->retrieveFields();
-        } elseif ($url === $API_BASE . 'Contacts/fieldeditor' and $method === 'post') {
-            return $this->createFields();
-        } elseif ($url === $API_BASE . 'Contacts/fieldeditor' and $method === 'put') {
-            return $this->updateFields();
-        } elseif ($url === $API_BASE . 'Contacts/fieldeditor' and $method === 'delete') {
-            return $this->deleteFields();
+
+        if($this->str_contains($url, 'Contact') or $this->str_contains($url, 'object')) {
+            if (($url === $API_BASE . 'Contact' or $url === $API_BASE . 'object') and $method === 'get') {
+                return $this->getSingleContact();
+            } elseif (($url === $API_BASE . 'Contact' or $url === $API_BASE . 'object') and $method === 'delete') {
+                return $this->deleteSingleContact();
+            } elseif (($url === $API_BASE . 'Contacts/getInfo'or $url === $API_BASE . 'objects/getInfo')) {
+                return $this->getInfo();
+            } elseif (($url === $API_BASE . 'Contacts' or $url === $API_BASE . 'objects') and $method === 'get') {
+                return $this->getMultipleContacts();
+            } elseif (($url === $API_BASE . 'Contacts' or $url === $API_BASE . 'objects') and $method === 'delete') {
+                return $this->deleteMultipleContacts();
+            } elseif (($url === $API_BASE . 'Contacts' or $url === $API_BASE . 'objects') and $method === 'post') {
+                return $this->createSingleContact();
+            } elseif (($url === $API_BASE . 'Contacts' or $url === $API_BASE . 'objects') and $method === 'put') {
+                return $this->updateSingleContact();
+            } elseif ($url === $API_BASE . 'Contacts/meta' or $url === $API_BASE . 'objects/meta') {
+                return $this->getMeta();
+            } elseif ($url === $API_BASE . 'Contacts/saveorupdate' or $url === $API_BASE . 'object') {
+                return $this->saveOrUpdateContact();
+            } elseif ($url === $API_BASE . 'Contacts/fieldeditor' and $method === 'get') {
+                return $this->retrieveFields();
+            } elseif ($url === $API_BASE . 'Contacts/fieldeditor' and $method === 'post') {
+                return $this->createFields();
+            } elseif ($url === $API_BASE . 'Contacts/fieldeditor' and $method === 'put') {
+                return $this->updateFields();
+            } elseif ($url === $API_BASE . 'Contacts/fieldeditor' and $method === 'delete') {
+                return $this->deleteFields();
+            }
+        }
+        elseif($this->str_contains($url, 'object'))
+        {
+
         }
 
         return parent::httpRequest($requestParams, $url, $method, $requiredParams, $options);
+    }
+
+    function str_contains($haystack, $needle)
+    {
+        return strpos($haystack, $needle) !== false;
     }
 
     function getSingleContact()
