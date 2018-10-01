@@ -42,11 +42,15 @@ class MockCurlClient extends CurlClient
             } elseif ($url === $API_BASE . 'Contacts/fieldeditor' and $method === 'delete') {
                 return $this->deleteFields();
             }
-        }
-        elseif($this->str_contains($url, 'object'))
-        {
 
+            //Applicable to Objects but not contacts
+            elseif ($url === $API_BASE . 'objects/tagByName' and $method === 'put') {
+                return $this->tagObjectByName();
+            } elseif ($url === $API_BASE . 'object/getByEmail' and $method === 'get') {
+                return $this->getObjectByEmail();
+            }
         }
+
 
         return parent::httpRequest($requestParams, $url, $method, $requiredParams, $options);
     }
@@ -291,6 +295,26 @@ class MockCurlClient extends CurlClient
         return '{
   "code": 0,
   "data": "Deleted",
+  "account_id": 50
+}';
+    }
+
+    function getObjectByEmail()
+    {
+        return '{
+  "code": 0,
+  "data": {
+    "id": "10"
+  },
+  "account_id": 50
+}';
+    }
+
+    function tagObjectByName()
+    {
+        return '{
+  "code": 0,
+  "data": "The tag is now being processed.",
   "account_id": 50
 }';
     }

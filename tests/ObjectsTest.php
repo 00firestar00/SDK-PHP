@@ -93,6 +93,20 @@ class ObjectsTest extends TestCase
 }", $response);
     }
 
+    public function testRetrieveIdByEmail(){
+        $mock_curl = new MockCurlClient();
+        $client = new Ontraport("2_AppID_12345678", "Key5678", $mock_curl);
+        $requestParams = array("objectID" => 0, "email" => "unit@test.com");
+        $response = $client->object()->retrieveIdByEmail($requestParams);
+        $this->assertEquals('{
+  "code": 0,
+  "data": {
+    "id": "10"
+  },
+  "account_id": 50
+}', $response);
+    }
+
     public function testDeleteSingle()
     {
         $mock_curl = new MockCurlClient();
@@ -168,5 +182,26 @@ class ObjectsTest extends TestCase
         }
     }
 
-    
+    function testAddTagByName()
+    {
+        $mock_curl = new MockCurlClient();
+        $client = new Ontraport("2_AppID_12345678", "Key5678", $mock_curl);
+        $requestParams = array(json_decode('{
+  "objectID": 0,
+  "ids": [
+    10
+  ],
+  "add_names": [
+    "tag_name_here"
+  ]
+}'));
+        $response = $client->object()->addTagByName($requestParams);
+        $this->assertEquals('{
+  "code": 0,
+  "data": "The tag is now being processed.",
+  "account_id": 50
+}', $response);
+    }
+
+
 }
