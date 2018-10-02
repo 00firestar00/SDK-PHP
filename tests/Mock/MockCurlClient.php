@@ -16,7 +16,7 @@ class MockCurlClient extends CurlClient
 
         if($this->str_contains($url, 'Contact') or $this->str_contains($url, 'object')) {
             if (($url === $API_BASE . 'Contact' or $url === $API_BASE . 'object') and $method === 'get') {
-                return $this->getSingleContact();
+                return $this->getSingle('contact');
             } elseif (($url === $API_BASE . 'Contact' or $url === $API_BASE . 'object') and $method === 'delete') {
                 return $this->deleteSingleContact();
             } elseif (($url === $API_BASE . 'Contacts/getInfo'or $url === $API_BASE . 'objects/getInfo')) {
@@ -80,6 +80,10 @@ class MockCurlClient extends CurlClient
             } elseif ($url === $API_BASE . 'task/complete') {
                 return $this->completeTask();
             }
+        } elseif($this->str_contains($url, 'Message')) {
+            if ($url === $API_BASE . 'Message' and $method = 'get') {
+                return $this->getSingle('message');
+            }
         }
 
 
@@ -91,9 +95,11 @@ class MockCurlClient extends CurlClient
         return strpos($haystack, $needle) !== false;
     }
 
-    function getSingleContact()
+    function getSingle($objectTypeToGet)
     {
-        return "{
+        if($objectTypeToGet === 'contact')
+        {
+            return "{
   \"code\": 0,
   \"data\": {
     \"id\": \"1\",
@@ -103,6 +109,19 @@ class MockCurlClient extends CurlClient
   },
   \"account_id\": 50
 }";
+        } elseif($objectTypeToGet === 'message')
+        {
+            return '{
+  "code": 0,
+  "data": {
+    "id": "5",
+    "alias": "task_title",
+    "tags": "",
+  },
+  "account_id": 187157
+}';
+        }
+        return 'Error: Unexpected object type as argument!';
     }
 
     function getInfo()
@@ -484,5 +503,7 @@ class MockCurlClient extends CurlClient
   "account_id": 187157
 }';
     }
+
+
 
 }
