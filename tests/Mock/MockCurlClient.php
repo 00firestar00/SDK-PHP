@@ -25,7 +25,7 @@ class MockCurlClient extends CurlClient
                 return $this->getMultipleContacts();
             } elseif (($url === $API_BASE . 'Contacts' or $url === $API_BASE . 'objects') and $method === 'delete') {
                 return $this->deleteMultipleContacts();
-            } elseif (($url === $API_BASE . 'Contacts' or $url === $API_BASE . 'objects') and $method === 'post') {
+            } elseif ($url === $API_BASE . 'Contacts' and $method === 'post') {
                 return $this->createSingleContact();
             } elseif (($url === $API_BASE . 'Contacts' or $url === $API_BASE . 'objects') and $method === 'put') {
                 return $this->updateSingleContact();
@@ -50,6 +50,8 @@ class MockCurlClient extends CurlClient
                 return $this->getObjectByEmail();
             } elseif ($url === $API_BASE . 'objects/tag' and $method === 'get') {
                 return $this->getObjectsWithTag();
+            } elseif ($url === $API_BASE . 'objects' and $method === 'post') {
+                return $this->createObject();
             }
         }
 
@@ -332,6 +334,18 @@ class MockCurlClient extends CurlClient
       "lastname": "test",
     }
   ],
+  "account_id": 50
+}';
+    }
+
+    function createObject()
+    {
+        return '{
+  "code": 0,
+  "data": {
+    "firstname": "unit",
+    "lastname": "test",
+  },
   "account_id": 50
 }';
     }

@@ -227,5 +227,24 @@ class ObjectsTest extends TestCase
 
     }
 
+    public function testCreate()
+    {
+        $mock_curl = new MockCurlClient();
+        $client = new Ontraport("2_AppID_12345678", "Key5678", $mock_curl);
+        $requestParams = array(
+            "firstname" => "unit",
+            "lastname" => "test",
+        );
+        $response = $client->object()->create($requestParams);
+        $this->assertEquals('{
+  "code": 0,
+  "data": {
+    "firstname": "unit",
+    "lastname": "test",
+  },
+  "account_id": 50
+}', $response);
+    }
+
 
 }
