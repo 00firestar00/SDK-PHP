@@ -46,6 +46,8 @@ class MockCurlClient extends CurlClient
             //Applicable to Objects but not contacts
             elseif ($url === $API_BASE . 'objects/tagByName' and $method === 'put') {
                 return $this->tagObjectByName();
+            } elseif ($url === $API_BASE . 'objects/tagByName' and $method === 'delete') {
+                return $this->removeTagByName();
             } elseif ($url === $API_BASE . 'object/getByEmail' and $method === 'get') {
                 return $this->getObjectByEmail();
             } elseif ($url === $API_BASE . 'objects/tag' and $method === 'get') {
@@ -423,6 +425,15 @@ class MockCurlClient extends CurlClient
     }
 
     function addTagByName()
+    {
+        return '{
+  "code": 0,
+  "data": "The tag is now being processed.",
+  "account_id": 187157
+}';
+    }
+
+    function removeTagByName()
     {
         return '{
   "code": 0,

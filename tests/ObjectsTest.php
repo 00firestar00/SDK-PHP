@@ -575,5 +575,25 @@ class ObjectsTest extends TestCase
 }', $response);
     }
 
+    function testRemoveTagByName()
+    {
+        $mock_curl = new MockCurlClient();
+        $client = new Ontraport("2_AppID_12345678", "Key5678", $mock_curl);
+        $requestParams = array(json_decode('{
+  "objectID": 0,
+  "ids": [
+    1
+  ],
+  "remove_names": [
+    "tag_name_here"
+  ]
+}'));
+        $response = $client->object()->removeTagByName($requestParams);
+        $this->assertEquals('{
+  "code": 0,
+  "data": "The tag is now being processed.",
+  "account_id": 187157
+}', $response);
+    }
 
 }
