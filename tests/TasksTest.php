@@ -37,7 +37,7 @@ class TasksTest extends TestCase
   "id": 5,
   "newtime": 4
 }'));
-        $response = $client->task()->assign($requestParams);
+        $response = $client->task()->reschedule($requestParams);
         $this->assertEquals('{
   "code": 0,
   "account_id": 187157

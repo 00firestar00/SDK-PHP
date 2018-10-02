@@ -69,6 +69,7 @@ class MockCurlClient extends CurlClient
             } elseif ($url === $API_BASE . 'objects/tag' and $method = 'remove'){
                 return $this->removeTag();
             }
+
         } elseif($this->str_contains($url, 'task')) {
             if ($url === $API_BASE . 'task/assign') {
                 return $this->assignTask();
