@@ -69,6 +69,16 @@ class MockCurlClient extends CurlClient
             } elseif ($url === $API_BASE . 'objects/tag' and $method = 'remove'){
                 return $this->removeTag();
             }
+        } elseif($this->str_contains($url, 'task')) {
+            if ($url === $API_BASE . 'task/assign') {
+                return $this->assignTask();
+            } elseif ($url === $API_BASE . 'task/reschedule') {
+                return $this->recheduleTask();
+            } elseif ($url === $API_BASE . 'task/cancel') {
+                return $this->cancelTask();
+            } elseif ($url === $API_BASE . 'task/complete') {
+                return $this->completeTask();
+            }
         }
 
 
@@ -441,4 +451,37 @@ class MockCurlClient extends CurlClient
   "account_id": 187157
 }';
     }
+
+    function assignTask()
+    {
+        return '{
+  "code": 0,
+  "account_id": 187157
+}';
+    }
+
+    function rescheduleTask()
+    {
+        return '{
+  "code": 0,
+  "account_id": 187157
+}';
+    }
+
+    function cancelTask()
+    {
+        return '{
+  "code": 0,
+  "account_id": 187157
+}';
+    }
+
+    function completeTask()
+    {
+        return '{
+  "code": 0,
+  "account_id": 187157
+}';
+    }
+
 }
