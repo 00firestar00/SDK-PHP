@@ -249,5 +249,29 @@ class ObjectsTest extends TestCase
 }', $response);
     }
 
+    function testSaveOrUpdate()
+    {
+        $mock_curl = new MockCurlClient();
+        $client = new Ontraport("2_AppID_12345678", "Key5678", $mock_curl);
+        $requestParams = array(
+            "objectID" => 0,
+            "firstname" => "unitUpdated",
+            "lastname" => "updatedLastName",
+        );
+        $response = $client->object()->saveOrUpdate($requestParams);
+        $this->assertEquals('{
+  "code": 0,
+  "data": {
+    "use_utm_names": "false",
+    "firstname": "unitUpdated",
+    "lastname": "updatedLastName",
+    "id": "9",
+    "owner": "1",
+  },
+  "account_id": 50
+}', $response);
+    }
+
+
 
 }

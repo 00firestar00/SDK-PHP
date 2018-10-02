@@ -31,7 +31,7 @@ class MockCurlClient extends CurlClient
                 return $this->updateSingleContact();
             } elseif ($url === $API_BASE . 'Contacts/meta' or $url === $API_BASE . 'objects/meta') {
                 return $this->getMeta();
-            } elseif ($url === $API_BASE . 'Contacts/saveorupdate' or $url === $API_BASE . 'object') {
+            } elseif ($url === $API_BASE . 'Contacts/saveorupdate' or $url === $API_BASE . 'objects/saveorupdate') {
                 return $this->saveOrUpdateContact();
             } elseif ($url === $API_BASE . 'Contacts/fieldeditor' and $method === 'get') {
                 return $this->retrieveFields();

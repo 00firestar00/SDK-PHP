@@ -207,7 +207,7 @@ class ContactsTest extends TestCase
         }
     }
 
-    function testSaveOrUpdateContact()
+    function testSaveOrUpdate()
     {
         $mock_curl = new MockCurlClient();
         $client = new Ontraport("2_AppID_12345678", "Key5678", $mock_curl);
@@ -381,30 +381,24 @@ class ContactsTest extends TestCase
         $client = new Ontraport("2_AppID_12345678", "Key5678", $mock_curl);
         $requestParams = array();
         $response = $client->contact()->retrieveCollectionInfo($requestParams);
-        $this->assertEquals('{
-  "code": 0,
-  "data": {
-    "listFields": [
-      "fn",
-      "email",
-    ],
-    "listFieldSettings": {
-      "viewMode": "1"
-    },
-    "cardViewSettings": {
-      "columnDisplayField": "",
-      "fields": [
-        "fn",
-        "email",
-      ],
-      "displaySize": "mini",
-      "newSettings": true
-    },
-    "viewMode": "1",
-    "count": "3"
-  },
-  "account_id": 50
-}', $response);
+        $this->assertEquals("{\"code\": 0,
+                      \"data\": {
+                        \"listFields\": [
+                          \"fn\",
+                          \"email\",
+                          \"office_phone\",
+                          \"date\",
+                          \"grade\",
+                          \"dla\",
+                          \"contact_id\"
+                        ],
+                        \"listFieldSettings\": [],
+                        \"cardViewSettings\": [],
+                        \"viewMode\": [],
+                        \"count\": \"2\"
+                      },
+                      \"account_id\": 50
+                    }", $response);
     }
 
 }
