@@ -541,4 +541,21 @@ class ObjectsTest extends TestCase
 }', $response);
     }
 
+    public function testAddTag()
+    {
+        $mock_curl = new MockCurlClient();
+        $client = new Ontraport("2_AppID_12345678", "Key5678", $mock_curl);
+        $requestParams = array(
+            "objectID" => 0,
+            "ids" => 3,
+            "add_list" => 1
+        );
+        $response = $client->object()->addTag($requestParams);
+        $this->assertEquals('{
+  "code": 0,
+  "data": "The tag is now being processed.",
+  "account_id": 187157
+}', $response);
+    }
+
 }

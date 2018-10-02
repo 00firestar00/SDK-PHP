@@ -62,6 +62,8 @@ class MockCurlClient extends CurlClient
                 return $this->subscribe();
             } elseif ($url === $API_BASE . 'objects/subscribe' and $method = 'delete'){
                 return $this->unsubscribe();
+            } elseif ($url === $API_BASE . 'objects/tag' and $method = 'put'){
+                return $this->addTag();
             }
         }
 
@@ -396,6 +398,15 @@ class MockCurlClient extends CurlClient
         return '{
   "code": 0,
   "data": "The subscription is now being processed.",
+  "account_id": 187157
+}';
+    }
+
+    function addTag()
+    {
+        return '{
+  "code": 0,
+  "data": "The tag is now being processed.",
   "account_id": 187157
 }';
     }
