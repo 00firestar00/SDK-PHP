@@ -272,6 +272,27 @@ class ObjectsTest extends TestCase
 }', $response);
     }
 
-
+    public function testUpdate()
+    {
+        $mock_curl = new MockCurlClient();
+        $client = new Ontraport("2_AppID_12345678", "Key5678", $mock_curl);
+        $requestParams = array(
+            "objectID" => 0,
+            "id" => 8,
+            "firstname" => "unitUpdated",
+        );
+        $response = $client->object()->update($requestParams);
+        $this->assertEquals('{
+  "code": 0,
+  "data": {
+    "attrs": {
+      "firstname": "unitUpdated",
+      "dlm": "1538154601",
+      "id": "8"
+    }
+  },
+  "account_id": 50
+}', $response);
+    }
 
 }
