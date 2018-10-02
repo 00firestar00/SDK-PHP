@@ -33,13 +33,13 @@ class MockCurlClient extends CurlClient
                 return $this->getMeta();
             } elseif ($url === $API_BASE . 'Contacts/saveorupdate' or $url === $API_BASE . 'objects/saveorupdate') {
                 return $this->saveOrUpdateContact();
-            } elseif ($url === $API_BASE . 'Contacts/fieldeditor' and $method === 'get') {
+            } elseif (($url === $API_BASE . 'Contacts/fieldeditor' or $url === $API_BASE . 'objects/fieldeditor') and $method === 'get') {
                 return $this->retrieveFields();
-            } elseif ($url === $API_BASE . 'Contacts/fieldeditor' and $method === 'post') {
+            } elseif (($url === $API_BASE . 'Contacts/fieldeditor' or $url === $API_BASE . 'objects/fieldeditor') and $method === 'post') {
                 return $this->createFields();
-            } elseif ($url === $API_BASE . 'Contacts/fieldeditor' and $method === 'put') {
+            } elseif (($url === $API_BASE . 'Contacts/fieldeditor' or $url === $API_BASE . 'objects/fieldeditor') and $method === 'put') {
                 return $this->updateFields();
-            } elseif ($url === $API_BASE . 'Contacts/fieldeditor' and $method === 'delete') {
+            } elseif (($url === $API_BASE . 'Contacts/fieldeditor' or $url === $API_BASE . 'objects/fieldeditor') and $method === 'delete') {
                 return $this->deleteFields();
             }
 

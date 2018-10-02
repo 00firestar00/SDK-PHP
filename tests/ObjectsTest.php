@@ -295,4 +295,150 @@ class ObjectsTest extends TestCase
 }', $response);
     }
 
+    function testRetrieveFields()
+    {
+        $mock_curl = new MockCurlClient();
+        $client = new Ontraport("2_AppID_12345678", "Key5678", $mock_curl);
+        $requestParams = array();
+        $response = $client->object()->retrieveFields($requestParams);
+        $this->assertEquals('{
+  "code": 0,
+  "data": {
+    "1": {
+      "id": 1,
+      "name": "Contact Information",
+      "description": null,
+      "fields": [
+        [
+          {
+            "id": 198,
+            "alias": "Name",
+            "field": "fn",
+            "type": "mergefield",
+            "required": 0,
+            "unique": 0,
+            "editable": 0,
+            "deletable": 0,
+            "options": "<op:merge field=\'firstname\'>X</op:merge> <op:merge field=\'lastname\'>X</op:merge>"
+          },
+          {
+            "id": 1,
+            "alias": "First Name",
+            "field": "firstname",
+            "type": "text",
+            "required": 0,
+            "unique": 0,
+            "editable": 1,
+            "deletable": 0,
+            "options": ""
+          }
+        ]
+      ]
+    }
+  },
+  "account_id": 50
+}', $response);
+    }
+
+    function testCreateFields()
+    {
+        $mock_curl = new MockCurlClient();
+        $client = new Ontraport("2_AppID_12345678", "Key5678", $mock_curl);
+        $requestParams = array(json_decode('{
+  "objectID": 0,
+  "name": "string1",
+  "description": "string2",
+  "fields": [
+        [
+      {
+          "alias": "string",
+        "type": "text",
+        "required": 0,
+        "unique": 0,
+        "options": {
+          "add": [
+              "string"
+          ],
+          "remove": [
+              "string"
+          ],
+          "replace": [
+              "string"
+          ]
+        }
+      }
+    ]
+  ]
+}'));
+        $response = $client->object()->createFields($requestParams);
+        $this->assertEquals('{
+  "code": 0,
+  "data": {
+    "success": {
+      "f1557": "string"
+    },
+    "error": []
+  },
+  "account_id": 50
+}', $response);
+    }
+
+    function testUpdateFields()
+    {
+        $mock_curl = new MockCurlClient();
+        $client = new Ontraport("2_AppID_12345678", "Key5678", $mock_curl);
+        $requestParams = array(json_decode('{
+  "objectID": 0,
+  "name": "string1",
+  "description": "string2",
+  "fields": [
+    [
+      {
+        "alias": "string",
+        "type": "text",
+        "required": 0,
+        "unique": 0,
+        "options": {
+          "add": [
+            "UPDATED!"
+          ],
+          "remove": [
+            "string"
+          ],
+          "replace": [
+            "string"
+          ]
+        }
+      }
+    ]
+  ]
+}'));
+        $response = $client->object()->updateFields($requestParams);
+        $this->assertEquals('{
+  "code": 0,
+  "data": {
+    "success": {
+      "f1557": "string",
+      "description": "string2"
+    }
+  },
+  "account_id": 50
+}', $response);
+    }
+
+    public function testDeleteFields()
+    {
+        $mock_curl = new MockCurlClient();
+        $client = new Ontraport("2_AppID_12345678", "Key5678", $mock_curl);
+        $requestParams = array(
+            "field" => "f1559"
+        );
+        $response = $client->object()->deleteFields($requestParams);
+        $this->assertEquals('{
+  "code": 0,
+  "data": "Deleted",
+  "account_id": 50
+}', $response);
+    }
+
 }
