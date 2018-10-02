@@ -74,7 +74,7 @@ class MockCurlClient extends CurlClient
             if ($url === $API_BASE . 'task/assign') {
                 return $this->assignTask();
             } elseif ($url === $API_BASE . 'task/reschedule') {
-                return $this->recheduleTask();
+                return $this->rescheduleTask();
             } elseif ($url === $API_BASE . 'task/cancel') {
                 return $this->cancelTask();
             } elseif ($url === $API_BASE . 'task/complete') {
