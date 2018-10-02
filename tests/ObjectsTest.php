@@ -42,25 +42,25 @@ class ObjectsTest extends TestCase
         $response = $client->object()->retrieveMultiplePaginated($requestParams);
 
         $object_data = array();
-        $object_data[] = json_decode("{
-  \"code\": 0,
-  \"data\": [
+        $object_data[] = json_decode('{
+  "code": 0,
+  "data": [
     {
-      \"id\": \"5\",
-      \"owner\": \"1\",
-      \"firstname\": \"Joe\",
-      \"lastname\": \"Johnson\"
+      "id": "8",
+      "owner": "1",
+      "firstname": "unitUpdated",
+      "lastname": "test",
     },
     {
-      \"id\": \"6\",
-      \"owner\": \"1\",
-      \"firstname\": \"Mike\",
-      \"lastname\": \"Michaels\"
+      "id": "10",
+      "owner": "1",
+      "firstname": "unit",
+      "lastname": "test",
     }
   ],
-  \"account_id\": 50,
-  \"misc\": []
-}", true);
+  "account_id": 50,
+  "misc": []
+}', true);
 
         $this->assertEquals(json_encode($object_data), $response);
     }
@@ -72,25 +72,25 @@ class ObjectsTest extends TestCase
         $client = new Ontraport("2_AppID_12345678", "Key5678", $mock_curl);
         $requestParams = array("objectID" => 0);
         $response = $client->object()->retrieveMultiple($requestParams);
-        $this->assertEquals("{
-  \"code\": 0,
-  \"data\": [
+        $this->assertEquals('{
+  "code": 0,
+  "data": [
     {
-      \"id\": \"5\",
-      \"owner\": \"1\",
-      \"firstname\": \"Joe\",
-      \"lastname\": \"Johnson\"
+      "id": "8",
+      "owner": "1",
+      "firstname": "unitUpdated",
+      "lastname": "test",
     },
     {
-      \"id\": \"6\",
-      \"owner\": \"1\",
-      \"firstname\": \"Mike\",
-      \"lastname\": \"Michaels\"
+      "id": "10",
+      "owner": "1",
+      "firstname": "unit",
+      "lastname": "test",
     }
   ],
-  \"account_id\": 50,
-  \"misc\": []
-}", $response);
+  "account_id": 50,
+  "misc": []
+}', $response);
     }
 
     public function testRetrieveIdByEmail(){
@@ -241,6 +241,9 @@ class ObjectsTest extends TestCase
   "data": {
     "firstname": "unit",
     "lastname": "test",
+    "use_utm_names": "false",
+    "id": "8",
+    "owner": "1",
   },
   "account_id": 50
 }', $response);
