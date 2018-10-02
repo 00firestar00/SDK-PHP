@@ -4,7 +4,7 @@ use OntraportAPI\Ontraport;
 use OntraportAPI\Tests\Mock\MockCurlClient;
 use PHPUnit\Framework\TestCase;
 
-class TasksTest extends TestCase
+class Messages extends TestCase
 {
 
     function testRetrieveSingle()
