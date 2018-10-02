@@ -456,4 +456,19 @@ class ObjectsTest extends TestCase
 }', $response);
     }
 
+    public function testUnpause()
+    {
+        $mock_curl = new MockCurlClient();
+        $client = new Ontraport("2_AppID_12345678", "Key5678", $mock_curl);
+        $requestParams = array(
+            "objectID" => 6,
+            "ids" => 1,
+        );
+        $response = $client->object()->unpause($requestParams);
+        $this->assertEquals('{
+  "code": 0,
+  "account_id": 187157
+}', $response);
+    }
+
 }

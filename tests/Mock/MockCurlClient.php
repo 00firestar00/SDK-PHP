@@ -52,6 +52,8 @@ class MockCurlClient extends CurlClient
                 return $this->getObjectsWithTag();
             } elseif ($url === $API_BASE . 'objects/pause'){
                 return $this->pause();
+            } elseif ($url === $API_BASE . 'objects/unpause'){
+                return $this->unpause();
             }
         }
 
@@ -339,6 +341,14 @@ class MockCurlClient extends CurlClient
     }
 
     function pause()
+    {
+        return '{
+  "code": 0,
+  "account_id": 187157
+}';
+    }
+
+    function unpause()
     {
         return '{
   "code": 0,
