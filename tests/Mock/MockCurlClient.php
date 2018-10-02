@@ -50,6 +50,8 @@ class MockCurlClient extends CurlClient
                 return $this->getObjectByEmail();
             } elseif ($url === $API_BASE . 'objects/tag' and $method === 'get') {
                 return $this->getObjectsWithTag();
+            } elseif ($url === $API_BASE . 'objects/pause'){
+                return $this->pause();
             }
         }
 
@@ -333,6 +335,14 @@ class MockCurlClient extends CurlClient
     }
   ],
   "account_id": 50
+}';
+    }
+
+    function pause()
+    {
+        return '{
+  "code": 0,
+  "account_id": 187157
 }';
     }
 
