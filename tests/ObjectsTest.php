@@ -471,4 +471,39 @@ class ObjectsTest extends TestCase
 }', $response);
     }
 
+    public function testAddToSequence()
+    {
+        $mock_curl = new MockCurlClient();
+        $client = new Ontraport("2_AppID_12345678", "Key5678", $mock_curl);
+        $requestParams = array(
+            "objectID" => 0,
+            "ids" => 3,
+            "add_list" => 140
+        );
+        $response = $client->object()->addToSequence($requestParams);
+        $this->assertEquals('{
+  "code": 0,
+  "data": "The subscription is now being processed.",
+  "account_id": 187157
+}', $response);
+    }
+
+    public function testRemoveFromSequence()
+    {
+        $mock_curl = new MockCurlClient();
+        $client = new Ontraport("2_AppID_12345678", "Key5678", $mock_curl);
+        $requestParams = array(
+            "objectID" => 0,
+            "ids" => 3,
+            "add_list" => 140
+        );
+        $response = $client->object()->removeFromSequence($requestParams);
+        $this->assertEquals('{
+  "code": 0,
+  "data": "The subscription is now being processed.",
+  "account_id": 187157
+}', $response);
+    }
+
+
 }

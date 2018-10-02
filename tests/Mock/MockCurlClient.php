@@ -54,6 +54,10 @@ class MockCurlClient extends CurlClient
                 return $this->pause();
             } elseif ($url === $API_BASE . 'objects/unpause'){
                 return $this->unpause();
+            } elseif ($url === $API_BASE . 'objects/sequence' and $method = 'put'){
+                return $this->addToSequence();
+            } elseif ($url === $API_BASE . 'objects/sequence' and $method = 'delete'){
+                return $this->removeFromSequence();
             }
         }
 
@@ -352,6 +356,24 @@ class MockCurlClient extends CurlClient
     {
         return '{
   "code": 0,
+  "account_id": 187157
+}';
+    }
+
+    function addToSequence()
+    {
+        return '{
+  "code": 0,
+  "data": "The subscription is now being processed.",
+  "account_id": 187157
+}';
+    }
+
+    function removeFromSequence()
+    {
+        return '{
+  "code": 0,
+  "data": "The subscription is now being processed.",
   "account_id": 187157
 }';
     }
