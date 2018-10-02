@@ -506,4 +506,39 @@ class ObjectsTest extends TestCase
     }
 
 
+    public function testSubscribe()
+    {
+        $mock_curl = new MockCurlClient();
+        $client = new Ontraport("2_AppID_12345678", "Key5678", $mock_curl);
+        $requestParams = array(
+            "objectID" => 0,
+            "ids" => 3,
+            "add_list" => 140
+        );
+        $response = $client->object()->subscribe($requestParams);
+        $this->assertEquals('{
+  "code": 0,
+  "data": "The subscription is now being processed.",
+  "account_id": 187157
+}', $response);
+    }
+
+
+    public function testUnsubscribe()
+    {
+        $mock_curl = new MockCurlClient();
+        $client = new Ontraport("2_AppID_12345678", "Key5678", $mock_curl);
+        $requestParams = array(
+            "objectID" => 0,
+            "ids" => 3,
+            "add_list" => 140
+        );
+        $response = $client->object()->unsubscribe($requestParams);
+        $this->assertEquals('{
+  "code": 0,
+  "data": "The subscription is now being processed.",
+  "account_id": 187157
+}', $response);
+    }
+
 }
