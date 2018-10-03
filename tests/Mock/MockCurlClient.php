@@ -139,6 +139,12 @@ class MockCurlClient extends CurlClient
                 return $this->getInfo('transaction');
             } elseif ($url === $API_BASE . 'Transactions/meta') {
                 return $this->getMeta('transaction');
+            } elseif ($url === $API_BASE . 'transaction/convertToCollections') {
+                return $this->convertToCollections();
+            } elseif ($url === $API_BASE . 'transaction/convertToDecline') {
+                return $this->convertToDecline();
+            } elseif ($url === $API_BASE . 'transaction/markPaid') {
+                return $this->markAsPaid();
             }
         }
 
@@ -1073,5 +1079,28 @@ class MockCurlClient extends CurlClient
 }';
     }
 
+    function convertToCollections()
+    {
+        return '{
+  "code": 0,
+  "account_id": 187157
+}';
+    }
 
+    function convertToDecline()
+    {
+        return '{
+  "code": 0,
+  "account_id": 187157
+}';
+    }
+
+    function markAsPaid()
+    {
+        return '{
+  "code": 0,
+  "data": [],
+  "account_id": 187157
+}';
+    }
 }
