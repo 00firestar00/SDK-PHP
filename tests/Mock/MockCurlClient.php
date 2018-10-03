@@ -117,6 +117,8 @@ class MockCurlClient extends CurlClient
                 return $this->getBlocksByFormName();
             } elseif ($url === $API_BASE . 'Form/getAllFormBlocks') {
                 return $this->getAllFormBlocks();
+            } elseif ($url === $API_BASE . 'form') {
+                return $this->getSmartFormData();
             }
         }
 
@@ -867,6 +869,21 @@ return parent::httpRequest($requestParams, $url, $method, $requiredParams, $opti
   "code": 0,
   "data": {
     "f1": "form_name"
+  },
+  "account_id": 187157
+}';
+    }
+
+    function getSmartFormData()
+    {
+        return '{
+  "code": 0,
+  "data": {
+    "f1": "form_na{
+  "code": 0,
+  "data": "html form data would be here"
+  "account_id": 187157
+}me"
   },
   "account_id": 187157
 }';

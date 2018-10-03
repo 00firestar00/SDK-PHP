@@ -176,4 +176,24 @@ class FormsTest extends TestCase
   "account_id": 187157
 }', $response);
     }
+
+    function testRetrieveSmartFormHTML(){
+        $mock_curl = new MockCurlClient();
+        $client = new Ontraport("2_AppID_12345678", "Key5678", $mock_curl);
+        $requestParams = array(
+            "id" => 2
+        );
+        $response = $client->form()->retrieveSmartFormHTML($requestParams);
+        $this->assertEquals('{
+  "code": 0,
+  "data": {
+    "f1": "form_na{
+  "code": 0,
+  "data": "html form data would be here"
+  "account_id": 187157
+}me"
+  },
+  "account_id": 187157
+}', $response);
+    }
 }
