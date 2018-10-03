@@ -130,6 +130,16 @@ class MockCurlClient extends CurlClient
             } elseif ($url === $API_BASE . 'LandingPages/meta') {
                 return $this->getMeta('landingPage');
             }
+        } elseif ($this->str_contains(strtolower($url), 'transaction')) {
+            if ($url === $API_BASE . 'Transaction' and $method === 'get') {
+                return $this->getSingle('transaction');
+            } elseif ($url === $API_BASE . 'Transactions' and $method === 'get') {
+                return $this->getMultiple('transactions');
+            } elseif ($url === $API_BASE . 'Transactions/getInfo') {
+                return $this->getInfo('transaction');
+            } elseif ($url === $API_BASE . 'Transactions/meta') {
+                return $this->getMeta('transaction');
+            }
         }
 
 
@@ -218,6 +228,17 @@ class MockCurlClient extends CurlClient
   ],
   "account_id": 187157,
   "misc": []
+}';
+        } elseif ($objectTypeToGet === 'transaction'){
+            return '{
+  "code": 0,
+  "data": {
+    "id": "1",
+    "hidden": "0",
+    "status": "0",
+    "contact_id": "2"
+  },
+  "account_id": 187157
 }';
         }
         return 'Error: Unexpected object type as argument!';
@@ -335,6 +356,26 @@ class MockCurlClient extends CurlClient
   },
   "account_id": 187157
 }';
+        } elseif ($objectType === 'transaction'){
+            return '{
+  "code": 0,
+  "data": {
+    "listFields": [
+      "status",
+      "total",
+      "contact_name",
+      "date"
+    ],
+    "listFieldSettings": [],
+    "cardViewSettings": [],
+    "viewMode": [],
+    "count": "1",
+    "sums": {
+      "total": 1
+    }
+  },
+  "account_id": 187157
+}';
         }
         return 'Error: Unexpected object type as argument!';
     }
@@ -421,6 +462,44 @@ class MockCurlClient extends CurlClient
       "domain": "mystore.pages.ontraport.net",
       "date": 1538602369,
       "dlm": "1537912720"
+    }
+  ],
+  "account_id": 187157,
+  "misc": []
+}';
+        } elseif ($objectTypeToGet === 'transactions'){
+            return '{
+  "code": 0,
+  "data": [
+    {
+      "id": "1",
+      "hidden": "0",
+      "status": "0",
+      "contact_id": "2",
+      "order_id": "0",
+      "form_id": "0",
+      "lp_id": null,
+      "cc_id": null,
+      "gateway_id": "0",
+      "date": "1538603619",
+      "template_id": "1",
+      "subtotal": "1.00",
+      "tax": "0.00",
+      "shipping": "0.00",
+      "total": "1.00",
+      "zip": "",
+      "city": null,
+      "state": null,
+      "county": null,
+      "tax_city": "0.00",
+      "tax_state": "0.00",
+      "tax_county": "0.00",
+      "external_order_id": "",
+      "oprid": "0",
+      "last_recharge_date": "1538603619",
+      "recharge_attempts": null,
+      "recharge": null,
+      "contact_name": "unit test"
     }
   ],
   "account_id": 187157,
@@ -583,6 +662,26 @@ class MockCurlClient extends CurlClient
           "unique": "0",
           "editable": null,
           "deletable": "1"
+        }
+      }
+    }
+  },
+  "account_id": 187157
+}';
+        } elseif ($objectType === 'transaction'){
+            return '{
+  "code": 0,
+  "data": {
+    "46": {
+      "name": "Invoice",
+      "fields": {
+        "date": {
+          "alias": "Date Created",
+          "type": "timestamp",
+          "required": "0",
+          "unique": "0",
+          "editable": "0",
+          "deletable": "0"
         }
       }
     }
