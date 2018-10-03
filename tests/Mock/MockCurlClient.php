@@ -160,6 +160,20 @@ class MockCurlClient extends CurlClient
             } elseif ($url === $API_BASE . 'transaction/processManual') {
                 return $this->processManual();
             }
+        } elseif ($this->str_contains(strtolower($url), 'rule')) {
+            if ($url === $API_BASE . 'Rule' and $method === 'get') {
+                return $this->getSingle('rule');
+            } elseif ($url === $API_BASE . 'Rules' and $method === 'get') {
+                return $this->getMultiple('rules');
+            } elseif ($url === $API_BASE . 'Rules/getInfo') {
+                return $this->getInfo('rule');
+            } elseif ($url === $API_BASE . 'Rules/meta') {
+                return $this->getMeta('rule');
+            } elseif ($url === $API_BASE . 'Rules' and $method === 'post') {
+                return $this->create('rule');
+            } elseif ($url === $API_BASE . 'Rules' and $method === 'put') {
+                return $this->update('rule');
+            }
         }
 
 
@@ -257,6 +271,24 @@ class MockCurlClient extends CurlClient
     "hidden": "0",
     "status": "0",
     "contact_id": "2"
+  },
+  "account_id": 187157
+}';
+        } elseif ($objectTypeToGet === 'rule') {
+            return '{
+  "code": 0,
+  "data": {
+    "id": "1",
+    "drip_id": null,
+    "events": "",
+    "conditions": "",
+    "actions": "",
+    "name": "rule_name_here",
+    "pause": "0",
+    "last_action": "0",
+    "object_type_id": "0",
+    "date": "1538502649",
+    "dlm": "1538502649"
   },
   "account_id": 187157
 }';
@@ -396,6 +428,24 @@ class MockCurlClient extends CurlClient
   },
   "account_id": 187157
 }';
+        } elseif ($objectType === 'rule'){
+            return '{
+  "code": 0,
+  "data": {
+    "listFields": [
+      "name",
+      "last_action",
+      "pause",
+      "date",
+      "dlm"
+    ],
+    "listFieldSettings": [],
+    "cardViewSettings": [],
+    "viewMode": [],
+    "count": "1"
+  },
+  "account_id": 187157
+}';
         }
         return 'Error: Unexpected object type as argument!';
     }
@@ -525,6 +575,28 @@ class MockCurlClient extends CurlClient
   "account_id": 187157,
   "misc": []
 }';
+        } elseif ($objectTypeToGet === 'rules') {
+            return '{
+  "code": 0,
+  "data": [
+    {
+      "id": "1",
+      "drip_id": null,
+      "events": "",
+      "conditions": "",
+      "actions": "",
+      "name": "rule_name_here",
+      "pause": "0",
+      "last_action": "0",
+      "object_type_id": "0",
+      "date": "1538502649",
+      "dlm": "1538502649"
+    }
+  ],
+  "account_id": 187157,
+  "misc": []
+}';
+
         }
         return ('Error: Unexpected object type as argument!');
     }
@@ -708,6 +780,30 @@ class MockCurlClient extends CurlClient
   },
   "account_id": 187157
 }';
+        } elseif ($objectType === 'rule') {
+            return '{
+  "code": 0,
+  "data": {
+    "6": {
+      "name": "Rule",
+      "fields": {
+        "pause": {
+          "alias": "Status",
+          "type": "drop",
+          "required": "0",
+          "unique": "0",
+          "editable": "1",
+          "deletable": "0",
+          "options": {
+            "0": "Live",
+            "1": "Paused"
+          }
+        }
+      }
+    }
+  },
+  "account_id": 187157
+}';
         }
         return ('Error: Unexpected object type as argument!');
     }
@@ -753,6 +849,25 @@ class MockCurlClient extends CurlClient
   },
   "account_id": 187157
 }';
+        } elseif ($objectType === 'rule') {
+            return '{
+  "code": 0,
+  "data": {
+    "pause": "0",
+    "tags": "rule_tags",
+    "name": "rule_name",
+    "id": "2",
+    "drip_id": null,
+    "events": "",
+    "conditions": "",
+    "actions": "",
+    "last_action": "0",
+    "object_type_id": "0",
+    "date": "1538609658",
+    "dlm": "1538609658"
+  },
+  "account_id": 187157
+}';
         }
         return ('Error: Unexpected object type as argument!');
     }
@@ -787,6 +902,18 @@ class MockCurlClient extends CurlClient
     "attrs": {
       "date_due": "4",
       "id": "1"
+    }
+  },
+  "account_id": 187157
+}';
+        } elseif ($objectType === 'rule') {
+            return '{
+  "code": 0,
+  "data": {
+    "attrs": {
+      "pause": "1",
+      "dlm": "1538609797",
+      "id": "2"
     }
   },
   "account_id": 187157

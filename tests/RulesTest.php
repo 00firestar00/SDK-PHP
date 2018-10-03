@@ -4,7 +4,7 @@ use OntraportAPI\Ontraport;
 use OntraportAPI\Tests\Mock\MockCurlClient;
 use PHPUnit\Framework\TestCase;
 
-class MessagesTest extends TestCase
+class RulesTest extends TestCase
 {
 
     function testRetrieveSingle()
@@ -12,15 +12,23 @@ class MessagesTest extends TestCase
         $mock_curl = new MockCurlClient();
         $client = new Ontraport("2_AppID_12345678", "Key5678", $mock_curl);
         $requestParams = array(
-            "id" => 5
-            );
-        $response = $client->message()->retrieveSingle($requestParams);
+            "id" => 1
+        );
+        $response = $client->rule()->retrieveSingle($requestParams);
         $this->assertEquals('{
   "code": 0,
   "data": {
-    "id": "5",
-    "alias": "task_title",
-    "tags": "",
+    "id": "1",
+    "drip_id": null,
+    "events": "",
+    "conditions": "",
+    "actions": "",
+    "name": "rule_name_here",
+    "pause": "0",
+    "last_action": "0",
+    "object_type_id": "0",
+    "date": "1538502649",
+    "dlm": "1538502649"
   },
   "account_id": 187157
 }', $response);
@@ -31,21 +39,22 @@ class MessagesTest extends TestCase
         $mock_curl = new MockCurlClient();
         $client = new Ontraport("2_AppID_12345678", "Key5678", $mock_curl);
         $requestParams = array();
-        $response = $client->message()->retrieveMultiple($requestParams);
+        $response = $client->rule()->retrieveMultiple($requestParams);
         $this->assertEquals('{
   "code": 0,
   "data": [
     {
       "id": "1",
-      "alias": "test1",
-      "type": "Template",
-      "last_save": "1537912999"
-    },
-    {
-      "id": "2",
-      "alias": "Abandoned Cart: Did we lose you?",
-      "type": "Template",
-      "last_save": "1496332432"
+      "drip_id": null,
+      "events": "",
+      "conditions": "",
+      "actions": "",
+      "name": "rule_name_here",
+      "pause": "0",
+      "last_action": "0",
+      "object_type_id": "0",
+      "date": "1538502649",
+      "dlm": "1538502649"
     }
   ],
   "account_id": 187157,
@@ -62,22 +71,23 @@ class MessagesTest extends TestCase
             "range" => 50,
         );
 
-        $response = $client->message()->retrieveMultiplePaginated($requestParams);
+        $response = $client->rule()->retrieveMultiplePaginated($requestParams);
         $object_data = array();
         $object_data[] = json_decode('{
   "code": 0,
   "data": [
     {
       "id": "1",
-      "alias": "test1",
-      "type": "Template",
-      "last_save": "1537912999"
-    },
-    {
-      "id": "2",
-      "alias": "Abandoned Cart: Did we lose you?",
-      "type": "Template",
-      "last_save": "1496332432"
+      "drip_id": null,
+      "events": "",
+      "conditions": "",
+      "actions": "",
+      "name": "rule_name_here",
+      "pause": "0",
+      "last_action": "0",
+      "object_type_id": "0",
+      "date": "1538502649",
+      "dlm": "1538502649"
     }
   ],
   "account_id": 187157,
@@ -92,36 +102,24 @@ class MessagesTest extends TestCase
         $mock_curl = new MockCurlClient();
         $client = new Ontraport("2_AppID_12345678", "Key5678", $mock_curl);
         $requestParams = array();
-        $response = $client->message()->retrieveMeta($requestParams);
+        $response = $client->rule()->retrieveMeta($requestParams);
         $this->assertEquals('{
   "code": 0,
   "data": {
-    "7": {
-      "name": "Message",
+    "6": {
+      "name": "Rule",
       "fields": {
-        "alias": {
-          "alias": "Name",
-          "type": "text",
+        "pause": {
+          "alias": "Status",
+          "type": "drop",
           "required": "0",
           "unique": "0",
           "editable": "1",
-          "deletable": "0"
-        },
-        "name": {
-          "alias": "Name",
-          "type": "mergefield",
-          "required": "0",
-          "unique": "0",
-          "editable": 0,
-          "deletable": "1"
-        },
-        "subject": {
-          "alias": "Subject",
-          "type": "text",
-          "required": "0",
-          "unique": "0",
-          "editable": 1,
-          "deletable": "1"
+          "deletable": "0",
+          "options": {
+            "0": "Live",
+            "1": "Paused"
+          }
         }
       }
     }
@@ -134,29 +132,21 @@ class MessagesTest extends TestCase
         $mock_curl = new MockCurlClient();
         $client = new Ontraport("2_AppID_12345678", "Key5678", $mock_curl);
         $requestParams = array();
-        $response = $client->message()->retrieveCollectionInfo($requestParams);
+        $response = $client->rule()->retrieveCollectionInfo($requestParams);
         $this->assertEquals('{
   "code": 0,
   "data": {
     "listFields": [
       "name",
-      "subject",
-      "spam_score",
+      "last_action",
+      "pause",
       "date",
-      "type",
-      "mcsent",
-      "mcopened",
-      "mcclicked",
-      "mcnotopened",
-      "mcnotclicked",
-      "mcunsub",
-      "mcabuse",
       "dlm"
     ],
     "listFieldSettings": [],
     "cardViewSettings": [],
     "viewMode": [],
-    "count": "5"
+    "count": "1"
   },
   "account_id": 187157
 }', $response);
@@ -166,14 +156,25 @@ class MessagesTest extends TestCase
         $mock_curl = new MockCurlClient();
         $client = new Ontraport("2_AppID_12345678", "Key5678", $mock_curl);
         $requestParams = array(
-            "type" => "e-mail"
+            "tags" => "rule_tags",
+            "name" => "rule_name"
         );
-        $response = $client->message()->create($requestParams);
+        $response = $client->rule()->create($requestParams);
         $this->assertEquals('{
   "code": 0,
   "data": {
-    "id": 7,
-    "date": "1538590526"
+    "pause": "0",
+    "tags": "rule_tags",
+    "name": "rule_name",
+    "id": "2",
+    "drip_id": null,
+    "events": "",
+    "conditions": "",
+    "actions": "",
+    "last_action": "0",
+    "object_type_id": "0",
+    "date": "1538609658",
+    "dlm": "1538609658"
   },
   "account_id": 187157
 }', $response);
@@ -183,14 +184,18 @@ class MessagesTest extends TestCase
         $mock_curl = new MockCurlClient();
         $client = new Ontraport("2_AppID_12345678", "Key5678", $mock_curl);
         $requestParams = array(
-            "id" => 7
+            "id" => 2,
+            "pause" => 1
         );
-        $response = $client->message()->update($requestParams);
+        $response = $client->rule()->update($requestParams);
         $this->assertEquals('{
   "code": 0,
   "data": {
-    "id": "7",
-    "date": "1538590526"
+    "attrs": {
+      "pause": "1",
+      "dlm": "1538609797",
+      "id": "2"
+    }
   },
   "account_id": 187157
 }', $response);
