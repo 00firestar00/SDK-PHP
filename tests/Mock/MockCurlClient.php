@@ -14,12 +14,12 @@ class MockCurlClient extends CurlClient
     {
         $API_BASE = O::REQUEST_URL . '/' . O::API_VERSION . '/';
 
-        if($this->str_contains($url, 'Contact') or $this->str_contains($url, 'object')) {
+        if ($this->str_contains($url, 'Contact') or $this->str_contains($url, 'object')) {
             if (($url === $API_BASE . 'Contact' or $url === $API_BASE . 'object') and $method === 'get') {
                 return $this->getSingle('contact');
             } elseif (($url === $API_BASE . 'Contact' or $url === $API_BASE . 'object') and $method === 'delete') {
                 return $this->deleteSingleContact();
-            } elseif (($url === $API_BASE . 'Contacts/getInfo'or $url === $API_BASE . 'objects/getInfo')) {
+            } elseif (($url === $API_BASE . 'Contacts/getInfo' or $url === $API_BASE . 'objects/getInfo')) {
                 return $this->getInfo('contact');
             } elseif (($url === $API_BASE . 'Contacts' or $url === $API_BASE . 'objects') and $method === 'get') {
                 return $this->getMultiple('contacts');
@@ -41,9 +41,7 @@ class MockCurlClient extends CurlClient
                 return $this->updateFields();
             } elseif (($url === $API_BASE . 'Contacts/fieldeditor' or $url === $API_BASE . 'objects/fieldeditor') and $method === 'delete') {
                 return $this->deleteFields();
-            }
-
-            //Applicable to Objects but not contacts
+            } //Applicable to Objects but not contacts
             elseif ($url === $API_BASE . 'objects/tagByName' and $method === 'put') {
                 return $this->tagObjectByName();
             } elseif ($url === $API_BASE . 'objects/tagByName' and $method === 'delete') {
@@ -52,25 +50,25 @@ class MockCurlClient extends CurlClient
                 return $this->getObjectByEmail();
             } elseif ($url === $API_BASE . 'objects/tag' and $method === 'get') {
                 return $this->getObjectsWithTag();
-            } elseif ($url === $API_BASE . 'objects/pause'){
+            } elseif ($url === $API_BASE . 'objects/pause') {
                 return $this->pause();
-            } elseif ($url === $API_BASE . 'objects/unpause'){
+            } elseif ($url === $API_BASE . 'objects/unpause') {
                 return $this->unpause();
-            } elseif ($url === $API_BASE . 'objects/sequence' and $method === 'put'){
+            } elseif ($url === $API_BASE . 'objects/sequence' and $method === 'put') {
                 return $this->addToSequence();
-            } elseif ($url === $API_BASE . 'objects/sequence' and $method === 'delete'){
+            } elseif ($url === $API_BASE . 'objects/sequence' and $method === 'delete') {
                 return $this->removeFromSequence();
-            } elseif ($url === $API_BASE . 'objects/subscribe' and $method === 'put'){
+            } elseif ($url === $API_BASE . 'objects/subscribe' and $method === 'put') {
                 return $this->subscribe();
-            } elseif ($url === $API_BASE . 'objects/subscribe' and $method === 'delete'){
+            } elseif ($url === $API_BASE . 'objects/subscribe' and $method === 'delete') {
                 return $this->unsubscribe();
-            } elseif ($url === $API_BASE . 'objects/tag' and $method === 'put'){
+            } elseif ($url === $API_BASE . 'objects/tag' and $method === 'put') {
                 return $this->addTag();
-            } elseif ($url === $API_BASE . 'objects/tag' and $method === 'delete'){
+            } elseif ($url === $API_BASE . 'objects/tag' and $method === 'delete') {
                 return $this->removeTag();
             }
 
-        } elseif($this->str_contains(strtolower($url), 'task')) {
+        } elseif ($this->str_contains(strtolower($url), 'task')) {
             if ($url === $API_BASE . 'task/assign') {
                 return $this->assignTask();
             } elseif ($url === $API_BASE . 'task/reschedule') {
@@ -90,7 +88,7 @@ class MockCurlClient extends CurlClient
             } elseif ($url === $API_BASE . 'Tasks' and $method === 'put') {
                 return $this->update('task');
             }
-        } elseif($this->str_contains(strtolower($url), 'message')) {
+        } elseif ($this->str_contains(strtolower($url), 'message')) {
             if ($url === $API_BASE . 'Message' and $method === 'get') {
                 return $this->getSingle('message');
             } elseif ($url === $API_BASE . 'Messages' and $method === 'get') {
@@ -104,7 +102,7 @@ class MockCurlClient extends CurlClient
             } elseif ($url === $API_BASE . 'message' and $method === 'put') {
                 return $this->update('message');
             }
-        } elseif($this->str_contains(strtolower($url), 'form')) {
+        } elseif ($this->str_contains(strtolower($url), 'form')) {
             if ($url === $API_BASE . 'Form' and $method === 'get') {
                 return $this->getSingle('form');
             } elseif ($url === $API_BASE . 'Forms' and $method === 'get') {
@@ -120,11 +118,22 @@ class MockCurlClient extends CurlClient
             } elseif ($url === $API_BASE . 'form') {
                 return $this->getSmartFormData();
             }
+        } elseif ($this->str_contains(strtolower($url), 'landingpage')) {
+            if ($url === $API_BASE . 'landingPage/getHostedURL') {
+                return $this->getHostedURL();
+            } elseif ($url === $API_BASE . 'LandingPage' and $method === 'get') {
+                return $this->getSingle('landingPage');
+            } elseif ($url === $API_BASE . 'LandingPages' and $method === 'get') {
+                return $this->getMultiple('landingPages');
+            } elseif ($url === $API_BASE . 'LandingPages/getInfo') {
+                return $this->getInfo('landingPage');
+            } elseif ($url === $API_BASE . 'LandingPages/meta') {
+                return $this->getMeta('landingPage');
+            }
         }
 
 
-
-return parent::httpRequest($requestParams, $url, $method, $requiredParams, $options);
+        return parent::httpRequest($requestParams, $url, $method, $requiredParams, $options);
     }
 
     function str_contains($haystack, $needle)
@@ -134,8 +143,7 @@ return parent::httpRequest($requestParams, $url, $method, $requiredParams, $opti
 
     function getSingle($objectTypeToGet)
     {
-        if($objectTypeToGet === 'contact')
-        {
+        if ($objectTypeToGet === 'contact') {
             return "{
   \"code\": 0,
   \"data\": {
@@ -146,8 +154,7 @@ return parent::httpRequest($requestParams, $url, $method, $requiredParams, $opti
   },
   \"account_id\": 50
 }";
-        } elseif($objectTypeToGet === 'message')
-        {
+        } elseif ($objectTypeToGet === 'message') {
             return '{
   "code": 0,
   "data": {
@@ -157,8 +164,7 @@ return parent::httpRequest($requestParams, $url, $method, $requiredParams, $opti
   },
   "account_id": 187157
 }';
-        } elseif($objectTypeToGet === 'task')
-        {
+        } elseif ($objectTypeToGet === 'task') {
             return '{
   "code": 0,
   "data": {
@@ -184,7 +190,7 @@ return parent::httpRequest($requestParams, $url, $method, $requiredParams, $opti
   },
   "account_id": 187157
 }';
-        } elseif($objectTypeToGet === 'form') {
+        } elseif ($objectTypeToGet === 'form') {
             return '{
   "code": 0,
   "data": {
@@ -200,13 +206,26 @@ return parent::httpRequest($requestParams, $url, $method, $requiredParams, $opti
   },
   "account_id": 187157
 }';
+        } elseif ($objectTypeToGet === 'landingPage'){
+            return '{
+  "code": 0,
+  "data": [
+    {
+      "domain": "mystore.pages.ontraport.net",
+      "date": 1538602369,
+      "dlm": "1537912720"
+    }
+  ],
+  "account_id": 187157,
+  "misc": []
+}';
         }
         return 'Error: Unexpected object type as argument!';
     }
 
     function getInfo($objectType)
     {
-        if($objectType === 'contact') {
+        if ($objectType === 'contact') {
             return "{\"code\": 0,
                       \"data\": {
                         \"listFields\": [
@@ -225,8 +244,8 @@ return parent::httpRequest($requestParams, $url, $method, $requiredParams, $opti
                       },
                       \"account_id\": 50
                     }";
-        } elseif($objectType === 'message'){
-            return  '{
+        } elseif ($objectType === 'message') {
+            return '{
   "code": 0,
   "data": {
     "listFields": [
@@ -251,7 +270,7 @@ return parent::httpRequest($requestParams, $url, $method, $requiredParams, $opti
   },
   "account_id": 187157
 }';
-        } elseif ($objectType === 'task'){
+        } elseif ($objectType === 'task') {
             return '{
   "code": 0,
   "data": {
@@ -273,7 +292,7 @@ return parent::httpRequest($requestParams, $url, $method, $requiredParams, $opti
   },
   "account_id": 187157
 }';
-        } elseif($objectType === 'form') {
+        } elseif ($objectType === 'form') {
             return '{
   "code": 0,
   "data": {
@@ -295,14 +314,34 @@ return parent::httpRequest($requestParams, $url, $method, $requiredParams, $opti
   },
   "account_id": 187157
 }';
+        } elseif($objectType === 'landingPage'){
+            return '{
+  "code": 0,
+  "data": {
+    "listFields": [
+      "name",
+      "domain",
+      "lpsent",
+      "unique_lpsent",
+      "lpconvert",
+      "unique_lpconvert",
+      "date",
+      "dlm"
+    ],
+    "listFieldSettings": [],
+    "cardViewSettings": [],
+    "viewMode": [],
+    "count": "1"
+  },
+  "account_id": 187157
+}';
         }
         return 'Error: Unexpected object type as argument!';
     }
 
     function getMultiple($objectTypeToGet)
     {
-        if($objectTypeToGet === 'contacts')
-        {
+        if ($objectTypeToGet === 'contacts') {
             return '{
   "code": 0,
   "data": [
@@ -322,8 +361,7 @@ return parent::httpRequest($requestParams, $url, $method, $requiredParams, $opti
   "account_id": 50,
   "misc": []
 }';
-        } elseif($objectTypeToGet === 'messages')
-        {
+        } elseif ($objectTypeToGet === 'messages') {
             return '{
   "code": 0,
   "data": [
@@ -343,7 +381,7 @@ return parent::httpRequest($requestParams, $url, $method, $requiredParams, $opti
   "account_id": 187157,
   "misc": []
 }';
-        } elseif($objectTypeToGet === 'tasks'){
+        } elseif ($objectTypeToGet === 'tasks') {
             return '{
   "code": 0,
   "data": [
@@ -361,7 +399,7 @@ return parent::httpRequest($requestParams, $url, $method, $requiredParams, $opti
   "account_id": 187157,
   "misc": []
 }';
-        } elseif($objectTypeToGet === 'forms') {
+        } elseif ($objectTypeToGet === 'forms') {
             return '{
   "code": 0,
   "data": [
@@ -375,8 +413,21 @@ return parent::httpRequest($requestParams, $url, $method, $requiredParams, $opti
   "account_id": 187157,
   "misc": []
 }';
+        } elseif ($objectTypeToGet === 'landingPages') {
+            return '{
+  "code": 0,
+  "data": [
+    {
+      "domain": "mystore.pages.ontraport.net",
+      "date": 1538602369,
+      "dlm": "1537912720"
+    }
+  ],
+  "account_id": 187157,
+  "misc": []
+}';
         }
-        return('Error: Unexpected object type as argument!');
+        return ('Error: Unexpected object type as argument!');
     }
 
     function getMeta($objectType)
@@ -417,9 +468,7 @@ return parent::httpRequest($requestParams, $url, $method, $requiredParams, $opti
   },
   "account_id": 50
 }';
-        }
-        elseif($objectType === 'message')
-        {
+        } elseif ($objectType === 'message') {
             return '{
   "code": 0,
   "data": {
@@ -455,7 +504,7 @@ return parent::httpRequest($requestParams, $url, $method, $requiredParams, $opti
   },
   "account_id": 187157
 }';
-        }elseif($objectType === 'task'){
+        } elseif ($objectType === 'task') {
             return '{
   "code": 0,
   "data": {
@@ -484,7 +533,7 @@ return parent::httpRequest($requestParams, $url, $method, $requiredParams, $opti
   },
   "account_id": 187157
 }';
-        } elseif ($objectType === 'form'){
+        } elseif ($objectType === 'form') {
             return '{
   "code": 0,
   "data": {
@@ -512,8 +561,36 @@ return parent::httpRequest($requestParams, $url, $method, $requiredParams, $opti
   },
   "account_id": 187157
 }';
+        } elseif ($objectType === 'landingPage'){
+            return '{
+  "code": 0,
+  "data": {
+    "20": {
+      "name": "LandingPage",
+      "fields": {
+        "name": {
+          "alias": "Name",
+          "type": "text",
+          "required": "0",
+          "unique": "0",
+          "editable": "1",
+          "deletable": "0"
+        },
+        "domain": {
+          "alias": "Domain",
+          "type": "url",
+          "required": "0",
+          "unique": "0",
+          "editable": null,
+          "deletable": "1"
         }
-        return('Error: Unexpected object type as argument!');
+      }
+    }
+  },
+  "account_id": 187157
+}';
+        }
+        return ('Error: Unexpected object type as argument!');
     }
 
 
@@ -536,8 +613,7 @@ return parent::httpRequest($requestParams, $url, $method, $requiredParams, $opti
 
     function create($objectType)
     {
-        if($objectType === 'contact')
-        {
+        if ($objectType === 'contact') {
             return '{
   "code": 0,
   "data": {
@@ -549,8 +625,7 @@ return parent::httpRequest($requestParams, $url, $method, $requiredParams, $opti
   },
   "account_id": 50
 }';
-        } elseif($objectType === 'message')
-        {
+        } elseif ($objectType === 'message') {
             return '{
   "code": 0,
   "data": {
@@ -560,7 +635,7 @@ return parent::httpRequest($requestParams, $url, $method, $requiredParams, $opti
   "account_id": 187157
 }';
         }
-        return('Error: Unexpected object type as argument!');
+        return ('Error: Unexpected object type as argument!');
     }
 
     function update($objectType)
@@ -577,7 +652,7 @@ return parent::httpRequest($requestParams, $url, $method, $requiredParams, $opti
   },
   "account_id": 50
 }';
-        } elseif($objectType === 'message'){
+        } elseif ($objectType === 'message') {
             return '{
   "code": 0,
   "data": {
@@ -586,7 +661,7 @@ return parent::httpRequest($requestParams, $url, $method, $requiredParams, $opti
   },
   "account_id": 187157
 }';
-        } elseif($objectType === 'task'){
+        } elseif ($objectType === 'task') {
             return '{
   "code": 0,
   "data": {
@@ -598,7 +673,7 @@ return parent::httpRequest($requestParams, $url, $method, $requiredParams, $opti
   "account_id": 187157
 }';
         }
-        return('Error: Unexpected object type as argument!');
+        return ('Error: Unexpected object type as argument!');
     }
 
     function saveOrUpdateContact()
@@ -715,7 +790,8 @@ return parent::httpRequest($requestParams, $url, $method, $requiredParams, $opti
 }';
     }
 
-    function getObjectsWithTag(){
+    function getObjectsWithTag()
+    {
         return '{
   "code": 0,
   "data": [
@@ -888,5 +964,15 @@ return parent::httpRequest($requestParams, $url, $method, $requiredParams, $opti
   "account_id": 187157
 }';
     }
+
+    function getHostedURL()
+    {
+        return '{
+  "code": 0,
+  "data": "http://user.ontraport.com/123",
+  "account_id": 187157
+}';
+    }
+
 
 }
