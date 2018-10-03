@@ -144,4 +144,36 @@ class FormsTest extends TestCase
   "account_id": 187157
 }', $response);
     }
+
+    function testRetrieveBlocksByForm(){
+        $mock_curl = new MockCurlClient();
+        $client = new Ontraport("2_AppID_12345678", "Key5678", $mock_curl);
+        $requestParams = array(
+            "name" => "form_name"
+        );
+        $response = $client->form()->retrieveBlocksByForm($requestParams);
+        $this->assertEquals('{
+  "code": 0,
+  "data": {
+    "block_ids": [
+      "f1"
+    ]
+  },
+  "account_id": 187157
+}', $response);
+    }
+
+    function testRetrieveFormBlocks(){
+        $mock_curl = new MockCurlClient();
+        $client = new Ontraport("2_AppID_12345678", "Key5678", $mock_curl);
+        $requestParams = array();
+        $response = $client->form()->retrieveFormBlocks($requestParams);
+        $this->assertEquals('{
+  "code": 0,
+  "data": {
+    "f1": "form_name"
+  },
+  "account_id": 187157
+}', $response);
+    }
 }

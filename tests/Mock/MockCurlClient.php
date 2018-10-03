@@ -113,6 +113,10 @@ class MockCurlClient extends CurlClient
                 return $this->getInfo('form');
             } elseif ($url === $API_BASE . 'Forms/meta') {
                 return $this->getMeta('form');
+            } elseif ($url === $API_BASE . 'Form/getBlocksByFormName') {
+                return $this->getBlocksByFormName();
+            } elseif ($url === $API_BASE . 'Form/getAllFormBlocks') {
+                return $this->getAllFormBlocks();
             }
         }
 
@@ -844,6 +848,28 @@ return parent::httpRequest($requestParams, $url, $method, $requiredParams, $opti
 }';
     }
 
+    function getBlocksByFormName()
+    {
+        return '{
+  "code": 0,
+  "data": {
+    "block_ids": [
+      "f1"
+    ]
+  },
+  "account_id": 187157
+}';
+    }
 
+    function getAllFormBlocks()
+    {
+        return '{
+  "code": 0,
+  "data": {
+    "f1": "form_name"
+  },
+  "account_id": 187157
+}';
+    }
 
 }
