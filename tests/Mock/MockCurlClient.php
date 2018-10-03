@@ -145,6 +145,14 @@ class MockCurlClient extends CurlClient
                 return $this->convertToDecline();
             } elseif ($url === $API_BASE . 'transaction/markPaid') {
                 return $this->markAsPaid();
+            } elseif ($url === $API_BASE . 'transaction/refund') {
+                return $this->refund();
+            } elseif ($url === $API_BASE . 'transaction/rerun') {
+                return $this->rerun();
+            } elseif ($url === $API_BASE . 'transaction/writeOff') {
+                return $this->writeOff();
+            } elseif ($url === $API_BASE . 'transaction/void') {
+                return $this->void();
             }
         }
 
@@ -1103,4 +1111,44 @@ class MockCurlClient extends CurlClient
   "account_id": 187157
 }';
     }
+
+    function refund()
+    {
+        return '{
+  "code": 0,
+  "data": "Refunded",
+  "account_id": 187157
+}';
+    }
+
+
+    function rerun()
+    {
+        return '{
+  "code": 0,
+  "data": 1,
+  "account_id": 187157
+}';
+    }
+
+
+    function writeOff()
+    {
+        return '{
+  "code": 0,
+  "data": 1,
+  "account_id": 187157
+}';
+    }
+
+    function void()
+    {
+        return '{
+  "code": 0,
+  "data": "Voided",
+  "account_id": 187157
+}';
+    }
+
+
 }

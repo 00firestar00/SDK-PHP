@@ -212,4 +212,72 @@ class TransactionsTest extends TestCase
 }', $response);
     }
 
+    function testRefund(){
+        $mock_curl = new MockCurlClient();
+        $client = new Ontraport("2_AppID_12345678", "Key5678", $mock_curl);
+        $requestParams = json_encode('{
+  "objectID": 46,
+  "ids": [
+    1
+  ]
+}');
+        $response = $client->transaction()->refund($requestParams);
+        $this->assertEquals('{
+  "code": 0,
+  "data": "Refunded",
+  "account_id": 187157
+}', $response);
+    }
+
+    function testRerun(){
+        $mock_curl = new MockCurlClient();
+        $client = new Ontraport("2_AppID_12345678", "Key5678", $mock_curl);
+        $requestParams = json_encode('{
+  "objectID": 46,
+  "ids": [
+    1
+  ]
+}');
+        $response = $client->transaction()->rerun($requestParams);
+        $this->assertEquals('{
+  "code": 0,
+  "data": 1,
+  "account_id": 187157
+}', $response);
+    }
+
+    function testWriteOff(){
+        $mock_curl = new MockCurlClient();
+        $client = new Ontraport("2_AppID_12345678", "Key5678", $mock_curl);
+        $requestParams = json_encode('{
+  "objectID": 46,
+  "ids": [
+    1
+  ]
+}');
+        $response = $client->transaction()->writeOff($requestParams);
+        $this->assertEquals('{
+  "code": 0,
+  "data": 1,
+  "account_id": 187157
+}', $response);
+    }
+
+    function testVoid(){
+        $mock_curl = new MockCurlClient();
+        $client = new Ontraport("2_AppID_12345678", "Key5678", $mock_curl);
+        $requestParams = json_encode('{
+  "objectID": 46,
+  "ids": [
+    2
+  ]
+}');
+        $response = $client->transaction()->void($requestParams);
+        $this->assertEquals('{
+  "code": 0,
+  "data": "Voided",
+  "account_id": 187157
+}', $response);
+    }
+
 }
