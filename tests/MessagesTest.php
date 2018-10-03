@@ -52,6 +52,23 @@ class Messages extends TestCase
   "misc": []
 }', $response);
     }
+//
+//    function testRetrieveMultiplePaginated()
+//    {
+//        $mock_curl = new MockCurlClient();
+//        $client = new Ontraport("2_AppID_12345678", "Key5678", $mock_curl);
+//        $requestParams = array(
+//            "start" => 0,
+//            "range" => 50,
+//        );
+//
+//        $response = $client->message()->retrieveMultiplePaginated($requestParams);
+//
+//        $object_data = array();
+//        $object_data[] = json_decode('dasfdfadfasf', true);
+//
+//        $this->assertEquals('placeholder', $response);
+//    }
 
     function testRetrieveMeta()
     {

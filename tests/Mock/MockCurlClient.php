@@ -178,6 +178,7 @@ class MockCurlClient extends CurlClient
   "account_id": 187157
 }';
         }
+        return 'Error: Unexpected object type as argument!';
     }
 
     function getMultiple($objectTypeToGet)
