@@ -39,36 +39,53 @@ class Messages extends TestCase
       "id": "1",
       "alias": "test1",
       "type": "Template",
-      "last_save": "1537912999",
+      "last_save": "1537912999"
     },
     {
       "id": "2",
       "alias": "Abandoned Cart: Did we lose you?",
       "type": "Template",
-      "last_save": "1496332432",
+      "last_save": "1496332432"
     }
   ],
   "account_id": 187157,
   "misc": []
 }', $response);
     }
-//
-//    function testRetrieveMultiplePaginated()
-//    {
-//        $mock_curl = new MockCurlClient();
-//        $client = new Ontraport("2_AppID_12345678", "Key5678", $mock_curl);
-//        $requestParams = array(
-//            "start" => 0,
-//            "range" => 50,
-//        );
-//
-//        $response = $client->message()->retrieveMultiplePaginated($requestParams);
-//
-//        $object_data = array();
-//        $object_data[] = json_decode('dasfdfadfasf', true);
-//
-//        $this->assertEquals('placeholder', $response);
-//    }
+
+    function testRetrieveMultiplePaginated()
+    {
+        $mock_curl = new MockCurlClient();
+        $client = new Ontraport("2_AppID_12345678", "Key5678", $mock_curl);
+        $requestParams = array(
+            "start" => 0,
+            "range" => 50,
+        );
+
+        $response = $client->message()->retrieveMultiplePaginated($requestParams);
+        $object_data = array();
+        $object_data[] = json_decode('{
+  "code": 0,
+  "data": [
+    {
+      "id": "1",
+      "alias": "test1",
+      "type": "Template",
+      "last_save": "1537912999"
+    },
+    {
+      "id": "2",
+      "alias": "Abandoned Cart: Did we lose you?",
+      "type": "Template",
+      "last_save": "1496332432"
+    }
+  ],
+  "account_id": 187157,
+  "misc": []
+}');
+
+        $this->assertEquals(json_encode($object_data), $response);
+    }
 
     function testRetrieveMeta()
     {

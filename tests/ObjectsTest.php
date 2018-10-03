@@ -49,13 +49,13 @@ class ObjectsTest extends TestCase
       "id": "8",
       "owner": "1",
       "firstname": "unitUpdated",
-      "lastname": "test",
+      "lastname": "test"
     },
     {
       "id": "10",
       "owner": "1",
       "firstname": "unit",
-      "lastname": "test",
+      "lastname": "test"
     }
   ],
   "account_id": 50,
@@ -76,19 +76,19 @@ class ObjectsTest extends TestCase
   "code": 0,
   "data": [
     {
-      "id": "3",
+      "id": "8",
       "owner": "1",
-      "firstname": "string",
-      "lastname": "string",
+      "firstname": "unitUpdated",
+      "lastname": "test"
     },
     {
-      "id": "2",
+      "id": "10",
       "owner": "1",
       "firstname": "unit",
-      "lastname": "test",
+      "lastname": "test"
     }
   ],
-  "account_id": 187157,
+  "account_id": 50,
   "misc": []
 }', $response);
     }

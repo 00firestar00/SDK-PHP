@@ -152,7 +152,7 @@ class MockCurlClient extends CurlClient
                       \"account_id\": 50
                     }";
         } elseif($objectType === 'message'){
-            return '{
+            $json_string = '{
   "code": 0,
   "data": {
     "listFields": [
@@ -177,6 +177,7 @@ class MockCurlClient extends CurlClient
   },
   "account_id": 187157
 }';
+            return $json_string;
         }
         return 'Error: Unexpected object type as argument!';
     }
@@ -189,19 +190,19 @@ class MockCurlClient extends CurlClient
   "code": 0,
   "data": [
     {
-      "id": "3",
+      "id": "8",
       "owner": "1",
-      "firstname": "string",
-      "lastname": "string",
+      "firstname": "unitUpdated",
+      "lastname": "test"
     },
     {
-      "id": "2",
+      "id": "10",
       "owner": "1",
       "firstname": "unit",
-      "lastname": "test",
+      "lastname": "test"
     }
   ],
-  "account_id": 187157,
+  "account_id": 50,
   "misc": []
 }';
         } elseif($objectTypeToGet === 'messages')
@@ -213,13 +214,13 @@ class MockCurlClient extends CurlClient
       "id": "1",
       "alias": "test1",
       "type": "Template",
-      "last_save": "1537912999",
+      "last_save": "1537912999"
     },
     {
       "id": "2",
       "alias": "Abandoned Cart: Did we lose you?",
       "type": "Template",
-      "last_save": "1496332432",
+      "last_save": "1496332432"
     }
   ],
   "account_id": 187157,

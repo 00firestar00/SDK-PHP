@@ -28,40 +28,39 @@ class ContactsTest extends TestCase
 
     }
 
-//    public function testRetrieveMultiplePaginated()
-//    {
-//        $mock_curl = new MockCurlClient();
-//        $client = new Ontraport("2_AppID_12345678", "Key5678", $mock_curl);
-//        $requestParams = array(
-//            "start" => 0,
-//            "range" => 50,
-//        );
-//
-//        $response = $client->contact()->retrieveMultiplePaginated($requestParams);
-//
-//        $object_data = array();
-//        $object_data[] = json_decode('{
-//  "code": 0,
-//  "data": [
-//    {
-//      "id": "8",
-//      "owner": "1",
-//      "firstname": "unitUpdated",
-//      "lastname": "test",
-//    },
-//    {
-//      "id": "10",
-//      "owner": "1",
-//      "firstname": "unit",
-//      "lastname": "test",
-//    }
-//  ],
-//  "account_id": 50,
-//  "misc": []
-//}', true);
-//
-//        $this->assertEquals('placeholder', $response);
-//    }
+    public function testRetrieveMultiplePaginated()
+    {
+        $mock_curl = new MockCurlClient();
+        $client = new Ontraport("2_AppID_12345678", "Key5678", $mock_curl);
+        $requestParams = array(
+            "start" => 0,
+            "range" => 50,
+        );
+
+        $response = $client->contact()->retrieveMultiplePaginated($requestParams);
+
+        $object_data = array();
+        $object_data[] = json_decode('{
+  "code": 0,
+  "data": [
+    {
+      "id": "8",
+      "owner": "1",
+      "firstname": "unitUpdated",
+      "lastname": "test"
+    },
+    {
+      "id": "10",
+      "owner": "1",
+      "firstname": "unit",
+      "lastname": "test"
+    }
+  ],
+  "account_id": 50,
+  "misc": []
+}', true);
+        $this->assertEquals(json_encode($object_data), $response);
+    }
 
     public function testRetrieveMultiple()
     {
@@ -73,19 +72,19 @@ class ContactsTest extends TestCase
   "code": 0,
   "data": [
     {
-      "id": "3",
+      "id": "8",
       "owner": "1",
-      "firstname": "string",
-      "lastname": "string",
+      "firstname": "unitUpdated",
+      "lastname": "test"
     },
     {
-      "id": "2",
+      "id": "10",
       "owner": "1",
       "firstname": "unit",
-      "lastname": "test",
+      "lastname": "test"
     }
   ],
-  "account_id": 187157,
+  "account_id": 50,
   "misc": []
 }', $response);
     }
