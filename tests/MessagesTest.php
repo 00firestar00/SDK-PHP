@@ -179,4 +179,21 @@ class Messages extends TestCase
 }', $response);
     }
 
+    function testUpdate(){
+        $mock_curl = new MockCurlClient();
+        $client = new Ontraport("2_AppID_12345678", "Key5678", $mock_curl);
+        $requestParams = array(
+            "id" => 7
+        );
+        $response = $client->message()->update($requestParams);
+        $this->assertEquals('{
+  "code": 0,
+  "data": {
+    "id": "7",
+    "date": "1538590526"
+  },
+  "account_id": 187157
+}', $response);
+    }
+
 }

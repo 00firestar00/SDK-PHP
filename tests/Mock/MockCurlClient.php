@@ -28,7 +28,7 @@ class MockCurlClient extends CurlClient
             } elseif (($url === $API_BASE . 'Contacts' or $url === $API_BASE . 'objects') and $method === 'post') {
                 return $this->create('contact');
             } elseif (($url === $API_BASE . 'Contacts' or $url === $API_BASE . 'objects') and $method === 'put') {
-                return $this->updateSingleContact();
+                return $this->update('contact');
             } elseif ($url === $API_BASE . 'Contacts/meta' or $url === $API_BASE . 'objects/meta') {
                 return $this->getMeta('contact');
             } elseif ($url === $API_BASE . 'Contacts/saveorupdate' or $url === $API_BASE . 'objects/saveorupdate') {
@@ -56,17 +56,17 @@ class MockCurlClient extends CurlClient
                 return $this->pause();
             } elseif ($url === $API_BASE . 'objects/unpause'){
                 return $this->unpause();
-            } elseif ($url === $API_BASE . 'objects/sequence' and $method = 'put'){
+            } elseif ($url === $API_BASE . 'objects/sequence' and $method === 'put'){
                 return $this->addToSequence();
-            } elseif ($url === $API_BASE . 'objects/sequence' and $method = 'delete'){
+            } elseif ($url === $API_BASE . 'objects/sequence' and $method === 'delete'){
                 return $this->removeFromSequence();
-            } elseif ($url === $API_BASE . 'objects/subscribe' and $method = 'put'){
+            } elseif ($url === $API_BASE . 'objects/subscribe' and $method === 'put'){
                 return $this->subscribe();
-            } elseif ($url === $API_BASE . 'objects/subscribe' and $method = 'delete'){
+            } elseif ($url === $API_BASE . 'objects/subscribe' and $method === 'delete'){
                 return $this->unsubscribe();
-            } elseif ($url === $API_BASE . 'objects/tag' and $method = 'put'){
+            } elseif ($url === $API_BASE . 'objects/tag' and $method === 'put'){
                 return $this->addTag();
-            } elseif ($url === $API_BASE . 'objects/tag' and $method = 'remove'){
+            } elseif ($url === $API_BASE . 'objects/tag' and $method === 'delete'){
                 return $this->removeTag();
             }
 
@@ -81,16 +81,18 @@ class MockCurlClient extends CurlClient
                 return $this->completeTask();
             }
         } elseif($this->str_contains(strtolower($url), 'message')) {
-            if ($url === $API_BASE . 'Message' and $method = 'get') {
+            if ($url === $API_BASE . 'Message' and $method === 'get') {
                 return $this->getSingle('message');
-            } elseif ($url === $API_BASE . 'Messages' and $method = 'get') {
+            } elseif ($url === $API_BASE . 'Messages' and $method === 'get') {
                 return $this->getMultiple('messages');
             } elseif ($url === $API_BASE . 'Messages/getInfo') {
                 return $this->getInfo('message');
             } elseif ($url === $API_BASE . 'Messages/meta') {
                 return $this->getMeta('message');
-            } elseif ($url === $API_BASE . 'message' and $method = 'post') {
+            } elseif ($url === $API_BASE . 'message' and $method === 'post') {
                 return $this->create('message');
+            } elseif ($url === $API_BASE . 'message' and $method === 'put') {
+                return $this->update('message');
             }
         }
 
@@ -278,9 +280,10 @@ class MockCurlClient extends CurlClient
         return('Error: Unexpected object type as argument!');
     }
 
-    function updateSingleContact()
+    function update($objectType)
     {
-        return '{
+        if ($objectType === 'contact') {
+            return '{
   "code": 0,
   "data": {
     "attrs": {
@@ -291,6 +294,17 @@ class MockCurlClient extends CurlClient
   },
   "account_id": 50
 }';
+        } elseif($objectType === 'message'){
+            return '{
+  "code": 0,
+  "data": {
+    "id": "7",
+    "date": "1538590526"
+  },
+  "account_id": 187157
+}';
+        }
+        return('Error: Unexpected object type as argument!');
     }
 
     function getMeta($objectType)

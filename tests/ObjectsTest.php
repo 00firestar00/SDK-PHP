@@ -565,7 +565,7 @@ class ObjectsTest extends TestCase
         $requestParams = array(
             "objectID" => 0,
             "ids" => 3,
-            "add_list" => 1
+            "remove_list" => 1
         );
         $response = $client->object()->removeTag($requestParams);
         $this->assertEquals('{
