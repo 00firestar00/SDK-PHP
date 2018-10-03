@@ -157,6 +157,8 @@ class MockCurlClient extends CurlClient
                 return $this->resendInvoice();
             } elseif ($url === $API_BASE . 'transaction/rerunCommission') {
                 return $this->rerunCommission();
+            } elseif ($url === $API_BASE . 'transaction/processManual') {
+                return $this->processManual();
             }
         }
 
@@ -1168,6 +1170,17 @@ class MockCurlClient extends CurlClient
         return '{
   "code": 0,
   "data": "Re-ran commissions",
+  "account_id": 187157
+}';
+    }
+
+    function processManual()
+    {
+        return '{
+  "code": 0,
+  "data": {
+    "invoice_id": 4
+  },
   "account_id": 187157
 }';
     }

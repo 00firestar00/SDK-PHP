@@ -314,4 +314,101 @@ class TransactionsTest extends TestCase
 }', $response);
     }
 
+    function testProcessManual(){
+        $mock_curl = new MockCurlClient();
+        $client = new Ontraport("2_AppID_12345678", "Key5678", $mock_curl);
+        $requestParams = json_encode('{
+  "contact_id": 2,
+  "chargeNow": "chargeNow",
+  "trans_date": 0,
+  "invoice_template": 1,
+  "gateway_id": 1,
+  "cc_id": 1,
+  "offer": {
+    "cc_id": 0,
+    "products": [
+      {
+        "quantity": 1,
+        "total": 0,
+        "shipping": false,
+        "tax": false,
+        "price": [
+          {
+            "price": 0,
+            "payment_count": 0,
+            "unit": "day",
+            "id": 0
+          }
+        ],
+        "type": "single",
+        "owner": 0,
+        "level1": 0,
+        "level2": 0,
+        "offer_to_affiliates": false,
+        "trial_period_unit": "day",
+        "trial_period_count": 0,
+        "trial_price": 0,
+        "setup_fee": 0,
+        "setup_fee_when": "immediately",
+        "setup_fee_date": "string",
+        "delay_start": 0,
+        "subscription_fee": 0,
+        "subscription_count": 0,
+        "subscription_unit": "day",
+        "taxable": true,
+        "id": 1
+      }
+    ],
+    "taxes": [
+      {
+        "id": 1,
+        "rate": 0,
+        "name": "string",
+        "taxShipping": true,
+        "taxTotal": 0,
+        "form_id": 0
+      }
+    ],
+    "shipping": [
+      {
+        "id": 1,
+        "name": "string",
+        "price": 0,
+        "form_id": 0
+      }
+    ],
+    "delay": 0,
+    "subTotal": 0,
+    "grandTotal": 0,
+    "hasTaxes": false,
+    "hasShipping": false,
+    "shipping_charge_reoccurring_orders": false,
+    "send_recurring_invoice": false,
+    "ccExpirationDate": ""
+  },
+  "billing_address": {
+    "address": "string",
+    "address2": "",
+    "city": "string",
+    "state": "string",
+    "zip": "string",
+    "country": "string"
+  },
+  "payer": {
+    "ccnumber": "",
+    "code": "",
+    "expire_month": 0,
+    "expire_year": 0
+  }
+}');
+        $response = $client->transaction()->processManual($requestParams);
+        $this->assertEquals('{
+  "code": 0,
+  "data": {
+    "invoice_id": 4
+  },
+  "account_id": 187157
+}', $response);
+    }
+
 }
