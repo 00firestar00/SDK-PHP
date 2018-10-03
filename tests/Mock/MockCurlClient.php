@@ -178,8 +178,17 @@ class MockCurlClient extends CurlClient
             } elseif ($url === $API_BASE . 'Rules' and $method === 'delete') {
                 return $this->deleteMultiple('rules');
             }
+        } elseif ($this->str_contains(strtolower($url), 'campaignbuilderitem')) {
+            if ($url === $API_BASE . 'CampaignBuilderItem' and $method === 'get') {
+                return $this->getSingle('campaignBuilderItem');
+            } elseif ($url === $API_BASE . 'CampaignBuilderItems' and $method === 'get') {
+                return $this->getMultiple('campaignBuilderItems');
+            } elseif ($url === $API_BASE . 'CampaignBuilderItems/getInfo') {
+                return $this->getInfo('campaignBuilderItem');
+            } elseif ($url === $API_BASE . 'CampaignBuilderItems/meta') {
+                return $this->getMeta('campaignBuilderItem');
+            }
         }
-
 
         return parent::httpRequest($requestParams, $url, $method, $requiredParams, $options);
     }
@@ -293,6 +302,20 @@ class MockCurlClient extends CurlClient
     "object_type_id": "0",
     "date": "1538502649",
     "dlm": "1538502649"
+  },
+  "account_id": 187157
+}';
+        } elseif ($objectTypeToGet === 'campaignBuilderItem') {
+            return '{
+  "code": 0,
+  "data": {
+    "id": "1",
+    "name": "Example: High Level Customer Lifecycle",
+    "date": "1538503425",
+    "dlm": "1538503670",
+    "object_type_id": "0",
+    "pause": "0",
+    "deleted": "false"
   },
   "account_id": 187157
 }';
@@ -450,6 +473,27 @@ class MockCurlClient extends CurlClient
   },
   "account_id": 187157
 }';
+        } elseif ($objectType === 'campaignBuilderItem'){
+            return '{
+  "code": 0,
+  "data": {
+    "listFields": [
+      "name",
+      "state",
+      "date",
+      "dlm",
+      "subs",
+      "subs_ever",
+      "element_num",
+      "todos"
+    ],
+    "listFieldSettings": [],
+    "cardViewSettings": [],
+    "viewMode": [],
+    "count": "1"
+  },
+  "account_id": 187157
+}';
         }
         return 'Error: Unexpected object type as argument!';
     }
@@ -595,6 +639,19 @@ class MockCurlClient extends CurlClient
       "object_type_id": "0",
       "date": "1538502649",
       "dlm": "1538502649"
+    }
+  ],
+  "account_id": 187157,
+  "misc": []
+}';
+
+        } elseif($objectTypeToGet === 'campaignBuilderItems') {
+            return '{
+  "code": 0,
+  "data": [
+    {
+      "id": "1",
+      "name": "Example: High Level Customer Lifecycle"
     }
   ],
   "account_id": 187157,
@@ -802,6 +859,26 @@ class MockCurlClient extends CurlClient
             "0": "Live",
             "1": "Paused"
           }
+        }
+      }
+    }
+  },
+  "account_id": 187157
+}';
+        } elseif ($objectType === 'campaignBuilderItem') {
+            return '{
+  "code": 0,
+  "data": {
+    "140": {
+      "name": "CampaignBuilder",
+      "fields": {
+        "name": {
+          "alias": "Name",
+          "type": "text",
+          "required": "0",
+          "unique": "1",
+          "editable": 1,
+          "deletable": "0"
         }
       }
     }
