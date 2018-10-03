@@ -52,4 +52,96 @@ class FormsTest extends TestCase
   "misc": []
 }', $response);
     }
+
+
+    function testRetrieveMultiplePaginated()
+    {
+        $mock_curl = new MockCurlClient();
+        $client = new Ontraport("2_AppID_12345678", "Key5678", $mock_curl);
+        $requestParams = array(
+            "start" => 0,
+            "range" => 50,
+        );
+
+        $response = $client->form()->retrieveMultiplePaginated($requestParams);
+        $object_data = array();
+        $object_data[] = json_decode('{
+  "code": 0,
+  "data": [
+    {
+      "form_id": "1",
+      "formname": "form_name",
+      "type": "11",
+      "tags": null,
+    }
+  ],
+  "account_id": 187157,
+  "misc": []
+}');
+
+        $this->assertEquals(json_encode($object_data), $response);
+    }
+
+    function testRetrieveMeta()
+    {
+        $mock_curl = new MockCurlClient();
+        $client = new Ontraport("2_AppID_12345678", "Key5678", $mock_curl);
+        $requestParams = array();
+        $response = $client->form()->retrieveMeta($requestParams);
+        $this->assertEquals('{
+  "code": 0,
+  "data": {
+    "122": {
+      "name": "SmartFormFE",
+      "fields": {
+        "formname": {
+          "alias": "Form Name",
+          "type": "text",
+          "required": "0",
+          "unique": "0",
+          "editable": 1,
+          "deletable": "1"
+        },
+        "redirect": {
+          "alias": "Thank You Page",
+          "type": "url",
+          "required": "0",
+          "unique": "0",
+          "editable": null,
+          "deletable": "1"
+        }
+      }
+    }
+  },
+  "account_id": 187157
+}', $response);
+    }
+
+    function testRetrieveCollectionInfo(){
+        $mock_curl = new MockCurlClient();
+        $client = new Ontraport("2_AppID_12345678", "Key5678", $mock_curl);
+        $requestParams = array();
+        $response = $client->form()->retrieveCollectionInfo($requestParams);
+        $this->assertEquals('{
+  "code": 0,
+  "data": {
+    "listFields": [
+      "formname",
+      "redirect",
+      "fillouts",
+      "visits",
+      "type",
+      "date",
+      "dlm",
+      "unique_fillouts",
+      "unique_visits"
+    ],
+    "listFieldSettings": [],
+    "cardViewSettings": [],
+    "viewMode": [],
+    "count": "1"
+  },
+  "account_id": 187157
+}', $response);
+    }
 }

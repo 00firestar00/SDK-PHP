@@ -109,6 +109,10 @@ class MockCurlClient extends CurlClient
                 return $this->getSingle('form');
             } elseif ($url === $API_BASE . 'Forms' and $method === 'get') {
                 return $this->getMultiple('forms');
+            } elseif ($url === $API_BASE . 'Forms/getInfo') {
+                return $this->getInfo('form');
+            } elseif ($url === $API_BASE . 'Forms/meta') {
+                return $this->getMeta('form');
             }
         }
 
@@ -263,6 +267,28 @@ return parent::httpRequest($requestParams, $url, $method, $requiredParams, $opti
   },
   "account_id": 187157
 }';
+        } elseif($objectType === 'form') {
+            return '{
+  "code": 0,
+  "data": {
+    "listFields": [
+      "formname",
+      "redirect",
+      "fillouts",
+      "visits",
+      "type",
+      "date",
+      "dlm",
+      "unique_fillouts",
+      "unique_visits"
+    ],
+    "listFieldSettings": [],
+    "cardViewSettings": [],
+    "viewMode": [],
+    "count": "1"
+  },
+  "account_id": 187157
+}';
         }
         return 'Error: Unexpected object type as argument!';
     }
@@ -342,90 +368,6 @@ return parent::httpRequest($requestParams, $url, $method, $requiredParams, $opti
   ],
   "account_id": 187157,
   "misc": []
-}';
-        }
-        return('Error: Unexpected object type as argument!');
-    }
-
-    function deleteSingleContact()
-    {
-        return '{
-  "code": 0,
-  "account_id": 50
-}';
-    }
-
-    function deleteMultipleContacts()
-    {
-        return '{
-  "code": 0,
-  "data": "Deleted",
-  "account_id": 50
-}';
-    }
-
-    function create($objectType)
-    {
-        if($objectType === 'contact')
-        {
-            return '{
-  "code": 0,
-  "data": {
-    "firstname": "unit",
-    "lastname": "test",
-    "use_utm_names": "false",
-    "id": "8",
-    "owner": "1",
-  },
-  "account_id": 50
-}';
-        } elseif($objectType === 'message')
-        {
-            return '{
-  "code": 0,
-  "data": {
-    "id": 7,
-    "date": "1538590526"
-  },
-  "account_id": 187157
-}';
-        }
-        return('Error: Unexpected object type as argument!');
-    }
-
-    function update($objectType)
-    {
-        if ($objectType === 'contact') {
-            return '{
-  "code": 0,
-  "data": {
-    "attrs": {
-      "firstname": "unitUpdated",
-      "dlm": "1538154601",
-      "id": "8"
-    }
-  },
-  "account_id": 50
-}';
-        } elseif($objectType === 'message'){
-            return '{
-  "code": 0,
-  "data": {
-    "id": "7",
-    "date": "1538590526"
-  },
-  "account_id": 187157
-}';
-        } elseif($objectType === 'task'){
-            return '{
-  "code": 0,
-  "data": {
-    "attrs": {
-      "date_due": "4",
-      "id": "1"
-    }
-  },
-  "account_id": 187157
 }';
         }
         return('Error: Unexpected object type as argument!');
@@ -536,9 +478,123 @@ return parent::httpRequest($requestParams, $url, $method, $requiredParams, $opti
   },
   "account_id": 187157
 }';
+        } elseif ($objectType === 'form'){
+            return '{
+  "code": 0,
+  "data": {
+    "122": {
+      "name": "SmartFormFE",
+      "fields": {
+        "formname": {
+          "alias": "Form Name",
+          "type": "text",
+          "required": "0",
+          "unique": "0",
+          "editable": 1,
+          "deletable": "1"
+        },
+        "redirect": {
+          "alias": "Thank You Page",
+          "type": "url",
+          "required": "0",
+          "unique": "0",
+          "editable": null,
+          "deletable": "1"
+        }
+      }
+    }
+  },
+  "account_id": 187157
+}';
         }
         return('Error: Unexpected object type as argument!');
     }
+
+
+    function deleteSingleContact()
+    {
+        return '{
+  "code": 0,
+  "account_id": 50
+}';
+    }
+
+    function deleteMultipleContacts()
+    {
+        return '{
+  "code": 0,
+  "data": "Deleted",
+  "account_id": 50
+}';
+    }
+
+    function create($objectType)
+    {
+        if($objectType === 'contact')
+        {
+            return '{
+  "code": 0,
+  "data": {
+    "firstname": "unit",
+    "lastname": "test",
+    "use_utm_names": "false",
+    "id": "8",
+    "owner": "1",
+  },
+  "account_id": 50
+}';
+        } elseif($objectType === 'message')
+        {
+            return '{
+  "code": 0,
+  "data": {
+    "id": 7,
+    "date": "1538590526"
+  },
+  "account_id": 187157
+}';
+        }
+        return('Error: Unexpected object type as argument!');
+    }
+
+    function update($objectType)
+    {
+        if ($objectType === 'contact') {
+            return '{
+  "code": 0,
+  "data": {
+    "attrs": {
+      "firstname": "unitUpdated",
+      "dlm": "1538154601",
+      "id": "8"
+    }
+  },
+  "account_id": 50
+}';
+        } elseif($objectType === 'message'){
+            return '{
+  "code": 0,
+  "data": {
+    "id": "7",
+    "date": "1538590526"
+  },
+  "account_id": 187157
+}';
+        } elseif($objectType === 'task'){
+            return '{
+  "code": 0,
+  "data": {
+    "attrs": {
+      "date_due": "4",
+      "id": "1"
+    }
+  },
+  "account_id": 187157
+}';
+        }
+        return('Error: Unexpected object type as argument!');
+    }
+
     function saveOrUpdateContact()
     {
         return '{
