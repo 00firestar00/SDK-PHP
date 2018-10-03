@@ -87,6 +87,8 @@ class MockCurlClient extends CurlClient
                 return $this->getInfo('task');
             } elseif ($url === $API_BASE . 'Tasks/meta') {
                 return $this->getMeta('task');
+            } elseif ($url === $API_BASE . 'Tasks' and $method === 'put') {
+                return $this->update('task');
             }
         } elseif($this->str_contains(strtolower($url), 'message')) {
             if ($url === $API_BASE . 'Message' and $method === 'get') {
@@ -374,6 +376,17 @@ class MockCurlClient extends CurlClient
   "data": {
     "id": "7",
     "date": "1538590526"
+  },
+  "account_id": 187157
+}';
+        } elseif($objectType === 'task'){
+            return '{
+  "code": 0,
+  "data": {
+    "attrs": {
+      "date_due": "4",
+      "id": "1"
+    }
   },
   "account_id": 187157
 }';
