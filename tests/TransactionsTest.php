@@ -280,4 +280,38 @@ class TransactionsTest extends TestCase
 }', $response);
     }
 
+    function testResendInvoice(){
+        $mock_curl = new MockCurlClient();
+        $client = new Ontraport("2_AppID_12345678", "Key5678", $mock_curl);
+        $requestParams = json_encode('{
+  "objectID": 46,
+  "ids": [
+    3
+  ]
+}');
+        $response = $client->transaction()->resendInvoice($requestParams);
+        $this->assertEquals('{
+  "code": 0,
+  "data": "",
+  "account_id": 187157
+}', $response);
+    }
+
+    function testRerunCommission(){
+        $mock_curl = new MockCurlClient();
+        $client = new Ontraport("2_AppID_12345678", "Key5678", $mock_curl);
+        $requestParams = json_encode('{
+  "objectID": 46,
+  "ids": [
+    3
+  ]
+}');
+        $response = $client->transaction()->rerunCommission($requestParams);
+        $this->assertEquals('{
+  "code": 0,
+  "data": "Re-ran commissions",
+  "account_id": 187157
+}', $response);
+    }
+
 }

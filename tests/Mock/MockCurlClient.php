@@ -153,6 +153,10 @@ class MockCurlClient extends CurlClient
                 return $this->writeOff();
             } elseif ($url === $API_BASE . 'transaction/void') {
                 return $this->void();
+            } elseif ($url === $API_BASE . 'transaction/resendInvoice') {
+                return $this->resendInvoice();
+            } elseif ($url === $API_BASE . 'transaction/rerunCommission') {
+                return $this->rerunCommission();
             }
         }
 
@@ -1150,5 +1154,22 @@ class MockCurlClient extends CurlClient
 }';
     }
 
+    function resendInvoice()
+    {
+        return '{
+  "code": 0,
+  "data": "",
+  "account_id": 187157
+}';
+    }
+
+    function rerunCommission()
+    {
+        return '{
+  "code": 0,
+  "data": "Re-ran commissions",
+  "account_id": 187157
+}';
+    }
 
 }
