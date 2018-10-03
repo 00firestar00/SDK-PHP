@@ -130,4 +130,26 @@ class Messages extends TestCase
 }', $response);
     }
 
+    function testRetrieveCollectionInfo(){
+        $mock_curl = new MockCurlClient();
+        $client = new Ontraport("2_AppID_12345678", "Key5678", $mock_curl);
+        $requestParams = array();
+        $response = $client->message()->retrieveCollectionInfo($requestParams);
+        $this->assertEquals('{
+  "code": 0,
+  "data": {
+    "listFields": [
+      "name",
+      "subject",
+      "spam_score",
+    ],
+    "listFieldSettings": [],
+    "cardViewSettings": [],
+    "viewMode": [],
+    "count": "5"
+  },
+  "account_id": 187157
+}', $response);
+    }
+
 }
