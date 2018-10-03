@@ -20,9 +20,9 @@ class MockCurlClient extends CurlClient
             } elseif (($url === $API_BASE . 'Contact' or $url === $API_BASE . 'object') and $method === 'delete') {
                 return $this->deleteSingleContact();
             } elseif (($url === $API_BASE . 'Contacts/getInfo'or $url === $API_BASE . 'objects/getInfo')) {
-                return $this->getInfo();
+                return $this->getInfo('contact');
             } elseif (($url === $API_BASE . 'Contacts' or $url === $API_BASE . 'objects') and $method === 'get') {
-                return $this->getMultipleContacts();
+                return $this->getMultiple('contacts');
             } elseif (($url === $API_BASE . 'Contacts' or $url === $API_BASE . 'objects') and $method === 'delete') {
                 return $this->deleteMultipleContacts();
             } elseif (($url === $API_BASE . 'Contacts' or $url === $API_BASE . 'objects') and $method === 'post') {
@@ -30,7 +30,7 @@ class MockCurlClient extends CurlClient
             } elseif (($url === $API_BASE . 'Contacts' or $url === $API_BASE . 'objects') and $method === 'put') {
                 return $this->updateSingleContact();
             } elseif ($url === $API_BASE . 'Contacts/meta' or $url === $API_BASE . 'objects/meta') {
-                return $this->getMeta();
+                return $this->getMeta('contact');
             } elseif ($url === $API_BASE . 'Contacts/saveorupdate' or $url === $API_BASE . 'objects/saveorupdate') {
                 return $this->saveOrUpdateContact();
             } elseif (($url === $API_BASE . 'Contacts/fieldeditor' or $url === $API_BASE . 'objects/fieldeditor') and $method === 'get') {
@@ -83,6 +83,12 @@ class MockCurlClient extends CurlClient
         } elseif($this->str_contains($url, 'Message')) {
             if ($url === $API_BASE . 'Message' and $method = 'get') {
                 return $this->getSingle('message');
+            } elseif ($url === $API_BASE . 'Messages' and $method = 'get') {
+                return $this->getMultiple('messages');
+            } elseif ($url === $API_BASE . 'Messages/getInfo') {
+                return $this->getInfo('message');
+            } elseif ($url === $API_BASE . 'Messages/meta') {
+                return $this->getMeta('message');
             }
         }
 
@@ -124,9 +130,10 @@ class MockCurlClient extends CurlClient
         return 'Error: Unexpected object type as argument!';
     }
 
-    function getInfo()
+    function getInfo($objectType)
     {
-        return "{\"code\": 0,
+        if($objectType === 'contact') {
+            return "{\"code\": 0,
                       \"data\": {
                         \"listFields\": [
                           \"fn\",
@@ -144,29 +151,81 @@ class MockCurlClient extends CurlClient
                       },
                       \"account_id\": 50
                     }";
+        } elseif($objectType === 'message'){
+            return '{
+  "code": 0,
+  "data": {
+    "listFields": [
+      "name",
+      "subject",
+      "spam_score",
+      "date",
+      "type",
+      "mcsent",
+      "mcopened",
+      "mcclicked",
+      "mcnotopened",
+      "mcnotclicked",
+      "mcunsub",
+      "mcabuse",
+      "dlm"
+    ],
+    "listFieldSettings": [],
+    "cardViewSettings": [],
+    "viewMode": [],
+    "count": "5"
+  },
+  "account_id": 187157
+}';
+        }
     }
 
-    function getMultipleContacts()
+    function getMultiple($objectTypeToGet)
     {
-        return '{
+        if($objectTypeToGet === 'contacts')
+        {
+            return '{
   "code": 0,
   "data": [
     {
-      "id": "8",
+      "id": "3",
       "owner": "1",
-      "firstname": "unitUpdated",
-      "lastname": "test",
+      "firstname": "string",
+      "lastname": "string",
     },
     {
-      "id": "10",
+      "id": "2",
       "owner": "1",
       "firstname": "unit",
       "lastname": "test",
     }
   ],
-  "account_id": 50,
+  "account_id": 187157,
   "misc": []
 }';
+        } elseif($objectTypeToGet === 'messages')
+        {
+            return '{
+  "code": 0,
+  "data": [
+    {
+      "id": "1",
+      "alias": "test1",
+      "type": "Template",
+      "last_save": "1537912999",
+    },
+    {
+      "id": "2",
+      "alias": "Abandoned Cart: Did we lose you?",
+      "type": "Template",
+      "last_save": "1496332432",
+    }
+  ],
+  "account_id": 187157,
+  "misc": []
+}';
+        }
+        return('Error: Unexpected object type as argument!');
     }
 
     function deleteSingleContact()
@@ -216,9 +275,10 @@ class MockCurlClient extends CurlClient
 }';
     }
 
-    function getMeta()
+    function getMeta($objectType)
     {
-        return '{
+        if ($objectType === 'contact') {
+            return '{
   "code": 0,
   "data": {
     "0": {
@@ -253,8 +313,47 @@ class MockCurlClient extends CurlClient
   },
   "account_id": 50
 }';
+        }
+        elseif($objectType === 'message')
+        {
+            return '{
+  "code": 0,
+  "data": {
+    "7": {
+      "name": "Message",
+      "fields": {
+        "alias": {
+          "alias": "Name",
+          "type": "text",
+          "required": "0",
+          "unique": "0",
+          "editable": "1",
+          "deletable": "0"
+        },
+        "name": {
+          "alias": "Name",
+          "type": "mergefield",
+          "required": "0",
+          "unique": "0",
+          "editable": 0,
+          "deletable": "1"
+        },
+        "subject": {
+          "alias": "Subject",
+          "type": "text",
+          "required": "0",
+          "unique": "0",
+          "editable": 1,
+          "deletable": "1"
+        }
+      }
     }
-
+  },
+  "account_id": 187157
+}';
+        }
+        else return('Error: Unexpected object type as argument!');
+    }
     function saveOrUpdateContact()
     {
         return '{

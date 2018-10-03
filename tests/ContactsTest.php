@@ -73,19 +73,19 @@ class ContactsTest extends TestCase
   "code": 0,
   "data": [
     {
-      "id": "8",
+      "id": "3",
       "owner": "1",
-      "firstname": "unitUpdated",
-      "lastname": "test",
+      "firstname": "string",
+      "lastname": "string",
     },
     {
-      "id": "10",
+      "id": "2",
       "owner": "1",
       "firstname": "unit",
       "lastname": "test",
     }
   ],
-  "account_id": 50,
+  "account_id": 187157,
   "misc": []
 }', $response);
     }
