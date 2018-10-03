@@ -142,11 +142,38 @@ class Messages extends TestCase
       "name",
       "subject",
       "spam_score",
+      "date",
+      "type",
+      "mcsent",
+      "mcopened",
+      "mcclicked",
+      "mcnotopened",
+      "mcnotclicked",
+      "mcunsub",
+      "mcabuse",
+      "dlm"
     ],
     "listFieldSettings": [],
     "cardViewSettings": [],
     "viewMode": [],
     "count": "5"
+  },
+  "account_id": 187157
+}', $response);
+    }
+
+    function testCreate(){
+        $mock_curl = new MockCurlClient();
+        $client = new Ontraport("2_AppID_12345678", "Key5678", $mock_curl);
+        $requestParams = array(
+            "type" => "e-mail"
+        );
+        $response = $client->message()->create($requestParams);
+        $this->assertEquals('{
+  "code": 0,
+  "data": {
+    "id": 7,
+    "date": "1538590526"
   },
   "account_id": 187157
 }', $response);

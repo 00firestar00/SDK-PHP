@@ -26,7 +26,7 @@ class MockCurlClient extends CurlClient
             } elseif (($url === $API_BASE . 'Contacts' or $url === $API_BASE . 'objects') and $method === 'delete') {
                 return $this->deleteMultipleContacts();
             } elseif (($url === $API_BASE . 'Contacts' or $url === $API_BASE . 'objects') and $method === 'post') {
-                return $this->createSingleContact();
+                return $this->create('contact');
             } elseif (($url === $API_BASE . 'Contacts' or $url === $API_BASE . 'objects') and $method === 'put') {
                 return $this->updateSingleContact();
             } elseif ($url === $API_BASE . 'Contacts/meta' or $url === $API_BASE . 'objects/meta') {
@@ -80,7 +80,7 @@ class MockCurlClient extends CurlClient
             } elseif ($url === $API_BASE . 'task/complete') {
                 return $this->completeTask();
             }
-        } elseif($this->str_contains($url, 'Message')) {
+        } elseif($this->str_contains(strtolower($url), 'message')) {
             if ($url === $API_BASE . 'Message' and $method = 'get') {
                 return $this->getSingle('message');
             } elseif ($url === $API_BASE . 'Messages' and $method = 'get') {
@@ -89,6 +89,8 @@ class MockCurlClient extends CurlClient
                 return $this->getInfo('message');
             } elseif ($url === $API_BASE . 'Messages/meta') {
                 return $this->getMeta('message');
+            } elseif ($url === $API_BASE . 'message' and $method = 'post') {
+                return $this->create('message');
             }
         }
 
@@ -247,9 +249,11 @@ class MockCurlClient extends CurlClient
 }';
     }
 
-    function createSingleContact()
+    function create($objectType)
     {
-        return '{
+        if($objectType === 'contact')
+        {
+            return '{
   "code": 0,
   "data": {
     "firstname": "unit",
@@ -260,6 +264,18 @@ class MockCurlClient extends CurlClient
   },
   "account_id": 50
 }';
+        } elseif($objectType === 'message')
+        {
+            return '{
+  "code": 0,
+  "data": {
+    "id": 7,
+    "date": "1538590526"
+  },
+  "account_id": 187157
+}';
+        }
+        return('Error: Unexpected object type as argument!');
     }
 
     function updateSingleContact()
