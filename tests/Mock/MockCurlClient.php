@@ -70,7 +70,7 @@ class MockCurlClient extends CurlClient
                 return $this->removeTag();
             }
 
-        } elseif($this->str_contains($url, 'task')) {
+        } elseif($this->str_contains(strtolower($url), 'task')) {
             if ($url === $API_BASE . 'task/assign') {
                 return $this->assignTask();
             } elseif ($url === $API_BASE . 'task/reschedule') {
@@ -79,6 +79,14 @@ class MockCurlClient extends CurlClient
                 return $this->cancelTask();
             } elseif ($url === $API_BASE . 'task/complete') {
                 return $this->completeTask();
+            } elseif ($url === $API_BASE . 'Task' and $method === 'get') {
+                return $this->getSingle('task');
+            } elseif ($url === $API_BASE . 'Tasks' and $method === 'get') {
+                return $this->getMultiple('tasks');
+            } elseif ($url === $API_BASE . 'Tasks/getInfo') {
+                return $this->getInfo('task');
+            } elseif ($url === $API_BASE . 'Tasks/meta') {
+                return $this->getMeta('task');
             }
         } elseif($this->str_contains(strtolower($url), 'message')) {
             if ($url === $API_BASE . 'Message' and $method === 'get') {
@@ -130,6 +138,33 @@ class MockCurlClient extends CurlClient
   },
   "account_id": 187157
 }';
+        } elseif($objectTypeToGet === 'task')
+        {
+            return '{
+  "code": 0,
+  "data": {
+    "id": "1",
+    "owner": "1",
+    "drip_id": "0",
+    "contact_id": "2",
+    "step_num": "0",
+    "subject": "task_subject_here",
+    "date_assigned": "1538513596",
+    "date_due": "1538859196",
+    "date_complete": null,
+    "status": "0",
+    "type": "0",
+    "details": "task instructions go here!",
+    "hidden": "0",
+    "call_outcome_id": "0",
+    "item_id": "5",
+    "notifications": null,
+    "rules": null,
+    "object_type_id": "0",
+    "object_name": "Contacts"
+  },
+  "account_id": 187157
+}';
         }
         return 'Error: Unexpected object type as argument!';
     }
@@ -156,7 +191,7 @@ class MockCurlClient extends CurlClient
                       \"account_id\": 50
                     }";
         } elseif($objectType === 'message'){
-            $json_string = '{
+            return  '{
   "code": 0,
   "data": {
     "listFields": [
@@ -181,7 +216,28 @@ class MockCurlClient extends CurlClient
   },
   "account_id": 187157
 }';
-            return $json_string;
+        } elseif ($objectType === 'task'){
+            return '{
+  "code": 0,
+  "data": {
+    "listFields": [
+      "",
+      "owner",
+      "subject",
+      "status",
+      "date_assigned",
+      "date_due",
+      "date_complete",
+      "call_outcome_id",
+      "contact_id"
+    ],
+    "listFieldSettings": [],
+    "cardViewSettings": [],
+    "viewMode": [],
+    "count": "3"
+  },
+  "account_id": 187157
+}';
         }
         return 'Error: Unexpected object type as argument!';
     }
@@ -225,6 +281,24 @@ class MockCurlClient extends CurlClient
       "alias": "Abandoned Cart: Did we lose you?",
       "type": "Template",
       "last_save": "1496332432"
+    }
+  ],
+  "account_id": 187157,
+  "misc": []
+}';
+        } elseif($objectTypeToGet === 'tasks'){
+            return '{
+  "code": 0,
+  "data": [
+    {
+      "id": "1",
+      "owner": "1",
+      "drip_id": "0"
+    },
+    {
+      "id": "2",
+      "owner": "1",
+      "drip_id": "0"
     }
   ],
   "account_id": 187157,
@@ -383,8 +457,37 @@ class MockCurlClient extends CurlClient
   },
   "account_id": 187157
 }';
+        }elseif($objectType === 'task'){
+            return '{
+  "code": 0,
+  "data": {
+    "1": {
+      "name": "Task",
+      "fields": {
+        "owner": {
+          "alias": "Assignee",
+          "type": "parent",
+          "required": "0",
+          "unique": "0",
+          "editable": "1",
+          "deletable": "1",
+          "parent_object": 2
+        },
+        "contact_id": {
+          "alias": "Contact",
+          "type": "parent",
+          "required": "0",
+          "unique": "0",
+          "editable": "0",
+          "deletable": "1"
         }
-        else return('Error: Unexpected object type as argument!');
+      }
+    }
+  },
+  "account_id": 187157
+}';
+        }
+        return('Error: Unexpected object type as argument!');
     }
     function saveOrUpdateContact()
     {
