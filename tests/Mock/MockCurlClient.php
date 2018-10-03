@@ -18,13 +18,13 @@ class MockCurlClient extends CurlClient
             if (($url === $API_BASE . 'Contact' or $url === $API_BASE . 'object') and $method === 'get') {
                 return $this->getSingle('contact');
             } elseif (($url === $API_BASE . 'Contact' or $url === $API_BASE . 'object') and $method === 'delete') {
-                return $this->deleteSingleContact();
+                return $this->deleteSingle('contact');
             } elseif (($url === $API_BASE . 'Contacts/getInfo' or $url === $API_BASE . 'objects/getInfo')) {
                 return $this->getInfo('contact');
             } elseif (($url === $API_BASE . 'Contacts' or $url === $API_BASE . 'objects') and $method === 'get') {
                 return $this->getMultiple('contacts');
             } elseif (($url === $API_BASE . 'Contacts' or $url === $API_BASE . 'objects') and $method === 'delete') {
-                return $this->deleteMultipleContacts();
+                return $this->deleteMultiple('contacts');
             } elseif (($url === $API_BASE . 'Contacts' or $url === $API_BASE . 'objects') and $method === 'post') {
                 return $this->create('contact');
             } elseif (($url === $API_BASE . 'Contacts' or $url === $API_BASE . 'objects') and $method === 'put') {
@@ -173,6 +173,10 @@ class MockCurlClient extends CurlClient
                 return $this->create('rule');
             } elseif ($url === $API_BASE . 'Rules' and $method === 'put') {
                 return $this->update('rule');
+            } elseif ($url === $API_BASE . 'Rule' and $method === 'delete') {
+                return $this->deleteSingle('rule');
+            } elseif ($url === $API_BASE . 'Rules' and $method === 'delete') {
+                return $this->deleteMultiple('rules');
             }
         }
 
@@ -809,21 +813,38 @@ class MockCurlClient extends CurlClient
     }
 
 
-    function deleteSingleContact()
+    function deleteSingle($objectType)
     {
-        return '{
+        if($objectType === 'contact') {
+            return '{
   "code": 0,
   "account_id": 50
 }';
+        } elseif($objectType === 'rule') {
+            return '{
+  "code": 0,
+  "account_id": 187157
+}';
+        }
+        return 'Error: Unexpected object type as argument!';
     }
 
-    function deleteMultipleContacts()
+    function deleteMultiple($objectType)
     {
-        return '{
+        if($objectType === 'contacts') {
+            return '{
   "code": 0,
   "data": "Deleted",
   "account_id": 50
 }';
+        }elseif($objectType === 'rules'){
+            return '{
+  "code": 0,
+  "data": "Deleted",
+  "account_id": 187157
+}';
+        }
+        return 'Error: Unexpected object type as argument!';
     }
 
     function create($objectType)

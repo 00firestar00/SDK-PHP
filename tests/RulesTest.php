@@ -201,4 +201,31 @@ class RulesTest extends TestCase
 }', $response);
     }
 
+    function testDeleteSingle(){
+        $mock_curl = new MockCurlClient();
+        $client = new Ontraport("2_AppID_12345678", "Key5678", $mock_curl);
+        $requestParams = array(
+            "id" => 1
+        );
+        $response = $client->rule()->deleteSingle($requestParams);
+        $this->assertEquals('{
+  "code": 0,
+  "account_id": 187157
+}', $response);
+    }
+
+    function testDeleteMultiple(){
+        $mock_curl = new MockCurlClient();
+        $client = new Ontraport("2_AppID_12345678", "Key5678", $mock_curl);
+        $requestParams = array(
+            "ids" => 2
+        );
+        $response = $client->rule()->deleteMultiple($requestParams);
+        $this->assertEquals('{
+  "code": 0,
+  "data": "Deleted",
+  "account_id": 187157
+}', $response);
+    }
+
 }
