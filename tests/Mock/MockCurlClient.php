@@ -202,6 +202,18 @@ class MockCurlClient extends CurlClient
             } elseif ($url === $API_BASE . 'Webhook/unsubscribe') {
                 return $this->unsubscribe('webhook');
             }
+        } elseif ($this->str_contains(strtolower($url), 'creditcard')) {
+            if ($url === $API_BASE . 'CreditCard' and $method === 'get') {
+                return $this->getSingle('creditCard');
+            } elseif ($url === $API_BASE . 'CreditCards' and $method === 'get') {
+                return $this->getMultiple('creditCards');
+            } elseif ($url === $API_BASE . 'CreditCards/getInfo') {
+                return $this->getInfo('creditCard');
+            } elseif ($url === $API_BASE . 'CreditCards/meta') {
+                return $this->getMeta('creditCard');
+            } elseif ($url === $API_BASE . 'CreditCard/default') {
+                return $this->setDefault('creditCard');
+            }
         }
 
         return parent::httpRequest($requestParams, $url, $method, $requiredParams, $options);
@@ -341,6 +353,30 @@ class MockCurlClient extends CurlClient
     "event": "object_create(0)",
     "id": 1,
     "owner": "1"
+  },
+  "account_id": 187157
+}';
+        } elseif ($objectTypeToGet === 'creditCard') {
+            return '{
+  "code": 0,
+  "data": {
+    "id": "1",
+    "firstname": "adsf",
+    "lastname": "adsf",
+    "contact_id": "2",
+    "last4": "1234",
+    "type": "6",
+    "exp_month": "1",
+    "exp_year": "2035",
+    "address": "adfs",
+    "address2": "afds",
+    "city": "asfd",
+    "state": "CA",
+    "zip": "12332",
+    "country": "US",
+    "status": "3",
+    "recent_sale": "0",
+    "invoice_id": "4"
   },
   "account_id": 187157
 }';
@@ -533,6 +569,23 @@ class MockCurlClient extends CurlClient
   },
   "account_id": 187157
 }';
+        } elseif ($objectType === 'creditCard'){
+            return '{
+  "code": 0,
+  "data": {
+    "listFields": [
+      "contact_id",
+      "last4",
+      "exp_month",
+      "exp_year"
+    ],
+    "listFieldSettings": [],
+    "cardViewSettings": [],
+    "viewMode": [],
+    "count": "1"
+  },
+  "account_id": 187157
+}';
         }
         return 'Error: Unexpected object type as argument!';
     }
@@ -718,6 +771,34 @@ class MockCurlClient extends CurlClient
       "last_hook": null,
       "last_code": "0",
       "last_payload": ""
+    }
+  ],
+  "account_id": 187157,
+  "misc": []
+}';
+
+        } elseif($objectTypeToGet === 'creditCards') {
+            return '{
+  "code": 0,
+  "data": [
+    {
+      "id": "1",
+      "firstname": "adsf",
+      "lastname": "adsf",
+      "contact_id": "2",
+      "last4": "1234",
+      "type": "6",
+      "exp_month": "1",
+      "exp_year": "2035",
+      "address": "adfs",
+      "address2": "afds",
+      "city": "asfd",
+      "state": "CA",
+      "zip": "12332",
+      "country": "US",
+      "status": "3",
+      "recent_sale": "0",
+      "invoice_id": "4"
     }
   ],
   "account_id": 187157,
@@ -964,6 +1045,26 @@ class MockCurlClient extends CurlClient
           "required": "0",
           "unique": "0",
           "editable": "1",
+          "deletable": "0"
+        }
+      }
+    }
+  },
+  "account_id": 187157
+}';
+        } elseif ($objectType === 'creditCard') {
+            return '{
+  "code": 0,
+  "data": {
+    "45": {
+      "name": "CreditCard",
+      "fields": {
+        "contact_id": {
+          "alias": "Contact",
+          "type": "parent",
+          "required": "0",
+          "unique": "0",
+          "editable": "0",
           "deletable": "0"
         }
       }
@@ -1517,5 +1618,17 @@ class MockCurlClient extends CurlClient
   "account_id": 187157
 }';
     }
+    function setDefault()
+    {
+        return '{
+  "code": 0,
+  "data": {
+    "id": "1",
+    "status": "3"
+  },
+  "account_id": 187157
+}';
+    }
+
 
 }
