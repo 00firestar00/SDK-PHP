@@ -7,26 +7,17 @@ cache:
 
 matrix:
   include:
-    - php: 5.3
-      env: FOUR=true
-      dist: precise
     - php: 5.4
-    - php: 5.5
     - php: 5.6
     - php: 7.0
     - php: 7.1
     - php: 7.2
-    - php: 7.3
-    - php: 7.4
     - php: nightly
     - php: hhvm-3.21
       env: HHVM=true
-  allow_failures:
-    - php: hhvm-3.21
 
 install:
   - if [[ $HHVM == true ]]; then curl -sSfL -o ~/.phpenv/versions/hhvm/bin/phpunit https://phar.phpunit.de/phpunit-5.7.phar; fi
-  - if [[ $FOUR == true ]]; then curl -sSfL -o ~/.phpenv/versions/hhvm/bin/phpunit https://phar.phpunit.de/phpunit-4.phar; fi
 
 notifications:
   email: false
