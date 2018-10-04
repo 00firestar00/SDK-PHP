@@ -14,35 +14,62 @@ class MockCurlClient extends CurlClient
     {
         $API_BASE = O::REQUEST_URL . '/' . O::API_VERSION . '/';
 
-        if ($this->str_contains($url, 'Contact') or $this->str_contains($url, 'object')) {
-            if (($url === $API_BASE . 'Contact' or $url === $API_BASE . 'object') and $method === 'get') {
+        if ($this->str_contains($url, 'Contact')) {
+            if ($url === $API_BASE . 'Contact' and $method === 'get') {
                 return $this->getSingle('contact');
-            } elseif (($url === $API_BASE . 'Contact' or $url === $API_BASE . 'object') and $method === 'delete') {
+            } elseif ($url === $API_BASE . 'Contact' and $method === 'delete') {
                 return $this->deleteSingle('contact');
-            } elseif (($url === $API_BASE . 'Contacts/getInfo' or $url === $API_BASE . 'objects/getInfo')) {
+            } elseif ($url === $API_BASE . 'Contacts/getInfo') {
                 return $this->getInfo('contact');
-            } elseif (($url === $API_BASE . 'Contacts' or $url === $API_BASE . 'objects') and $method === 'get') {
+            } elseif ($url === $API_BASE . 'Contacts' and $method === 'get') {
                 return $this->getMultiple('contacts');
-            } elseif (($url === $API_BASE . 'Contacts' or $url === $API_BASE . 'objects') and $method === 'delete') {
+            } elseif ($url === $API_BASE . 'Contacts'and $method === 'delete') {
                 return $this->deleteMultiple('contacts');
-            } elseif (($url === $API_BASE . 'Contacts' or $url === $API_BASE . 'objects') and $method === 'post') {
+            } elseif ($url === $API_BASE . 'Contacts'and $method === 'post') {
                 return $this->create('contact');
-            } elseif (($url === $API_BASE . 'Contacts' or $url === $API_BASE . 'objects') and $method === 'put') {
+            } elseif ($url === $API_BASE . 'Contacts' and $method === 'put') {
                 return $this->update('contact');
-            } elseif ($url === $API_BASE . 'Contacts/meta' or $url === $API_BASE . 'objects/meta') {
+            } elseif ($url === $API_BASE . 'Contacts/meta') {
                 return $this->getMeta('contact');
-            } elseif ($url === $API_BASE . 'Contacts/saveorupdate' or $url === $API_BASE . 'objects/saveorupdate') {
+            } elseif ($url === $API_BASE . 'Contacts/saveorupdate'){
                 return $this->saveOrUpdateContact();
-            } elseif (($url === $API_BASE . 'Contacts/fieldeditor' or $url === $API_BASE . 'objects/fieldeditor') and $method === 'get') {
+            } elseif ($url === $API_BASE . 'Contacts/fieldeditor' and $method === 'get') {
                 return $this->retrieveFields();
-            } elseif (($url === $API_BASE . 'Contacts/fieldeditor' or $url === $API_BASE . 'objects/fieldeditor') and $method === 'post') {
+            } elseif ($url === $API_BASE . 'Contacts/fieldeditor' and $method === 'post') {
                 return $this->createFields();
-            } elseif (($url === $API_BASE . 'Contacts/fieldeditor' or $url === $API_BASE . 'objects/fieldeditor') and $method === 'put') {
+            } elseif ($url === $API_BASE . 'Contacts/fieldeditor' and $method === 'put') {
                 return $this->updateFields();
-            } elseif (($url === $API_BASE . 'Contacts/fieldeditor' or $url === $API_BASE . 'objects/fieldeditor') and $method === 'delete') {
+            } elseif ($url === $API_BASE . 'Contacts/fieldeditor' and $method === 'delete') {
                 return $this->deleteFields();
-            } //Applicable to Objects but not contacts
-            elseif ($url === $API_BASE . 'objects/tagByName' and $method === 'put') {
+            }
+        }elseif($this->str_contains($url, 'object')){
+            if ($url === $API_BASE . 'object' and $method === 'get') {
+                return $this->getSingle('contact');
+            } elseif ($url === $API_BASE . 'object' and $method === 'delete') {
+                return $this->deleteSingle('contact');
+            } elseif ($url === $API_BASE . 'objects/getInfo') {
+                return $this->getInfo('contact');
+            } elseif ($url === $API_BASE . 'objects' and $method === 'get') {
+                return $this->getMultiple('objects');
+            } elseif ($url === $API_BASE . 'objects'and $method === 'delete') {
+                return $this->deleteMultiple('contacts');
+            } elseif ($url === $API_BASE . 'objects'and $method === 'post') {
+                return $this->create('contact');
+            } elseif ($url === $API_BASE . 'objects' and $method === 'put') {
+                return $this->update('contact');
+            } elseif ($url === $API_BASE . 'objects/meta') {
+                return $this->getMeta('object');
+            } elseif ($url === $API_BASE . 'objects/saveorupdate'){
+                return $this->saveOrUpdateContact();
+            } elseif ($url === $API_BASE . 'objects/fieldeditor' and $method === 'get') {
+                return $this->retrieveFields();
+            } elseif ($url === $API_BASE . 'objects/fieldeditor' and $method === 'post') {
+                return $this->createFields();
+            } elseif ($url === $API_BASE . 'objects/fieldeditor' and $method === 'put') {
+                return $this->updateFields();
+            } elseif ($url === $API_BASE . 'objects/fieldeditor' and $method === 'delete') {
+                return $this->deleteFields();
+            } elseif ($url === $API_BASE . 'objects/tagByName' and $method === 'put') {
                 return $this->tagObjectByName();
             } elseif ($url === $API_BASE . 'objects/tagByName' and $method === 'delete') {
                 return $this->removeTagByName();
@@ -214,6 +241,16 @@ class MockCurlClient extends CurlClient
             } elseif ($url === $API_BASE . 'CreditCard/default') {
                 return $this->setDefault('creditCard');
             }
+        } elseif ($this->str_contains(strtolower($url), 'customobject')) {
+            if ($url === $API_BASE . 'CustomObject' and $method === 'get') {
+                return $this->getSingle('customObject');
+            } elseif ($url === $API_BASE . 'CustomObjects' and $method === 'get') {
+                return $this->getMultiple('customObjects');
+            } elseif ($url === $API_BASE . 'CustomObjects/getInfo') {
+                return $this->getInfo('customObject');
+            } elseif ($url === $API_BASE . 'CustomObjects/meta') {
+                return $this->getMeta('customObject');
+            }
         }
 
         return parent::httpRequest($requestParams, $url, $method, $requiredParams, $options);
@@ -237,6 +274,17 @@ class MockCurlClient extends CurlClient
   },
   \"account_id\": 50
 }";
+        } elseif ($objectTypeToGet === 'object') {
+            return '{
+  "code": 0,
+  "data": {
+    "id": "3",
+    "owner": "1",
+    "firstname": "string",
+    "lastname": "string",
+  },
+  "account_id": 187157
+}';
         } elseif ($objectTypeToGet === 'message') {
             return '{
   "code": 0,
@@ -405,6 +453,26 @@ class MockCurlClient extends CurlClient
                       },
                       \"account_id\": 50
                     }";
+        } elseif ($objectType === 'object') {
+            return '{
+  "code": 0,
+  "data": {
+    "listFields": [
+      "fn",
+      "email",
+      "office_phone",
+      "date",
+      "grade",
+      "dla",
+      "contact_id"
+    ],
+    "listFieldSettings": [],
+    "cardViewSettings": [],
+    "viewMode": [],
+    "count": "2"
+  },
+  "account_id": 187157
+}';
         } elseif ($objectType === 'message') {
             return '{
   "code": 0,
@@ -612,7 +680,27 @@ class MockCurlClient extends CurlClient
   "account_id": 50,
   "misc": []
 }';
-        } elseif ($objectTypeToGet === 'messages') {
+        } if ($objectTypeToGet === 'objects') {
+        return '{
+  "code": 0,
+  "data": [
+    {
+      "id": "8",
+      "owner": "1",
+      "firstname": "unitUpdated",
+      "lastname": "test"
+    },
+    {
+      "id": "10",
+      "owner": "1",
+      "firstname": "unit",
+      "lastname": "test"
+    }
+  ],
+  "account_id": 50,
+  "misc": []
+}';
+    } elseif ($objectTypeToGet === 'messages') {
             return '{
   "code": 0,
   "data": [
@@ -846,6 +934,52 @@ class MockCurlClient extends CurlClient
     }
   },
   "account_id": 50
+}';
+        } elseif ($objectType === 'object') {
+            return '{
+  "code": 0,
+  "data": {
+    "0": {
+      "name": "Contact",
+      "fields": {
+        "f1568": {
+          "alias": "fdsfa",
+          "type": "parent",
+          "required": "0",
+          "unique": "0",
+          "editable": null,
+          "deletable": "0",
+          "parent_object": "10000"
+        },
+        "firstname": {
+          "alias": "First Name",
+          "type": "text",
+          "required": "0",
+          "unique": "0",
+          "editable": "1",
+          "deletable": "0"
+        }
+      }
+    },
+    "146": {
+      "name": "Order",
+      "fields": {}
+    },
+    "10000": {
+      "name": "oTemp",
+      "fields": {
+        "f1567": {
+          "alias": "asfdas",
+          "type": "parent",
+          "required": "0",
+          "unique": "0",
+          "editable": null,
+          "deletable": "0"
+        }
+      }
+    }
+  },
+  "account_id": 187157
 }';
         } elseif ($objectType === 'message') {
             return '{
@@ -1084,6 +1218,11 @@ class MockCurlClient extends CurlClient
   "code": 0,
   "account_id": 50
 }';
+        } elseif($objectType === 'object') {
+            return '{
+  "code": 0,
+  "account_id": 50
+}';
         } elseif($objectType === 'rule') {
             return '{
   "code": 0,
@@ -1101,7 +1240,13 @@ class MockCurlClient extends CurlClient
   "data": "Deleted",
   "account_id": 50
 }';
-        }elseif($objectType === 'rules'){
+        } elseif($objectType === 'objects') {
+        return '{
+  "code": 0,
+  "data": "Deleted",
+  "account_id": 50
+}';
+    } elseif($objectType === 'rules'){
             return '{
   "code": 0,
   "data": "Deleted",
@@ -1125,7 +1270,19 @@ class MockCurlClient extends CurlClient
   },
   "account_id": 50
 }';
-        } elseif ($objectType === 'message') {
+        }elseif ($objectType === 'object') {
+        return '{
+  "code": 0,
+  "data": {
+    "firstname": "unit",
+    "lastname": "test",
+    "use_utm_names": "false",
+    "id": "8",
+    "owner": "1",
+  },
+  "account_id": 50
+}';
+    } elseif ($objectType === 'message') {
             return '{
   "code": 0,
   "data": {
@@ -1160,6 +1317,18 @@ class MockCurlClient extends CurlClient
     function update($objectType)
     {
         if ($objectType === 'contact') {
+            return '{
+  "code": 0,
+  "data": {
+    "attrs": {
+      "firstname": "unitUpdated",
+      "dlm": "1538154601",
+      "id": "8"
+    }
+  },
+  "account_id": 50
+}';
+        } elseif ($objectType === 'object') {
             return '{
   "code": 0,
   "data": {

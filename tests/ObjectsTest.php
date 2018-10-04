@@ -150,6 +150,15 @@ class ObjectsTest extends TestCase
     "0": {
       "name": "Contact",
       "fields": {
+        "f1568": {
+          "alias": "fdsfa",
+          "type": "parent",
+          "required": "0",
+          "unique": "0",
+          "editable": null,
+          "deletable": "0",
+          "parent_object": "10000"
+        },
         "firstname": {
           "alias": "First Name",
           "type": "text",
@@ -157,27 +166,28 @@ class ObjectsTest extends TestCase
           "unique": "0",
           "editable": "1",
           "deletable": "0"
-        },
-        "lastname": {
-          "alias": "Last Name",
-          "type": "text",
+        }
+      }
+    },
+    "146": {
+      "name": "Order",
+      "fields": {}
+    },
+    "10000": {
+      "name": "oTemp",
+      "fields": {
+        "f1567": {
+          "alias": "asfdas",
+          "type": "parent",
           "required": "0",
           "unique": "0",
-          "editable": "1",
-          "deletable": "0"
-        },
-        "email": {
-          "alias": "Email",
-          "type": "email",
-          "required": "0",
-          "unique": "0",
-          "editable": "1",
+          "editable": null,
           "deletable": "0"
         }
       }
     }
   },
-  "account_id": 50
+  "account_id": 187157
 }', $response);
         }
     }
@@ -595,5 +605,53 @@ class ObjectsTest extends TestCase
   "account_id": 187157
 }', $response);
     }
+
+//    public function testRetrieveCustomObjects()
+//    {
+//        $mock_curl = new MockCurlClient();
+//        $client = new Ontraport("2_AppID_12345678", "Key5678", $mock_curl);
+//        $response = $client->object()->retrieveCustomObjects();
+//        $this->assertEquals('{
+//  "code": 0,
+//  "data": [
+//    {
+//      "id": "0",
+//      "name": "Contacts",
+//      "date_created": "0",
+//      "table": "contacts",
+//      "key": "id",
+//      "external_key": "contact_id",
+//      "primary_nav": "1",
+//      "singular": "Contact",
+//      "plural": "Contacts",
+//      "possessive": "Contact\'s",
+//      "plural_possessive": "Contacts\'",
+//      "icon": "ussr-icon-people",
+//      "theme": "ussr-theme-orange-900",
+//      "deletable": "0",
+//      "object_label": "[First Name] [Last Name] ([Email])"
+//    },
+//    {
+//      "id": "10000",
+//      "name": "Temp",
+//      "date_created": "1538673578",
+//      "table": "data_object_10000",
+//      "key": "id",
+//      "external_key": "contact_id",
+//      "primary_nav": "0",
+//      "singular": "Temp",
+//      "plural": "Temps",
+//      "possessive": "Temp\'s",
+//      "plural_possessive": "Temps\'",
+//      "icon": "user",
+//      "theme": "ussr-theme-orange-900",
+//      "deletable": "1",
+//      "object_label": "[asfdas//First Name]"
+//    }
+//  ],
+//  "account_id": 187157,
+//  "misc": []
+//}', $response);
+//    }
 
 }

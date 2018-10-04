@@ -4,31 +4,57 @@ use OntraportAPI\Ontraport;
 use OntraportAPI\Tests\Mock\MockCurlClient;
 use PHPUnit\Framework\TestCase;
 
-class ContactsTest extends TestCase
+class CustomObjectsTest extends TestCase
 {
 
-    public function testRetrieveSingle()
+    function testRetrieveSingle()
     {
         $mock_curl = new MockCurlClient();
         $client = new Ontraport("2_AppID_12345678", "Key5678", $mock_curl);
         $requestParams = array(
-            "id" => 27
+            "id" => 10000
         );
-        $response = $client->contact()->retrieveSingle($requestParams);
-        $this->assertEquals('{
-  "code": 0,
-  "data": {
-    "id": "1",
-    "owner": "1",
-    "firstname": "unit",
-    "lastname": "test"
+        $response = $client->custom(10000)->retrieveSingle($requestParams);
+        $this->assertEquals("{
+  \"code\": 0,
+  \"data\": {
+    \"id\": \"1\",
+    \"owner\": \"1\",
+    \"firstname\": \"unit\",
+    \"lastname\": \"test\"
   },
-  "account_id": 50
-}', $response);
-
+  \"account_id\": 50
+}", $response);
     }
 
-    public function testRetrieveMultiplePaginated()
+    function testRetrieveMultiple()
+    {
+        $mock_curl = new MockCurlClient();
+        $client = new Ontraport("2_AppID_12345678", "Key5678", $mock_curl);
+        $requestParams = array();
+        $response = $client->custom(10000)->retrieveMultiple($requestParams);
+        $this->assertEquals('{
+  "code": 0,
+  "data": [
+    {
+      "id": "8",
+      "owner": "1",
+      "firstname": "unitUpdated",
+      "lastname": "test"
+    },
+    {
+      "id": "10",
+      "owner": "1",
+      "firstname": "unit",
+      "lastname": "test"
+    }
+  ],
+  "account_id": 50,
+  "misc": []
+}', $response);
+    }
+
+    function testRetrieveMultiplePaginated()
     {
         $mock_curl = new MockCurlClient();
         $client = new Ontraport("2_AppID_12345678", "Key5678", $mock_curl);
@@ -37,8 +63,7 @@ class ContactsTest extends TestCase
             "range" => 50,
         );
 
-        $response = $client->contact()->retrieveMultiplePaginated($requestParams);
-
+        $response = $client->custom(10000)->retrieveMultiplePaginated($requestParams);
         $object_data = array();
         $object_data[] = json_decode('{
   "code": 0,
@@ -58,79 +83,32 @@ class ContactsTest extends TestCase
   ],
   "account_id": 50,
   "misc": []
-}', true);
+}');
+
         $this->assertEquals(json_encode($object_data), $response);
     }
 
-    public function testRetrieveMultiple()
+    function testRetrieveMeta()
     {
         $mock_curl = new MockCurlClient();
         $client = new Ontraport("2_AppID_12345678", "Key5678", $mock_curl);
         $requestParams = array();
-        $response = $client->contact()->retrieveMultiple($requestParams);
+        $response = $client->custom(10000)->retrieveMeta($requestParams);
         $this->assertEquals('{
-  "code": 0,
-  "data": [
-    {
-      "id": "8",
-      "owner": "1",
-      "firstname": "unitUpdated",
-      "lastname": "test"
-    },
-    {
-      "id": "10",
-      "owner": "1",
-      "firstname": "unit",
-      "lastname": "test"
-    }
-  ],
-  "account_id": 50,
-  "misc": []
-}', $response);
-    }
-
-    public function testDeleteSingle()
-    {
-        $mock_curl = new MockCurlClient();
-        $client = new Ontraport("2_AppID_12345678", "Key5678", $mock_curl);
-        $requestParams = array(
-            "id" => 2
-        );
-        $response = $client->contact()->deleteSingle($requestParams);
-        $this->assertEquals('{
-  "code": 0,
-  "account_id": 50
-}', $response);
-    }
-
-    public function testDeleteMultiple()
-    {
-        $mock_curl = new MockCurlClient();
-        $client = new Ontraport("2_AppID_12345678", "Key5678", $mock_curl);
-        $requestParams = array(
-            "id" => 2
-        );
-        $response = $client->contact()->deleteMultiple($requestParams);
-        $this->assertEquals('{
-  "code": 0,
-  "data": "Deleted",
-  "account_id": 50
-}', $response);
-    }
-
-
-    public function testRetrieveMeta()
-    {
-        {
-            $mock_curl = new MockCurlClient();
-            $client = new Ontraport("2_AppID_12345678", "Key5678", $mock_curl);
-            $response = $client->contact()->retrieveMeta();
-            $this->assertEquals('{
   "code": 0,
   "data": {
     "0": {
       "name": "Contact",
       "fields": {
+        "f1568": {
+          "alias": "fdsfa",
+          "type": "parent",
+          "required": "0",
+          "unique": "0",
+          "editable": null,
+          "deletable": "0",
+          "parent_object": "10000"
+        },
         "firstname": {
           "alias": "First Name",
           "type": "text",
@@ -138,30 +116,56 @@ class ContactsTest extends TestCase
           "unique": "0",
           "editable": "1",
           "deletable": "0"
-        },
-        "lastname": {
-          "alias": "Last Name",
-          "type": "text",
+        }
+      }
+    },
+    "146": {
+      "name": "Order",
+      "fields": {}
+    },
+    "10000": {
+      "name": "oTemp",
+      "fields": {
+        "f1567": {
+          "alias": "asfdas",
+          "type": "parent",
           "required": "0",
           "unique": "0",
-          "editable": "1",
-          "deletable": "0"
-        },
-        "email": {
-          "alias": "Email",
-          "type": "email",
-          "required": "0",
-          "unique": "0",
-          "editable": "1",
+          "editable": null,
           "deletable": "0"
         }
       }
     }
   },
-  "account_id": 50
+  "account_id": 187157
 }', $response);
-        }
     }
+
+    function testRetrieveCollectionInfo(){
+        $mock_curl = new MockCurlClient();
+        $client = new Ontraport("2_AppID_12345678", "Key5678", $mock_curl);
+        $requestParams = array();
+        $response = $client->custom(10000)->retrieveCollectionInfo($requestParams);
+        $this->assertEquals("{\"code\": 0,
+                      \"data\": {
+                        \"listFields\": [
+                          \"fn\",
+                          \"email\",
+                          \"office_phone\",
+                          \"date\",
+                          \"grade\",
+                          \"dla\",
+                          \"contact_id\"
+                        ],
+                        \"listFieldSettings\": [],
+                        \"cardViewSettings\": [],
+                        \"viewMode\": [],
+                        \"count\": \"2\"
+                      },
+                      \"account_id\": 50
+                    }", $response);
+    }
+
 
     public function testCreate()
     {
@@ -171,7 +175,7 @@ class ContactsTest extends TestCase
             "firstname" => "unit",
             "lastname" => "test",
         );
-        $response = $client->contact()->create($requestParams);
+        $response = $client->custom(10000)->create($requestParams);
         $this->assertEquals('{
   "code": 0,
   "data": {
@@ -193,7 +197,7 @@ class ContactsTest extends TestCase
             "id" => 8,
             "firstname" => "unitUpdated",
         );
-        $response = $client->contact()->update($requestParams);
+        $response = $client->custom(10000)->update($requestParams);
         $this->assertEquals('{
   "code": 0,
   "data": {
@@ -214,7 +218,7 @@ class ContactsTest extends TestCase
             "firstname" => "unitUpdated",
             "lastname" => "updatedLastName",
         );
-        $response = $client->contact()->saveOrUpdate($requestParams);
+        $response = $client->custom(10000)->saveOrUpdate($requestParams);
         $this->assertEquals('{
   "code": 0,
   "data": {
@@ -233,7 +237,7 @@ class ContactsTest extends TestCase
         $mock_curl = new MockCurlClient();
         $client = new Ontraport("2_AppID_12345678", "Key5678", $mock_curl);
         $requestParams = array();
-        $response = $client->contact()->retrieveFields($requestParams);
+        $response = $client->custom(10000)->retrieveFields($requestParams);
         $this->assertEquals('{
   "code": 0,
   "data": {
@@ -303,7 +307,7 @@ class ContactsTest extends TestCase
     ]
   ]
 }'));
-        $response = $client->contact()->createFields($requestParams);
+        $response = $client->custom(10000)->createFields($requestParams);
         $this->assertEquals('{
   "code": 0,
   "data": {
@@ -346,7 +350,7 @@ class ContactsTest extends TestCase
     ]
   ]
 }'));
-        $response = $client->contact()->updateFields($requestParams);
+        $response = $client->custom(10000)->updateFields($requestParams);
         $this->assertEquals('{
   "code": 0,
   "data": {
@@ -366,38 +370,11 @@ class ContactsTest extends TestCase
         $requestParams = array(
             "field" => "f1559"
         );
-        $response = $client->contact()->deleteFields($requestParams);
+        $response = $client->custom(10000)->deleteFields($requestParams);
         $this->assertEquals('{
   "code": 0,
   "data": "Deleted",
   "account_id": 50
 }', $response);
     }
-
-    public function testRetrieveCollectionInfo()
-    {
-        $mock_curl = new MockCurlClient();
-        $client = new Ontraport("2_AppID_12345678", "Key5678", $mock_curl);
-        $requestParams = array();
-        $response = $client->contact()->retrieveCollectionInfo($requestParams);
-        $this->assertEquals("{\"code\": 0,
-                      \"data\": {
-                        \"listFields\": [
-                          \"fn\",
-                          \"email\",
-                          \"office_phone\",
-                          \"date\",
-                          \"grade\",
-                          \"dla\",
-                          \"contact_id\"
-                        ],
-                        \"listFieldSettings\": [],
-                        \"cardViewSettings\": [],
-                        \"viewMode\": [],
-                        \"count\": \"2\"
-                      },
-                      \"account_id\": 50
-                    }", $response);
-    }
-
 }
