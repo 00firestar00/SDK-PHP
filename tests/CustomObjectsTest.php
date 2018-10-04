@@ -377,4 +377,36 @@ class CustomObjectsTest extends TestCase
   "account_id": 50
 }', $response);
     }
+
+
+    public function testDeleteSingle()
+    {
+        $mock_curl = new MockCurlClient();
+        $client = new Ontraport("2_AppID_12345678", "Key5678", $mock_curl);
+        $requestParams = array(
+            "objectID" => 0,
+            "id" => 2
+        );
+        $response = $client->custom(10000)->deleteSingle($requestParams);
+        $this->assertEquals('{
+  "code": 0,
+  "account_id": 50
+}', $response);
+    }
+
+    public function testDeleteMultiple()
+    {
+        $mock_curl = new MockCurlClient();
+        $client = new Ontraport("2_AppID_12345678", "Key5678", $mock_curl);
+        $requestParams = array(
+            "objectID" => 0,
+            "id" => 2
+        );
+        $response = $client->custom(10000)->deleteMultiple($requestParams);
+        $this->assertEquals('{
+  "code": 0,
+  "data": "Deleted",
+  "account_id": 50
+}', $response);
+    }
 }
