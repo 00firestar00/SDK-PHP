@@ -22,15 +22,7 @@ matrix:
     - php: hhvm
 
 install:
-  - composer install
-  - if [[ $HHVM == true ]]; then composer require "phpunit/phpunit:5.7"; fi
-
-before_script:
-  - phpenv config-rm xdebug.ini
-
-script:
-  - if [[ $HHVM == true ]]; then ./vendor/bin/phpunit .; fi
-  - if [[ $HHVM != true ]]; then phpunit .; fi
+  - if [[ $HHVM == true ]]; then curl -sSfL -o ~/.phpenv/versions/hhvm/bin/phpunit https://phar.phpunit.de/phpunit-5.7.phar; fi
 
 notifications:
   email: false
