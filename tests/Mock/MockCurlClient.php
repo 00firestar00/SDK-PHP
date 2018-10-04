@@ -59,9 +59,9 @@ class MockCurlClient extends CurlClient
             } elseif ($url === $API_BASE . 'objects/sequence' and $method === 'delete') {
                 return $this->removeFromSequence();
             } elseif ($url === $API_BASE . 'objects/subscribe' and $method === 'put') {
-                return $this->subscribe();
+                return $this->subscribe('object');
             } elseif ($url === $API_BASE . 'objects/subscribe' and $method === 'delete') {
-                return $this->unsubscribe();
+                return $this->unsubscribe('object');
             } elseif ($url === $API_BASE . 'objects/tag' and $method === 'put') {
                 return $this->addTag();
             } elseif ($url === $API_BASE . 'objects/tag' and $method === 'delete') {
@@ -187,6 +187,20 @@ class MockCurlClient extends CurlClient
                 return $this->getInfo('campaignBuilderItem');
             } elseif ($url === $API_BASE . 'CampaignBuilderItems/meta') {
                 return $this->getMeta('campaignBuilderItem');
+            }
+        } elseif ($this->str_contains(strtolower($url), 'webhook')) {
+            if ($url === $API_BASE . 'Webhook' and $method === 'get') {
+                return $this->getSingle('webhook');
+            } elseif ($url === $API_BASE . 'Webhooks' and $method === 'get') {
+                return $this->getMultiple('webhooks');
+            } elseif ($url === $API_BASE . 'Webhooks/getInfo') {
+                return $this->getInfo('webhook');
+            } elseif ($url === $API_BASE . 'Webhooks/meta') {
+                return $this->getMeta('webhook');
+            } elseif ($url === $API_BASE . 'Webhook/subscribe') {
+                return $this->subscribe('webhook');
+            } elseif ($url === $API_BASE . 'Webhook/unsubscribe') {
+                return $this->unsubscribe('webhook');
             }
         }
 
@@ -316,6 +330,17 @@ class MockCurlClient extends CurlClient
     "object_type_id": "0",
     "pause": "0",
     "deleted": "false"
+  },
+  "account_id": 187157
+}';
+        } elseif ($objectTypeToGet === 'webhook') {
+            return '{
+  "code": 0,
+  "data": {
+    "url": "google.com",
+    "event": "object_create(0)",
+    "id": 1,
+    "owner": "1"
   },
   "account_id": 187157
 }';
@@ -494,6 +519,20 @@ class MockCurlClient extends CurlClient
   },
   "account_id": 187157
 }';
+        } elseif ($objectType === 'webhook'){
+            return '{
+  "code": 0,
+  "data": {
+    "listFields": [
+      ""
+    ],
+    "listFieldSettings": [],
+    "cardViewSettings": [],
+    "viewMode": [],
+    "count": "2"
+  },
+  "account_id": 187157
+}';
         }
         return 'Error: Unexpected object type as argument!';
     }
@@ -652,6 +691,33 @@ class MockCurlClient extends CurlClient
     {
       "id": "1",
       "name": "Example: High Level Customer Lifecycle"
+    }
+  ],
+  "account_id": 187157,
+  "misc": []
+}';
+
+        } elseif($objectTypeToGet === 'webhooks') {
+            return '{
+  "code": 0,
+  "data": [
+    {
+      "id": "1",
+      "event": "object_create(0)",
+      "data": "",
+      "url": "google.com",
+      "last_hook": null,
+      "last_code": "0",
+      "last_payload": ""
+    },
+    {
+      "id": "2",
+      "event": "object_create(0)",
+      "data": "",
+      "url": "yahoo.com",
+      "last_hook": null,
+      "last_code": "0",
+      "last_payload": ""
     }
   ],
   "account_id": 187157,
@@ -878,6 +944,26 @@ class MockCurlClient extends CurlClient
           "required": "0",
           "unique": "1",
           "editable": 1,
+          "deletable": "0"
+        }
+      }
+    }
+  },
+  "account_id": 187157
+}';
+        } elseif ($objectType === 'webhook') {
+            return '{
+  "code": 0,
+  "data": {
+    "145": {
+      "name": "Webhook",
+      "fields": {
+        "event": {
+          "alias": "Event",
+          "type": "longtext",
+          "required": "0",
+          "unique": "0",
+          "editable": "1",
           "deletable": "0"
         }
       }
@@ -1184,22 +1270,44 @@ class MockCurlClient extends CurlClient
 }';
     }
 
-    function subscribe()
+    function subscribe($typeToSubscribeTo)
     {
-        return '{
+        if($typeToSubscribeTo === 'object'){
+            return '{
   "code": 0,
   "data": "The subscription is now being processed.",
   "account_id": 187157
 }';
+        } elseif($typeToSubscribeTo === 'webhook'){
+            return '{
+  "code": 0,
+  "data": {
+    "url": "yahoo.com",
+    "event": "object_create(0)",
+    "id": 2,
+    "owner": "1"
+  },
+  "account_id": 187157
+}';
+        }
+
     }
 
-    function unsubscribe()
+    function unsubscribe($typeToUnsubscribeFrom)
     {
-        return '{
+        if($typeToUnsubscribeFrom === 'object') {
+            return '{
   "code": 0,
   "data": "The subscription is now being processed.",
   "account_id": 187157
 }';
+        } elseif($typeToUnsubscribeFrom === 'webhook'){
+            return '{
+  "code": 0,
+  "data": "Deleted",
+  "account_id": 187157
+}';
+        }
     }
 
     function addTag()
