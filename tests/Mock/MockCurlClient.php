@@ -1864,7 +1864,36 @@ class MockCurlClient extends CurlClient
         return '{
   "code": 0,
   "data": {
-    "invoice_id": 4
+    "id": "1",
+    "contact_id": "2",
+    "offer_id": "9",
+    "affiliate": "0",
+    "cc_id": "1",
+    "name": "adsf",
+    "payment_next_date": "1541361600",
+    "orig_month_date": "0",
+    "unit": "month",
+    "count": "1",
+    "gateway_id": "169326",
+    "shipping_address": null,
+    "shipping_city": null,
+    "shipping_state": null,
+    "shipping_zip": null,
+    "shipping_country": null,
+    "shipping_last_charge": "0",
+    "shipping_service": null,
+    "status": "0",
+    "hidden": "0",
+    "dlm": "1538684779",
+    "order_form_json": null,
+    "cancellation_date": "0",
+    "next_sub": "0.00",
+    "tax": "0.00",
+    "shipping": "0.00",
+    "next_charge": "0.00",
+    "transactions": "1",
+    "transactions_remaining": "0",
+    "charged": "0.00"
   },
   "account_id": 187157
 }';
