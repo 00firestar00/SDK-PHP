@@ -409,4 +409,14 @@ class CustomObjectsTest extends TestCase
   "account_id": 50
 }', $response);
     }
+
+    /**
+     * @expectedException \OntraportAPI\Exceptions\CustomObjectException
+     */
+    public function testInvalidCustomObject()
+    {
+        $mock_curl = new MockCurlClient();
+        $client = new Ontraport("2_AppID_12345678", "Key5678", $mock_curl);
+        $response = $client->custom(1);
+    }
 }
