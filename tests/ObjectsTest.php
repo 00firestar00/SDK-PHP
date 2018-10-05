@@ -70,7 +70,9 @@ class ObjectsTest extends TestCase
     {
         $mock_curl = new MockCurlClient();
         $client = new Ontraport("2_AppID_12345678", "Key5678", $mock_curl);
-        $requestParams = array("objectID" => 0);
+        $requestParams = array(
+            "objectID" => 0,
+            "condition" => "[{ \"field\":{\"field\":\"email\"}, \"op\":\"=\", \"value\":{\"value\":\"test@test.com\"} }]");
         $response = $client->object()->retrieveMultiple($requestParams);
         $this->assertEquals('{
   "code": 0,

@@ -1898,6 +1898,4 @@ class MockCurlClient extends CurlClient
   "account_id": 187157
 }';
     }
-
-
 }
