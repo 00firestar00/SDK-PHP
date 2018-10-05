@@ -411,4 +411,80 @@ class TransactionsTest extends TestCase
 }', $response);
     }
 
+    function testRetrieveOrder(){
+        $mock_curl = new MockCurlClient();
+        $client = new Ontraport("2_AppID_12345678", "Key5678", $mock_curl);
+        $requestParams = array(
+            "id" => 1
+        );
+        $response = $client->transaction()->retrieveOrder($requestParams);
+        $this->assertEquals('{
+  "code": 0,
+  "data": {
+    "products": [
+      {
+        "quantity": "1",
+        "minQuantity": "1",
+        "maxQuantity": "99",
+        "total": "0.00",
+        "shipping": false,
+        "tax": false,
+        "price": [
+          {
+            "price": "0.00",
+            "payment_count": "1",
+            "unit": "month",
+            "id": "309734178098"
+          }
+        ],
+        "type": "subscription",
+        "quantityEditable": false,
+        "index": "0",
+        "name": "adsf",
+        "id": "1",
+        "uid": "c3a75463-76fb-0e7c-b381-6e956dd69e57",
+        "product_type": null
+      }
+    ],
+    "shipping": null,
+    "delay": "0",
+    "invoice_template": "1",
+    "subTotal": "0",
+    "grandTotal": "0",
+    "hasTaxes": false,
+    "hasShipping": false,
+    "paypalValid": false,
+    "offerCoupon": false,
+    "coupon": null,
+    "shipping_charge_reoccurring_orders": false,
+    "resorted": null,
+    "cc_id": "1",
+    "send_recurring_invoice": "0",
+    "offer_id": 7,
+    "order_id": "1",
+    "payment_next_date": "1541361600",
+    "status": "0",
+    "gateway_id": "1",
+    "affiliate_id": "0"
+  },
+  "account_id": 187157
+}', $response);
+    }
+
+//    function testUpdateOrder(){
+//        $mock_curl = new MockCurlClient();
+//        $client = new Ontraport("2_AppID_12345678", "Key5678", $mock_curl);
+//        $requestParams = json_encode('{
+//  "objectID": 46,
+//  "ids": [
+//    3
+//  ]
+//}');
+//        $response = $client->transaction()->updateOrder($requestParams);
+//        $this->assertEquals('{
+//  "code": 0,
+//  "data": "Re-ran commissions",
+//  "account_id": 187157
+//}', $response);
+//    }
 }
