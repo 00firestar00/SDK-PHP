@@ -31,6 +31,55 @@ class CriteriaTest extends TestCase
 ))', $str_condition);
     }
 
+    public function testBuildConditionWithArray()
+    {
+        $arr = array(
+            "foo" => "bar",
+            "bar" => "foo",
+        );
+        $condition = new Criteria("foo", "IN", $arr);
+        $str_condition = var_export($condition, true);
+        $this->assertEquals('OntraportAPI\Criteria::__set_state(array(
+   \'_condition\' => 
+  array (
+    0 => 
+    array (
+      \'field\' => 
+      array (
+        \'field\' => \'foo\',
+      ),
+      \'op\' => \'IN\',
+      \'value\' => 
+      array (
+        \'list\' => 
+        array (
+          0 => 
+          array (
+            \'value\' => \'bar\',
+          ),
+          1 => 
+          array (
+            \'value\' => \'foo\',
+          ),
+        ),
+      ),
+    ),
+  ),
+))', $str_condition);
+    }
+
+    /**
+     * @expectedException \OntraportAPI\Exceptions\ArrayOperatorException
+     */
+    public function testInvalidBuildConditionWithArray()
+    {
+        $arr = array(
+            "foo" => "bar",
+            "bar" => "foo",
+        );
+        $condition = new Criteria("foo", "=", $arr);
+    }
+
     public function testAndCondition()
     {
         $condition = new Criteria("name", "=", "name");
