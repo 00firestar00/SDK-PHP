@@ -116,6 +116,13 @@ class CriteriaTest extends TestCase
         $this->assertEquals('[{"field":{"field":"name"},"op":"=","value":{"value":"name"}}]', $str_condition);
     }
 
+    /**
+     * @expectedException \OntraportAPI\Exceptions\ConditionOperatorException
+     */
+    public function testInvalidOperator()
+    {
+        $condition = new Criteria("name", "`_:+", "name");
+    }
 
 
 }
