@@ -1,0 +1,15 @@
+<phpunit bootstrap="tests/bootstrap.php">
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/5.7/phpunit.xsd"
+    <testsuite name='All'>
+        <directory suffix='.php'>./</directory>
+    </testsuite>
+    <logging>
+        <log type="coverage-clover" target="clover.xml"/>
+    </logging>
+    <filter>
+        <whitelist>
+            <directory suffix=".php">./src</directory>
+        </whitelist>
+    </filter>
+</phpunit>

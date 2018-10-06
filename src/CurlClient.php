@@ -172,6 +172,7 @@ class CurlClient
      * @throws Exceptions\TypeException
      * @throws Exceptions\RequiredParamsException
      * @throws Exceptions\HttpMethodException
+     * @codeCoverageIgnore
      */
     public function httpRequest($requestParams, $url, $method, $requiredParams, $options)
     {
@@ -202,31 +203,31 @@ class CurlClient
             $requestParams = http_build_query($requestParams);
         }
 
-        $curlHandle = curl_init();
         $headers = array();
+        $setopts = array();
         switch(strtolower($method))
         {
             case "post":
-                curl_setopt($curlHandle, CURLOPT_POST, 1);
-                curl_setopt($curlHandle, CURLOPT_POSTFIELDS, $requestParams);
+                $setopts[CURLOPT_POST] = 1;
+                $setopts[CURLOPT_POSTFIELDS] = $requestParams;
                 break;
 
             case "get":
-                curl_setopt($curlHandle, CURLOPT_HTTPGET, 1);
+                $setopts[CURLOPT_HTTPGET] = 1;
                 $url = $url."?".$requestParams;
                 break;
 
             case "put":
-                curl_setopt($curlHandle, CURLOPT_CUSTOMREQUEST, "PUT");
-                curl_setopt($curlHandle, CURLOPT_POSTFIELDS, $requestParams);
+                $setopts[CURLOPT_CUSTOMREQUEST] = "PUT";
+                $setopts[CURLOPT_POSTFIELDS] = $requestParams;
                 break;
 
             case "delete":
-                curl_setopt($curlHandle, CURLOPT_CUSTOMREQUEST, "DELETE");
+                $setopts[CURLOPT_CUSTOMREQUEST] = "DELETE";
                 if (array_key_exists("Content-Type", $this->_requestHeaders) &&
                     $this->_requestHeaders["Content-Type"] === "Content-Type: application/json")
                 {
-                    curl_setopt($curlHandle, CURLOPT_POSTFIELDS, $requestParams);
+                    $setopts[CURLOPT_POSTFIELDS] = $requestParams;
                 }
                 else
                 {
@@ -235,12 +236,11 @@ class CurlClient
                 break;
         }
 
-        curl_setopt($curlHandle, CURLOPT_URL, $url);
-        curl_setopt($curlHandle, CURLOPT_HTTPHEADER, $this->_requestHeaders);
-        curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curlHandle, CURLOPT_HEADER, false);
-        curl_setopt($curlHandle, CURLOPT_HEADERFUNCTION,
-            function($curl, $header) use (&$headers)
+        $setopts[CURLOPT_URL] = $url;
+        $setopts[CURLOPT_HTTPHEADER] = $this->_requestHeaders;
+        $setopts[CURLOPT_RETURNTRANSFER] = true;
+        $setopts[CURLOPT_HEADER] = false;
+        $setopts[CURLOPT_HEADERFUNCTION] = function($curl, $header) use (&$headers)
             {
                 $len = strlen($header);
                 $header = explode(":", $header, 2);
@@ -254,21 +254,9 @@ class CurlClient
 
                 return $len;
             }
-        );
-        curl_setopt($curlHandle, CURLOPT_TIMEOUT, 60);
-
-        $result = curl_exec($curlHandle);
-
-        $this->_lastStatusCode = curl_getinfo($curlHandle, CURLINFO_HTTP_CODE);
-        if ($this->_lastStatusCode == self::HTTP_RATE_LIMIT)
-        {
-            $result = $this->retry($headers[self::RATE_LIMIT_RESET], $curlHandle);
-        }
-
-        curl_close($curlHandle);
-
-        unset($this->_requestHeaders["Content-Type"]);
-        return $result;
+        ;
+        $setopts[CURLOPT_TIMEOUT] = 60;
+        return $this->_sendCurl($setopts, $headers);
     }
 
     /**
@@ -304,6 +292,27 @@ class CurlClient
         sleep($wait);
         $result = curl_exec($curlHandle);
         $this->_lastStatusCode = curl_getinfo($curlHandle, CURLINFO_HTTP_CODE);
+        return $result;
+    }
+
+    private function _sendCurl($setopts, $headers)
+    {
+        $curlHandle = curl_init();
+        foreach ($setopts as $key => $val)
+        {
+            curl_setopt($curlHandle, $key, $val);
+        }
+        $result = curl_exec($curlHandle);
+
+        $this->_lastStatusCode = curl_getinfo($curlHandle, CURLINFO_HTTP_CODE);
+        if ($this->_lastStatusCode == self::HTTP_RATE_LIMIT)
+        {
+            $result = $this->retry($headers[self::RATE_LIMIT_RESET], $curlHandle);
+        }
+
+        curl_close($curlHandle);
+
+        unset($this->_requestHeaders["Content-Type"]);
         return $result;
     }
 }
