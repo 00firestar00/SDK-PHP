@@ -64,12 +64,22 @@ class ObjectFieldTest extends TestCase
         $this->assertEquals('{"alias":"My New Dropdown","required":0,"unique":0,"type":"drop","options":{"replace":["second"]}}' , json_encode($requestParams));
     }
 
+    //id = field = 0
     function testCreateFromResponse()
     {
         $responseArray = json_decode('{"alias":"My New Field","required":0,"field":0,"id":0,"unique":0,"type":"text","options":{"replace":["second"]}}', true);
         $myDropDown = ObjectField::CreateFromResponse($responseArray);
         $requestParams = $myDropDown->toRequestParams();
         $this->assertEquals('{"alias":"My New Field","required":0,"unique":0,"type":"text","options":{"replace":["second"]}}', json_encode($requestParams));
+    }
+
+    //id, field != 0
+    function testCreateFromResponseV2()
+    {
+        $responseArray = json_decode('{"alias":"My New Field","required":0,"field":"yes","id":2,"unique":0,"type":"text","options":{"replace":["second"]}}', true);
+        $myDropDown = ObjectField::CreateFromResponse($responseArray);
+        $requestParams = $myDropDown->toRequestParams();
+        $this->assertEquals('{"alias":"My New Field","required":0,"unique":0,"type":"text","options":{"replace":["second"]},"id":2,"field":"yes"}', json_encode($requestParams));
     }
 
     /**
