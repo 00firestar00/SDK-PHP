@@ -57,5 +57,5 @@ class CurlClientTest extends TestCase
         $requiredParams = array("id");
         $response = $client->getHttpClient()->httpRequest($requestParams, "ontraport.com", 'get', $requiredParams, null);
     }
-    
+
 }
