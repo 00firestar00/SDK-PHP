@@ -1,11 +1,8 @@
 <?php
 
 use OntraportAPI\Ontraport;
-use OntraportAPI\Tests\Mock\MockCurlClient;
 use PHPUnit\Framework\TestCase;
-use OntraportAPI\ObjectType;
 use OntraportAPI\Models\FieldEditor\ObjectField;
-use OntraportAPI\Models\FieldEditor\ObjectSection;
 
 class ObjectFieldTest extends TestCase
 {
