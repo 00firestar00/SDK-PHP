@@ -64,6 +64,14 @@ class ObjectFieldTest extends TestCase
         $this->assertEquals('{"alias":"My New Dropdown","required":0,"unique":0,"type":"drop","options":{"replace":["second"]}}' , json_encode($requestParams));
     }
 
+    function testCreateFromResponse()
+    {
+        $responseArray = json_decode('{"alias":"My New Field","required":0,"field":0,"id":0,"unique":0,"type":"text","options":{"replace":["second"]}}', true);
+        $myDropDown = ObjectField::CreateFromResponse($responseArray);
+        $requestParams = $myDropDown->toRequestParams();
+        $this->assertEquals('{"alias":"My New Field","required":0,"unique":0,"type":"text","options":{"replace":["second"]}}', json_encode($requestParams));
+    }
+
     /**
      * @expectedException  \OntraportAPI\Exceptions\FieldTypeException
      */
@@ -71,10 +79,6 @@ class ObjectFieldTest extends TestCase
     {
         $myField = new ObjectField("My New Field", 12345);
     }
-
-
-
-
 
 
 
