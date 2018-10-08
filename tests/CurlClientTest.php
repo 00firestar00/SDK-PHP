@@ -14,7 +14,7 @@ class CurlClientTest extends TestCase
         $this->assertEquals('{"Api-key":"Api-key: Key5678","Api-Appid":"Api-Appid: 2_AppID_12345678"}', $response);
     }
 
-    public function testSetAndGetLasStatusCode()
+    public function testSetAndGetLastStatusCode()
     {
         $mock_curl = new MockCurlClient();
         $client = new Ontraport("2_AppID_12345678", "Key5678", $mock_curl);
@@ -57,4 +57,5 @@ class CurlClientTest extends TestCase
         $requiredParams = array("id");
         $response = $client->getHttpClient()->httpRequest($requestParams, "ontraport.com", 'get', $requiredParams, null);
     }
+    
 }
