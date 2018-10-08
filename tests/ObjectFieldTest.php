@@ -12,10 +12,8 @@ class ObjectFieldTest extends TestCase
     function testToRequestParams()
     {
         $myField = new ObjectField("My New Field", ObjectField::TYPE_TEXT);
-        $mySection = new ObjectSection("Contact Information", array($myField));
-
-        $requestParams = $mySection->toRequestParams();
-        $this->assertEquals('{"name":"Contact Information","description":null,"fields":[[{"alias":"My New Field","required":0,"unique":0,"type":"text"}]]}' , json_encode($requestParams));
+        $requestParams = $myField->toRequestParams();
+        $this->assertEquals('{"alias":"My New Field","required":0,"unique":0,"type":"text"}' , json_encode($requestParams));
     }
 
     function testSetAndGetID()
@@ -42,89 +40,36 @@ class ObjectFieldTest extends TestCase
         $this->assertEquals('My New Alias', $myNewAlias);
     }
 
-
-    function testAddThenRemoveOptions()
+    function testAddDropOptions()
     {
-        $mock_curl = new MockCurlClient();
-        $client = new Ontraport("2_AppID_12345678","Key5678", $mock_curl);
-
-        $myField = new ObjectField("My New Field", ObjectField::TYPE_TEXT);
         $myDropDown = new ObjectField("My New Dropdown", ObjectField::TYPE_DROP);
         $myDropDown->addDropOptions(array("first", "second", "third"));
-        $myDropDown->removeDropOptions(array("third"));
-
-        $mySection = new ObjectSection("Contact Information", array($myField, $myDropDown));
-
-        $requestParams = $mySection->toRequestParams();
-        $requestParams["objectID"] = ObjectType::CONTACT;
-        $response = $client->object()->createFields($requestParams);
-        $this->assertEquals('{
-  "code": 0,
-  "data": {
-    "success": {
-      "f1557": "string"
-    },
-    "error": []
-  },
-  "account_id": 50
-}' , $response);
+        $requestParams = $myDropDown->toRequestParams();
+        $this->assertEquals('{"alias":"My New Dropdown","required":0,"unique":0,"type":"drop","options":{"add":["first","second","third"]}}' , json_encode($requestParams));
     }
 
-    function testAddThenReplaceOptions()
+    function testRemoveDropOptions()
     {
-        $mock_curl = new MockCurlClient();
-        $client = new Ontraport("2_AppID_12345678","Key5678", $mock_curl);
-
-        $myField = new ObjectField("My New Field", ObjectField::TYPE_TEXT);
         $myDropDown = new ObjectField("My New Dropdown", ObjectField::TYPE_DROP);
-        $myDropDown->addDropOptions(array("first", "second", "third"));
-        $myDropDown->replaceDropOptions(array("third"));
-
-        $mySection = new ObjectSection("Contact Information", array($myField, $myDropDown));
-
-        $requestParams = $mySection->toRequestParams();
-        $requestParams["objectID"] = ObjectType::CONTACT;
-        $response = $client->object()->createFields($requestParams);
-        $this->assertEquals('{
-  "code": 0,
-  "data": {
-    "success": {
-      "f1557": "string"
-    },
-    "error": []
-  },
-  "account_id": 50
-}' , $response);
+        $myDropDown->removeDropOptions(array("second"));
+        $requestParams = $myDropDown->toRequestParams();
+        $this->assertEquals('{"alias":"My New Dropdown","required":0,"unique":0,"type":"drop","options":{"remove":["second"]}}' , json_encode($requestParams));
     }
-    
+
+    function testReplaceDropOptions()
+    {
+        $myDropDown = new ObjectField("My New Dropdown", ObjectField::TYPE_DROP);
+        $myDropDown->replaceDropOptions(array("second"));
+        $requestParams = $myDropDown->toRequestParams();
+        $this->assertEquals('{"alias":"My New Dropdown","required":0,"unique":0,"type":"drop","options":{"replace":["second"]}}' , json_encode($requestParams));
+    }
+
     /**
      * @expectedException  \OntraportAPI\Exceptions\FieldTypeException
      */
     function testFieldTypeException()
     {
-        $mock_curl = new MockCurlClient();
-        $client = new Ontraport("2_AppID_12345678","Key5678", $mock_curl);
-
         $myField = new ObjectField("My New Field", 12345);
-        $myDropDown = new ObjectField("My New Dropdown", ObjectField::TYPE_DROP);
-        $myDropDown->addDropOptions(array("first", "second", "third"));
-        $myDropDown->replaceDropOptions(array("third"));
-
-        $mySection = new ObjectSection("Contact Information", array($myField, $myDropDown));
-
-        $requestParams = $mySection->toRequestParams();
-        $requestParams["objectID"] = ObjectType::CONTACT;
-        $response = $client->object()->createFields($requestParams);
-        $this->assertEquals('{
-  "code": 0,
-  "data": {
-    "success": {
-      "f1557": "string"
-    },
-    "error": []
-  },
-  "account_id": 50
-}' , $response);
     }
 
 
