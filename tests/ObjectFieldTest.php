@@ -9,18 +9,18 @@ use OntraportAPI\Models\FieldEditor\ObjectSection;
 
 class ObjectFieldTest extends TestCase
 {
-    function testConstruct()
+    function testCreateFields()
     {
         $mock_curl = new MockCurlClient();
         $client = new Ontraport("2_AppID_12345678","Key5678", $mock_curl);
-//
-//        $myField = new ObjectField("My New Field", ObjectField::TYPE_TEXT);
-//        $myDropDown = new ObjectField("My New Dropdown", ObjectField::TYPE_DROP);
-//        $myDropDown->addDropOptions(array("first", "second", "third"));
 
-//        $mySection = new ObjectSection("Contact Information", array($myField, $myDropDown));
+        $myField = new ObjectField("My New Field", ObjectField::TYPE_TEXT);
+        $myDropDown = new ObjectField("My New Dropdown", ObjectField::TYPE_DROP);
+        $myDropDown->addDropOptions(array("first", "second", "third"));
 
-//        $requestParams = $mySection->toRequestParams();
+        $mySection = new ObjectSection("Contact Information", array($myField, $myDropDown));
+
+        $requestParams = $mySection->toRequestParams();
         $requestParams["objectID"] = ObjectType::CONTACT;
         $response = $client->object()->createFields($requestParams);
         $this->assertEquals('{
