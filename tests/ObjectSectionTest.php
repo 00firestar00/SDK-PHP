@@ -26,4 +26,14 @@ class ObjectSectionTest extends TestCase
         $stringMyFieldByAlias = json_encode(json_decode($myFieldByAlias));
         $this->assertEquals('{"alias":"My New Dropdown","required":0,"unique":0,"type":"drop"}', $stringMyFieldByAlias);
     }
+
+    function testSetDescription()
+    {
+        $myField = new ObjectField("My New Field", ObjectField::TYPE_TEXT);
+        $myDropDown = new ObjectField("My New Dropdown", ObjectField::TYPE_DROP);
+        $mySection = new ObjectSection("Contact Information", array($myField, $myDropDown));
+        $mySection->setDescription("blah blah blah...");
+        $sectionWithDescription = json_encode(json_decode($mySection));
+        $this->assertEquals('{"name":"Contact Information","description":"blah blah blah...","fields":[[{"alias":"My New Field","required":0,"unique":0,"type":"text"},{"alias":"My New Dropdown","required":0,"unique":0,"type":"drop"}]]}', $sectionWithDescription);
+    }
 }
