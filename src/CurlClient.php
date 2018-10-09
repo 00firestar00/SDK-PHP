@@ -298,7 +298,7 @@ class CurlClient
      *
      * @param int $wait
      * @param $curlHandle
-     * @codeCoverageIgnore 
+     * @codeCoverageIgnore
      *
      * @return mixed
      */
