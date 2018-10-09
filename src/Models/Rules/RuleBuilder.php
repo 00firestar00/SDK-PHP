@@ -638,7 +638,7 @@ class RuleBuilder implements Request
      *
      * @return array Conditions classified
      */
-    private function _operatorClassifier($init_conditions)
+    private static function _operatorClassifier($init_conditions)
     {
         $or_rules = array();
         $and_rules = array();
