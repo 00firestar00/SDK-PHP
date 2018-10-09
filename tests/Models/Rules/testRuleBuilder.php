@@ -165,13 +165,13 @@ class testRuleBuilder extends TestCase
     "object_type_id": "0",
     "id": "1",
     "drip_id": null,
-    "conditions": "",
+    "conditions": "Is_subscribed_to_drip(1)",
     "pause": "0",
     "last_action": "0",
     "date": "1527179185",
     "dlm": "1527179185"
 }', true));
-        $this->assertEquals('{"object_type_id":"0","name":"Create Me!","events":"Contact_added_to_campaign(1)","conditions":"","actions":"Add_contact_to_category(1)","id":"1"}', json_encode($myRule->toRequestParams()));
+        $this->assertEquals('{"object_type_id":"0","name":"Create Me!","events":"Contact_added_to_campaign(1)","conditions":"Is_subscribed_to_drip(1)","actions":"Add_contact_to_category(1)","id":"1"}', json_encode($myRule->toRequestParams()));
     }
 
     /**

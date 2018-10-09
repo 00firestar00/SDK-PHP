@@ -172,7 +172,7 @@ class CurlClient
      * @throws Exceptions\TypeException
      * @throws Exceptions\RequiredParamsException
      * @throws Exceptions\HttpMethodException
-     * @codeCoverageIgnore 
+     * @codeCoverageIgnore
      */
     public function httpRequest($requestParams, $url, $method, $requiredParams, $options)
     {
