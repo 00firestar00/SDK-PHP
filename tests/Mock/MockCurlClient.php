@@ -14,35 +14,62 @@ class MockCurlClient extends CurlClient
     {
         $API_BASE = O::REQUEST_URL . '/' . O::API_VERSION . '/';
 
-        if ($this->str_contains($url, 'Contact') or $this->str_contains($url, 'object')) {
-            if (($url === $API_BASE . 'Contact' or $url === $API_BASE . 'object') and $method === 'get') {
+        if ($this->str_contains($url, 'Contact')) {
+            if ($url === $API_BASE . 'Contact' and $method === 'get') {
                 return $this->getSingle('contact');
-            } elseif (($url === $API_BASE . 'Contact' or $url === $API_BASE . 'object') and $method === 'delete') {
+            } elseif ($url === $API_BASE . 'Contact' and $method === 'delete') {
                 return $this->deleteSingle('contact');
-            } elseif (($url === $API_BASE . 'Contacts/getInfo' or $url === $API_BASE . 'objects/getInfo')) {
+            } elseif ($url === $API_BASE . 'Contacts/getInfo') {
                 return $this->getInfo('contact');
-            } elseif (($url === $API_BASE . 'Contacts' or $url === $API_BASE . 'objects') and $method === 'get') {
+            } elseif ($url === $API_BASE . 'Contacts' and $method === 'get') {
                 return $this->getMultiple('contacts');
-            } elseif (($url === $API_BASE . 'Contacts' or $url === $API_BASE . 'objects') and $method === 'delete') {
+            } elseif ($url === $API_BASE . 'Contacts'and $method === 'delete') {
                 return $this->deleteMultiple('contacts');
-            } elseif (($url === $API_BASE . 'Contacts' or $url === $API_BASE . 'objects') and $method === 'post') {
+            } elseif ($url === $API_BASE . 'Contacts'and $method === 'post') {
                 return $this->create('contact');
-            } elseif (($url === $API_BASE . 'Contacts' or $url === $API_BASE . 'objects') and $method === 'put') {
+            } elseif ($url === $API_BASE . 'Contacts' and $method === 'put') {
                 return $this->update('contact');
-            } elseif ($url === $API_BASE . 'Contacts/meta' or $url === $API_BASE . 'objects/meta') {
+            } elseif ($url === $API_BASE . 'Contacts/meta') {
                 return $this->getMeta('contact');
-            } elseif ($url === $API_BASE . 'Contacts/saveorupdate' or $url === $API_BASE . 'objects/saveorupdate') {
+            } elseif ($url === $API_BASE . 'Contacts/saveorupdate'){
                 return $this->saveOrUpdateContact();
-            } elseif (($url === $API_BASE . 'Contacts/fieldeditor' or $url === $API_BASE . 'objects/fieldeditor') and $method === 'get') {
+            } elseif ($url === $API_BASE . 'Contacts/fieldeditor' and $method === 'get') {
                 return $this->retrieveFields();
-            } elseif (($url === $API_BASE . 'Contacts/fieldeditor' or $url === $API_BASE . 'objects/fieldeditor') and $method === 'post') {
+            } elseif ($url === $API_BASE . 'Contacts/fieldeditor' and $method === 'post') {
                 return $this->createFields();
-            } elseif (($url === $API_BASE . 'Contacts/fieldeditor' or $url === $API_BASE . 'objects/fieldeditor') and $method === 'put') {
+            } elseif ($url === $API_BASE . 'Contacts/fieldeditor' and $method === 'put') {
                 return $this->updateFields();
-            } elseif (($url === $API_BASE . 'Contacts/fieldeditor' or $url === $API_BASE . 'objects/fieldeditor') and $method === 'delete') {
+            } elseif ($url === $API_BASE . 'Contacts/fieldeditor' and $method === 'delete') {
                 return $this->deleteFields();
-            } //Applicable to Objects but not contacts
-            elseif ($url === $API_BASE . 'objects/tagByName' and $method === 'put') {
+            }
+        }elseif($this->str_contains($url, 'object')){
+            if ($url === $API_BASE . 'object' and $method === 'get') {
+                return $this->getSingle('contact');
+            } elseif ($url === $API_BASE . 'object' and $method === 'delete') {
+                return $this->deleteSingle('contact');
+            } elseif ($url === $API_BASE . 'objects/getInfo') {
+                return $this->getInfo('contact');
+            } elseif ($url === $API_BASE . 'objects' and $method === 'get') {
+                return $this->getMultiple('objects');
+            } elseif ($url === $API_BASE . 'objects'and $method === 'delete') {
+                return $this->deleteMultiple('contacts');
+            } elseif ($url === $API_BASE . 'objects'and $method === 'post') {
+                return $this->create('contact');
+            } elseif ($url === $API_BASE . 'objects' and $method === 'put') {
+                return $this->update('contact');
+            } elseif ($url === $API_BASE . 'objects/meta') {
+                return $this->getMeta('object');
+            } elseif ($url === $API_BASE . 'objects/saveorupdate'){
+                return $this->saveOrUpdateContact();
+            } elseif ($url === $API_BASE . 'objects/fieldeditor' and $method === 'get') {
+                return $this->retrieveFields();
+            } elseif ($url === $API_BASE . 'objects/fieldeditor' and $method === 'post') {
+                return $this->createFields();
+            } elseif ($url === $API_BASE . 'objects/fieldeditor' and $method === 'put') {
+                return $this->updateFields();
+            } elseif ($url === $API_BASE . 'objects/fieldeditor' and $method === 'delete') {
+                return $this->deleteFields();
+            } elseif ($url === $API_BASE . 'objects/tagByName' and $method === 'put') {
                 return $this->tagObjectByName();
             } elseif ($url === $API_BASE . 'objects/tagByName' and $method === 'delete') {
                 return $this->removeTagByName();
@@ -59,9 +86,9 @@ class MockCurlClient extends CurlClient
             } elseif ($url === $API_BASE . 'objects/sequence' and $method === 'delete') {
                 return $this->removeFromSequence();
             } elseif ($url === $API_BASE . 'objects/subscribe' and $method === 'put') {
-                return $this->subscribe();
+                return $this->subscribe('object');
             } elseif ($url === $API_BASE . 'objects/subscribe' and $method === 'delete') {
-                return $this->unsubscribe();
+                return $this->unsubscribe('object');
             } elseif ($url === $API_BASE . 'objects/tag' and $method === 'put') {
                 return $this->addTag();
             } elseif ($url === $API_BASE . 'objects/tag' and $method === 'delete') {
@@ -159,6 +186,10 @@ class MockCurlClient extends CurlClient
                 return $this->rerunCommission();
             } elseif ($url === $API_BASE . 'transaction/processManual') {
                 return $this->processManual();
+            } elseif ($url === $API_BASE . 'transaction/order' and $method === 'get') {
+                return $this->getTransactionOrder();
+            } elseif ($url === $API_BASE . 'transaction/order' and $method === 'put') {
+                return $this->updateTransactionOrder();
             }
         } elseif ($this->str_contains(strtolower($url), 'rule')) {
             if ($url === $API_BASE . 'Rule' and $method === 'get') {
@@ -188,6 +219,42 @@ class MockCurlClient extends CurlClient
             } elseif ($url === $API_BASE . 'CampaignBuilderItems/meta') {
                 return $this->getMeta('campaignBuilderItem');
             }
+        } elseif ($this->str_contains(strtolower($url), 'webhook')) {
+            if ($url === $API_BASE . 'Webhook' and $method === 'get') {
+                return $this->getSingle('webhook');
+            } elseif ($url === $API_BASE . 'Webhooks' and $method === 'get') {
+                return $this->getMultiple('webhooks');
+            } elseif ($url === $API_BASE . 'Webhooks/getInfo') {
+                return $this->getInfo('webhook');
+            } elseif ($url === $API_BASE . 'Webhooks/meta') {
+                return $this->getMeta('webhook');
+            } elseif ($url === $API_BASE . 'Webhook/subscribe') {
+                return $this->subscribe('webhook');
+            } elseif ($url === $API_BASE . 'Webhook/unsubscribe') {
+                return $this->unsubscribe('webhook');
+            }
+        } elseif ($this->str_contains(strtolower($url), 'creditcard')) {
+            if ($url === $API_BASE . 'CreditCard' and $method === 'get') {
+                return $this->getSingle('creditCard');
+            } elseif ($url === $API_BASE . 'CreditCards' and $method === 'get') {
+                return $this->getMultiple('creditCards');
+            } elseif ($url === $API_BASE . 'CreditCards/getInfo') {
+                return $this->getInfo('creditCard');
+            } elseif ($url === $API_BASE . 'CreditCards/meta') {
+                return $this->getMeta('creditCard');
+            } elseif ($url === $API_BASE . 'CreditCard/default') {
+                return $this->setDefault('creditCard');
+            }
+        } elseif ($this->str_contains(strtolower($url), 'customobject')) {
+            if ($url === $API_BASE . 'CustomObject' and $method === 'get') {
+                return $this->getSingle('customObject');
+            } elseif ($url === $API_BASE . 'CustomObjects' and $method === 'get') {
+                return $this->getMultiple('customObjects');
+            } elseif ($url === $API_BASE . 'CustomObjects/getInfo') {
+                return $this->getInfo('customObject');
+            } elseif ($url === $API_BASE . 'CustomObjects/meta') {
+                return $this->getMeta('customObject');
+            }
         }
 
         return parent::httpRequest($requestParams, $url, $method, $requiredParams, $options);
@@ -211,6 +278,17 @@ class MockCurlClient extends CurlClient
   },
   \"account_id\": 50
 }";
+        } elseif ($objectTypeToGet === 'object') {
+            return '{
+  "code": 0,
+  "data": {
+    "id": "3",
+    "owner": "1",
+    "firstname": "string",
+    "lastname": "string",
+  },
+  "account_id": 187157
+}';
         } elseif ($objectTypeToGet === 'message') {
             return '{
   "code": 0,
@@ -319,6 +397,41 @@ class MockCurlClient extends CurlClient
   },
   "account_id": 187157
 }';
+        } elseif ($objectTypeToGet === 'webhook') {
+            return '{
+  "code": 0,
+  "data": {
+    "url": "google.com",
+    "event": "object_create(0)",
+    "id": 1,
+    "owner": "1"
+  },
+  "account_id": 187157
+}';
+        } elseif ($objectTypeToGet === 'creditCard') {
+            return '{
+  "code": 0,
+  "data": {
+    "id": "1",
+    "firstname": "adsf",
+    "lastname": "adsf",
+    "contact_id": "2",
+    "last4": "1234",
+    "type": "6",
+    "exp_month": "1",
+    "exp_year": "2035",
+    "address": "adfs",
+    "address2": "afds",
+    "city": "asfd",
+    "state": "CA",
+    "zip": "12332",
+    "country": "US",
+    "status": "3",
+    "recent_sale": "0",
+    "invoice_id": "4"
+  },
+  "account_id": 187157
+}';
         }
         return 'Error: Unexpected object type as argument!';
     }
@@ -344,6 +457,26 @@ class MockCurlClient extends CurlClient
                       },
                       \"account_id\": 50
                     }";
+        } elseif ($objectType === 'object') {
+            return '{
+  "code": 0,
+  "data": {
+    "listFields": [
+      "fn",
+      "email",
+      "office_phone",
+      "date",
+      "grade",
+      "dla",
+      "contact_id"
+    ],
+    "listFieldSettings": [],
+    "cardViewSettings": [],
+    "viewMode": [],
+    "count": "2"
+  },
+  "account_id": 187157
+}';
         } elseif ($objectType === 'message') {
             return '{
   "code": 0,
@@ -494,6 +627,37 @@ class MockCurlClient extends CurlClient
   },
   "account_id": 187157
 }';
+        } elseif ($objectType === 'webhook'){
+            return '{
+  "code": 0,
+  "data": {
+    "listFields": [
+      ""
+    ],
+    "listFieldSettings": [],
+    "cardViewSettings": [],
+    "viewMode": [],
+    "count": "2"
+  },
+  "account_id": 187157
+}';
+        } elseif ($objectType === 'creditCard'){
+            return '{
+  "code": 0,
+  "data": {
+    "listFields": [
+      "contact_id",
+      "last4",
+      "exp_month",
+      "exp_year"
+    ],
+    "listFieldSettings": [],
+    "cardViewSettings": [],
+    "viewMode": [],
+    "count": "1"
+  },
+  "account_id": 187157
+}';
         }
         return 'Error: Unexpected object type as argument!';
     }
@@ -520,7 +684,27 @@ class MockCurlClient extends CurlClient
   "account_id": 50,
   "misc": []
 }';
-        } elseif ($objectTypeToGet === 'messages') {
+        } if ($objectTypeToGet === 'objects') {
+        return '{
+  "code": 0,
+  "data": [
+    {
+      "id": "8",
+      "owner": "1",
+      "firstname": "unitUpdated",
+      "lastname": "test"
+    },
+    {
+      "id": "10",
+      "owner": "1",
+      "firstname": "unit",
+      "lastname": "test"
+    }
+  ],
+  "account_id": 50,
+  "misc": []
+}';
+    } elseif ($objectTypeToGet === 'messages') {
             return '{
   "code": 0,
   "data": [
@@ -658,6 +842,61 @@ class MockCurlClient extends CurlClient
   "misc": []
 }';
 
+        } elseif($objectTypeToGet === 'webhooks') {
+            return '{
+  "code": 0,
+  "data": [
+    {
+      "id": "1",
+      "event": "object_create(0)",
+      "data": "",
+      "url": "google.com",
+      "last_hook": null,
+      "last_code": "0",
+      "last_payload": ""
+    },
+    {
+      "id": "2",
+      "event": "object_create(0)",
+      "data": "",
+      "url": "yahoo.com",
+      "last_hook": null,
+      "last_code": "0",
+      "last_payload": ""
+    }
+  ],
+  "account_id": 187157,
+  "misc": []
+}';
+
+        } elseif($objectTypeToGet === 'creditCards') {
+            return '{
+  "code": 0,
+  "data": [
+    {
+      "id": "1",
+      "firstname": "adsf",
+      "lastname": "adsf",
+      "contact_id": "2",
+      "last4": "1234",
+      "type": "6",
+      "exp_month": "1",
+      "exp_year": "2035",
+      "address": "adfs",
+      "address2": "afds",
+      "city": "asfd",
+      "state": "CA",
+      "zip": "12332",
+      "country": "US",
+      "status": "3",
+      "recent_sale": "0",
+      "invoice_id": "4"
+    }
+  ],
+  "account_id": 187157,
+  "misc": []
+}';
+
         }
         return ('Error: Unexpected object type as argument!');
     }
@@ -699,6 +938,52 @@ class MockCurlClient extends CurlClient
     }
   },
   "account_id": 50
+}';
+        } elseif ($objectType === 'object') {
+            return '{
+  "code": 0,
+  "data": {
+    "0": {
+      "name": "Contact",
+      "fields": {
+        "f1568": {
+          "alias": "fdsfa",
+          "type": "parent",
+          "required": "0",
+          "unique": "0",
+          "editable": null,
+          "deletable": "0",
+          "parent_object": "10000"
+        },
+        "firstname": {
+          "alias": "First Name",
+          "type": "text",
+          "required": "0",
+          "unique": "0",
+          "editable": "1",
+          "deletable": "0"
+        }
+      }
+    },
+    "146": {
+      "name": "Order",
+      "fields": {}
+    },
+    "10000": {
+      "name": "oTemp",
+      "fields": {
+        "f1567": {
+          "alias": "asfdas",
+          "type": "parent",
+          "required": "0",
+          "unique": "0",
+          "editable": null,
+          "deletable": "0"
+        }
+      }
+    }
+  },
+  "account_id": 187157
 }';
         } elseif ($objectType === 'message') {
             return '{
@@ -885,6 +1170,46 @@ class MockCurlClient extends CurlClient
   },
   "account_id": 187157
 }';
+        } elseif ($objectType === 'webhook') {
+            return '{
+  "code": 0,
+  "data": {
+    "145": {
+      "name": "Webhook",
+      "fields": {
+        "event": {
+          "alias": "Event",
+          "type": "longtext",
+          "required": "0",
+          "unique": "0",
+          "editable": "1",
+          "deletable": "0"
+        }
+      }
+    }
+  },
+  "account_id": 187157
+}';
+        } elseif ($objectType === 'creditCard') {
+            return '{
+  "code": 0,
+  "data": {
+    "45": {
+      "name": "CreditCard",
+      "fields": {
+        "contact_id": {
+          "alias": "Contact",
+          "type": "parent",
+          "required": "0",
+          "unique": "0",
+          "editable": "0",
+          "deletable": "0"
+        }
+      }
+    }
+  },
+  "account_id": 187157
+}';
         }
         return ('Error: Unexpected object type as argument!');
     }
@@ -893,6 +1218,11 @@ class MockCurlClient extends CurlClient
     function deleteSingle($objectType)
     {
         if($objectType === 'contact') {
+            return '{
+  "code": 0,
+  "account_id": 50
+}';
+        } elseif($objectType === 'object') {
             return '{
   "code": 0,
   "account_id": 50
@@ -914,7 +1244,13 @@ class MockCurlClient extends CurlClient
   "data": "Deleted",
   "account_id": 50
 }';
-        }elseif($objectType === 'rules'){
+        } elseif($objectType === 'objects') {
+        return '{
+  "code": 0,
+  "data": "Deleted",
+  "account_id": 50
+}';
+    } elseif($objectType === 'rules'){
             return '{
   "code": 0,
   "data": "Deleted",
@@ -938,7 +1274,19 @@ class MockCurlClient extends CurlClient
   },
   "account_id": 50
 }';
-        } elseif ($objectType === 'message') {
+        }elseif ($objectType === 'object') {
+        return '{
+  "code": 0,
+  "data": {
+    "firstname": "unit",
+    "lastname": "test",
+    "use_utm_names": "false",
+    "id": "8",
+    "owner": "1",
+  },
+  "account_id": 50
+}';
+    } elseif ($objectType === 'message') {
             return '{
   "code": 0,
   "data": {
@@ -973,6 +1321,18 @@ class MockCurlClient extends CurlClient
     function update($objectType)
     {
         if ($objectType === 'contact') {
+            return '{
+  "code": 0,
+  "data": {
+    "attrs": {
+      "firstname": "unitUpdated",
+      "dlm": "1538154601",
+      "id": "8"
+    }
+  },
+  "account_id": 50
+}';
+        } elseif ($objectType === 'object') {
             return '{
   "code": 0,
   "data": {
@@ -1184,22 +1544,44 @@ class MockCurlClient extends CurlClient
 }';
     }
 
-    function subscribe()
+    function subscribe($typeToSubscribeTo)
     {
-        return '{
+        if($typeToSubscribeTo === 'object'){
+            return '{
   "code": 0,
   "data": "The subscription is now being processed.",
   "account_id": 187157
 }';
+        } elseif($typeToSubscribeTo === 'webhook'){
+            return '{
+  "code": 0,
+  "data": {
+    "url": "yahoo.com",
+    "event": "object_create(0)",
+    "id": 2,
+    "owner": "1"
+  },
+  "account_id": 187157
+}';
+        }
+
     }
 
-    function unsubscribe()
+    function unsubscribe($typeToUnsubscribeFrom)
     {
-        return '{
+        if($typeToUnsubscribeFrom === 'object') {
+            return '{
   "code": 0,
   "data": "The subscription is now being processed.",
   "account_id": 187157
 }';
+        } elseif($typeToUnsubscribeFrom === 'webhook'){
+            return '{
+  "code": 0,
+  "data": "Deleted",
+  "account_id": 187157
+}';
+        }
     }
 
     function addTag()
@@ -1410,4 +1792,110 @@ class MockCurlClient extends CurlClient
 }';
     }
 
+    function setDefault()
+    {
+        return '{
+  "code": 0,
+  "data": {
+    "id": "1",
+    "status": "3"
+  },
+  "account_id": 187157
+}';
+    }
+
+    function getTransactionOrder()
+    {
+        return '{
+  "code": 0,
+  "data": {
+    "products": [
+      {
+        "quantity": "1",
+        "minQuantity": "1",
+        "maxQuantity": "99",
+        "total": "0.00",
+        "shipping": false,
+        "tax": false,
+        "price": [
+          {
+            "price": "0.00",
+            "payment_count": "1",
+            "unit": "month",
+            "id": "309734178098"
+          }
+        ],
+        "type": "subscription",
+        "quantityEditable": false,
+        "index": "0",
+        "name": "adsf",
+        "id": "1",
+        "uid": "c3a75463-76fb-0e7c-b381-6e956dd69e57",
+        "product_type": null
+      }
+    ],
+    "shipping": null,
+    "delay": "0",
+    "invoice_template": "1",
+    "subTotal": "0",
+    "grandTotal": "0",
+    "hasTaxes": false,
+    "hasShipping": false,
+    "paypalValid": false,
+    "offerCoupon": false,
+    "coupon": null,
+    "shipping_charge_reoccurring_orders": false,
+    "resorted": null,
+    "cc_id": "1",
+    "send_recurring_invoice": "0",
+    "offer_id": 7,
+    "order_id": "1",
+    "payment_next_date": "1541361600",
+    "status": "0",
+    "gateway_id": "1",
+    "affiliate_id": "0"
+  },
+  "account_id": 187157
+}';
+    }
+
+    function updateTransactionOrder()
+    {
+        return '{
+  "code": 0,
+  "data": {
+    "id": "1",
+    "contact_id": "2",
+    "offer_id": "9",
+    "affiliate": "0",
+    "cc_id": "1",
+    "name": "adsf",
+    "payment_next_date": "1541361600",
+    "orig_month_date": "0",
+    "unit": "month",
+    "count": "1",
+    "gateway_id": "169326",
+    "shipping_address": null,
+    "shipping_city": null,
+    "shipping_state": null,
+    "shipping_zip": null,
+    "shipping_country": null,
+    "shipping_last_charge": "0",
+    "shipping_service": null,
+    "status": "0",
+    "hidden": "0",
+    "dlm": "1538684779",
+    "order_form_json": null,
+    "cancellation_date": "0",
+    "next_sub": "0.00",
+    "tax": "0.00",
+    "shipping": "0.00",
+    "next_charge": "0.00",
+    "transactions": "1",
+    "transactions_remaining": "0",
+    "charged": "0.00"
+  },
+  "account_id": 187157
+}';
+    }
 }

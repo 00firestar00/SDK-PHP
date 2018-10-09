@@ -411,4 +411,186 @@ class TransactionsTest extends TestCase
 }', $response);
     }
 
+    function testRetrieveOrder(){
+        $mock_curl = new MockCurlClient();
+        $client = new Ontraport("2_AppID_12345678", "Key5678", $mock_curl);
+        $requestParams = array(
+            "id" => 1
+        );
+        $response = $client->transaction()->retrieveOrder($requestParams);
+        $this->assertEquals('{
+  "code": 0,
+  "data": {
+    "products": [
+      {
+        "quantity": "1",
+        "minQuantity": "1",
+        "maxQuantity": "99",
+        "total": "0.00",
+        "shipping": false,
+        "tax": false,
+        "price": [
+          {
+            "price": "0.00",
+            "payment_count": "1",
+            "unit": "month",
+            "id": "309734178098"
+          }
+        ],
+        "type": "subscription",
+        "quantityEditable": false,
+        "index": "0",
+        "name": "adsf",
+        "id": "1",
+        "uid": "c3a75463-76fb-0e7c-b381-6e956dd69e57",
+        "product_type": null
+      }
+    ],
+    "shipping": null,
+    "delay": "0",
+    "invoice_template": "1",
+    "subTotal": "0",
+    "grandTotal": "0",
+    "hasTaxes": false,
+    "hasShipping": false,
+    "paypalValid": false,
+    "offerCoupon": false,
+    "coupon": null,
+    "shipping_charge_reoccurring_orders": false,
+    "resorted": null,
+    "cc_id": "1",
+    "send_recurring_invoice": "0",
+    "offer_id": 7,
+    "order_id": "1",
+    "payment_next_date": "1541361600",
+    "status": "0",
+    "gateway_id": "1",
+    "affiliate_id": "0"
+  },
+  "account_id": 187157
+}', $response);
+    }
+
+    function testUpdateOrder(){
+        $mock_curl = new MockCurlClient();
+        $client = new Ontraport("2_AppID_12345678", "Key5678", $mock_curl);
+        $requestParams = json_encode('{
+  "objectID": 52,
+  "contact_id": 2,
+  "offer": {
+    "cc_id": 0,
+    "order_id": 1,
+    "offer_id": 9,
+    "products": [
+      {
+        "quantity": 1,
+        "total": 0,
+        "shipping": false,
+        "tax": false,
+        "price": [
+          {
+            "price": 0,
+            "payment_count": 0,
+            "unit": "day",
+            "id": 0
+          }
+        ],
+        "type": "single",
+        "owner": 0,
+        "level1": 0,
+        "level2": 0,
+        "offer_to_affiliates": false,
+        "trial_period_unit": "day",
+        "trial_period_count": 0,
+        "trial_price": 0,
+        "setup_fee": 0,
+        "setup_fee_when": "immediately",
+        "setup_fee_date": "string",
+        "delay_start": 0,
+        "subscription_fee": 0,
+        "subscription_count": 0,
+        "subscription_unit": "day",
+        "taxable": true,
+        "id": 0
+      }
+    ],
+    "taxes": [
+      {
+        "id": 0,
+        "rate": 0,
+        "name": "string",
+        "taxShipping": true,
+        "taxTotal": 0,
+        "form_id": 0
+      }
+    ],
+    "shipping": [
+      {
+        "id": 0,
+        "name": "string",
+        "price": 0,
+        "form_id": 0
+      }
+    ],
+    "delay": 0,
+    "subTotal": 0,
+    "grandTotal": 0,
+    "hasTaxes": false,
+    "hasShipping": false,
+    "shipping_charge_reoccurring_orders": false,
+    "ccExpirationDate": ""
+  },
+  "billing_address": {
+    "address": "string",
+    "address2": "",
+    "city": "string",
+    "state": "string",
+    "zip": "string",
+    "country": "string"
+  },
+  "payer": {
+    "ccnumber": "",
+    "code": "",
+    "expire_month": 0,
+    "expire_year": 0
+  }
+}');
+        $response = $client->transaction()->updateOrder($requestParams);
+        $this->assertEquals('{
+  "code": 0,
+  "data": {
+    "id": "1",
+    "contact_id": "2",
+    "offer_id": "9",
+    "affiliate": "0",
+    "cc_id": "1",
+    "name": "adsf",
+    "payment_next_date": "1541361600",
+    "orig_month_date": "0",
+    "unit": "month",
+    "count": "1",
+    "gateway_id": "169326",
+    "shipping_address": null,
+    "shipping_city": null,
+    "shipping_state": null,
+    "shipping_zip": null,
+    "shipping_country": null,
+    "shipping_last_charge": "0",
+    "shipping_service": null,
+    "status": "0",
+    "hidden": "0",
+    "dlm": "1538684779",
+    "order_form_json": null,
+    "cancellation_date": "0",
+    "next_sub": "0.00",
+    "tax": "0.00",
+    "shipping": "0.00",
+    "next_charge": "0.00",
+    "transactions": "1",
+    "transactions_remaining": "0",
+    "charged": "0.00"
+  },
+  "account_id": 187157
+}', $response);
+    }
 }

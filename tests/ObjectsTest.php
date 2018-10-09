@@ -70,7 +70,9 @@ class ObjectsTest extends TestCase
     {
         $mock_curl = new MockCurlClient();
         $client = new Ontraport("2_AppID_12345678", "Key5678", $mock_curl);
-        $requestParams = array("objectID" => 0);
+        $requestParams = array(
+            "objectID" => 0,
+            "condition" => "[{ \"field\":{\"field\":\"email\"}, \"op\":\"=\", \"value\":{\"value\":\"test@test.com\"} }]");
         $response = $client->object()->retrieveMultiple($requestParams);
         $this->assertEquals('{
   "code": 0,
@@ -150,6 +152,15 @@ class ObjectsTest extends TestCase
     "0": {
       "name": "Contact",
       "fields": {
+        "f1568": {
+          "alias": "fdsfa",
+          "type": "parent",
+          "required": "0",
+          "unique": "0",
+          "editable": null,
+          "deletable": "0",
+          "parent_object": "10000"
+        },
         "firstname": {
           "alias": "First Name",
           "type": "text",
@@ -157,27 +168,28 @@ class ObjectsTest extends TestCase
           "unique": "0",
           "editable": "1",
           "deletable": "0"
-        },
-        "lastname": {
-          "alias": "Last Name",
-          "type": "text",
+        }
+      }
+    },
+    "146": {
+      "name": "Order",
+      "fields": {}
+    },
+    "10000": {
+      "name": "oTemp",
+      "fields": {
+        "f1567": {
+          "alias": "asfdas",
+          "type": "parent",
           "required": "0",
           "unique": "0",
-          "editable": "1",
-          "deletable": "0"
-        },
-        "email": {
-          "alias": "Email",
-          "type": "email",
-          "required": "0",
-          "unique": "0",
-          "editable": "1",
+          "editable": null,
           "deletable": "0"
         }
       }
     }
   },
-  "account_id": 50
+  "account_id": 187157
 }', $response);
         }
     }
@@ -595,5 +607,4 @@ class ObjectsTest extends TestCase
   "account_id": 187157
 }', $response);
     }
-
 }

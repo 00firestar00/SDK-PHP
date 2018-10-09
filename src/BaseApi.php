@@ -277,6 +277,8 @@ abstract class BaseApi
         {
             return array("Content-Type" => "application/json");
         }
+        // @codeCoverageIgnoreStart
         return array();
+        // @codeCoverageIgnoreEnd
     }
 }
