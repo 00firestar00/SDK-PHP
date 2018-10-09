@@ -86,6 +86,4 @@ class ObjectSectionTest extends TestCase
         $this->assertEquals('{"name":"Contact Information","description":null,"fields":[[{"alias":"My New Field","required":0,"unique":0,"type":"text","options":{"replace":["second"]},"id":2,"field":"yes"}]]}', json_encode($requestParams));
 
     }
-
-
 }
