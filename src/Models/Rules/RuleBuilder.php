@@ -619,7 +619,7 @@ class RuleBuilder implements Request
      * @param string $init_rule
      * @return array $rules
      */
-    private function _splitRule($init_rule)
+    private static function _splitRule($init_rule)
     {
         $rules = array();
         $init_rule = str_replace("|", ";", $init_rule);

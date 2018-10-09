@@ -6,12 +6,13 @@ use OntraportAPI\Models\Rules\RuleBuilder as Builder;
 use OntraportAPI\Models\Rules\Events;
 use OntraportAPI\Models\Rules\Conditions;
 use OntraportAPI\Models\Rules\Actions;
+use OntraportAPI\ObjectType;
 
 class testRuleBuilder extends TestCase
 {
     function testToRequestParams()
     {
-        $builder = new Builder("Building my Rule!", \OntraportAPI\ObjectType::CONTACT); // object_type_id = 0;
+        $builder = new Builder("Building my Rule!", ObjectType::CONTACT); // object_type_id = 0;
 
         // Add an event if we only want the url.
         $eventParams = array(1); // parameter '1' for fulfillment id
@@ -28,7 +29,7 @@ class testRuleBuilder extends TestCase
 
     function testAddCondition()
     {
-        $builder = new Builder("Building my Rule!", \OntraportAPI\ObjectType::CONTACT); // object_type_id = 0;
+        $builder = new Builder("Building my Rule!", ObjectType::CONTACT); // object_type_id = 0;
 
         // Add an event if we only want the url.
         $eventParams = array(1); // parameter '1' for fulfillment id
@@ -49,7 +50,7 @@ class testRuleBuilder extends TestCase
 
     function testCreateFromResponse()
     {
-
+        $myRule = new \OntraportAPI\Models\Rules\RuleBuilder('blank',0);
         $myRule = \OntraportAPI\Models\Rules\RuleBuilder::CreateFromResponse(json_decode('{
     "name": "Create Me!",
     "events": "Contact_added_to_campaign(1)",
