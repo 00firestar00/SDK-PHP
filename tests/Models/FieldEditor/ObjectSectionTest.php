@@ -46,6 +46,28 @@ class ObjectSectionTest extends TestCase
         $this->assertEquals('{"name":"Contact Information","description":null,"fields":[[{"alias":"My Updated Field","required":0,"unique":0,"type":"text","field":"some_field_here"}]]}', json_encode($requestParams));
     }
 
+    /**
+     * @expectedException \OntraportAPI\Exceptions\FieldEditorException
+     */
+    function testUpdateField2(){
+        $mySection = new ObjectSection("Contact Information");
+        $myUpdatedField = new ObjectField("My Updated Field", ObjectField::TYPE_TEXT);
+        $myUpdatedField->setField("some_field_here");
+        $mySection->updateField($myUpdatedField);
+        $requestParams = $mySection->toRequestParams();
+        $this->assertEquals('Should have thrown FieldEditorException.', json_encode($requestParams));
+    }
+
+    /**
+     * @expectedException \OntraportAPI\Exceptions\FieldEditorException
+     */
+    function testUpdateField3(){
+        $mySection = new ObjectSection("Contact Information");
+        $mySection->updateField('hello');
+        $requestParams = $mySection->toRequestParams();
+        $this->assertEquals('Should have thrown FieldEditorException.', json_encode($requestParams));
+    }
+
     function testPutFieldsInColumn()
     {
         $myField = new ObjectField("My New Field", ObjectField::TYPE_TEXT);

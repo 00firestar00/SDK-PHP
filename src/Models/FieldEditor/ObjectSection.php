@@ -138,7 +138,9 @@ class ObjectSection implements Request
                 }
             }
         }
+        // @codeCoverageIgnoreStart
         return null;
+        // @codeCoverageIgnoreEnd
     }
 
     /**
