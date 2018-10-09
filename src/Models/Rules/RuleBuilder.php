@@ -591,7 +591,7 @@ class RuleBuilder implements Request
      * @param string $rule Valid formatted rule
      * @return array $parsed Array with "name" => rule type, "params" => rule parameters
      */
-    private function _parseParams($rule)
+    private static function _parseParams($rule)
     {
         $parsed = array();
 
