@@ -99,6 +99,63 @@ class testRuleBuilder extends TestCase
         $this->assertEquals('{"object_type_id":0,"name":"Building my Rule!","events":"Contact_subscribed_to_fulfillment(1)","conditions":"Is_subscribed_to_drip(1)|Is_subscribed_to_drip(2)","actions":"Send_contact_a_task(2)"}', json_encode($requestParams));
     }
 
+    /**
+     * @expectedException \OntraportAPI\Exceptions\RequiredParamsException
+     * @expectedExceptionMessage Invalid input: missing required parameter(s): operator
+     */
+    function testAddConditionNULL()
+    {
+        $builder = new Builder("Building my Rule!", ObjectType::CONTACT); // object_type_id = 0;
+
+        // Add an event if we only want the url.
+        $eventParams = array(1); // parameter '1' for fulfillment id
+        $builder->addEvent(Events::OBJECT_ADDED_TO_FULFILLMENT, $eventParams);
+
+        // Add conditions
+        $conditionParams = array(1); // parameter '1' for sequence id
+        $builder->addCondition(Conditions::OBJECT_SUBSCRIBED_SEQUENCE, $conditionParams);
+
+        // Add conditions
+        $conditionParams = array(2); // parameter '2' for sequence id
+        $builder->addCondition(Conditions::OBJECT_SUBSCRIBED_SEQUENCE, $conditionParams);
+
+        // Add action
+        $actionParams = array(2); // parameter '2' for task id
+        $builder->addAction(Actions::ADD_TASK, $actionParams);
+
+        // Convert RuleBuilder object to request parameters
+        $requestParams = $builder->toRequestParams();
+        $this->assertEquals('Should have thrown RequiredParamsException.', json_encode($requestParams));
+    }
+
+    /**
+     * @expectedException \OntraportAPI\Exceptions\OntraportAPIException
+     */
+    function testAddConditionOTHER()
+    {
+        $builder = new Builder("Building my Rule!", ObjectType::CONTACT); // object_type_id = 0;
+
+        // Add an event if we only want the url.
+        $eventParams = array(1); // parameter '1' for fulfillment id
+        $builder->addEvent(Events::OBJECT_ADDED_TO_FULFILLMENT, $eventParams);
+
+        // Add conditions
+        $conditionParams = array(1); // parameter '1' for sequence id
+        $builder->addCondition(Conditions::OBJECT_SUBSCRIBED_SEQUENCE, $conditionParams);
+
+        // Add conditions
+        $conditionParams = array(2); // parameter '2' for sequence id
+        $builder->addCondition(Conditions::OBJECT_SUBSCRIBED_SEQUENCE, $conditionParams, 'INVALID');
+
+        // Add action
+        $actionParams = array(2); // parameter '2' for task id
+        $builder->addAction(Actions::ADD_TASK, $actionParams);
+
+        // Convert RuleBuilder object to request parameters
+        $requestParams = $builder->toRequestParams();
+        $this->assertEquals('Should have thrown OntraportAPIException.', json_encode($requestParams));
+    }
+
     function testCreateFromResponse()
     {
         $myRule = new \OntraportAPI\Models\Rules\RuleBuilder('blank',0);
