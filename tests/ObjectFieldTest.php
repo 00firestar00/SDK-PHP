@@ -87,12 +87,22 @@ class ObjectFieldTest extends TestCase
         $myField = new ObjectField("My New Field", 12345);
     }
 
+    /**
+     * @expectedException  \OntraportAPI\Exceptions\FieldTypeException
+     */
+    function testExceptionInExpandTextType()
+    {
+        $myField = new ObjectField("My New Field", ObjectField::TYPE_DROP);
+        $myField->expandTextType();
+        $requestParams = $myField->toRequestParams();
+        $this->assertEquals('{"alias":"My New Field","required":0,"unique":0,"type":"longtext"}' , json_encode($requestParams));
+    }
+
     function testExpandTextType()
     {
         $myField = new ObjectField("My New Field", ObjectField::TYPE_TEXT);
         $myField->expandTextType();
         $requestParams = $myField->toRequestParams();
-        echo json_encode($requestParams);
         $this->assertEquals('{"alias":"My New Field","required":0,"unique":0,"type":"longtext"}' , json_encode($requestParams));
     }
 

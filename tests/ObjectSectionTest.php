@@ -62,8 +62,7 @@ class ObjectSectionTest extends TestCase
      */
     function testInvalidColumnIndex()
     {
-        $myField = new ObjectField("My New Field", ObjectField::TYPE_TEXT);
-        $mySection = new ObjectSection("Contact Information", array($myField));
+        $mySection = new ObjectSection("Contact Information");
         $secondField = new ObjectField("My 2nd Field", ObjectField::TYPE_TEXT);
         $mySection->putFieldsInColumn(3, array($secondField));
         $requestParams = $mySection->toRequestParams();
@@ -78,5 +77,15 @@ class ObjectSectionTest extends TestCase
         $this->assertEquals('{"name":"Contact Information","description":null,"fields":[[{"alias":"My New Field","required":0,"unique":0,"type":"text","options":{"replace":["second"]},"id":2,"field":"yes"}]]}', json_encode($requestParams));
 
     }
+
+    function testCreateFromResponse2()
+    {
+        $responseArray = json_decode('{"data":{"name":"Contact Information","description":null,"fields":[[{"alias":"My New Field","required":0,"field":"yes","id":2,"unique":0,"type":"text","options":{"replace":["second"]}}]]}}', true);
+        $mySection = ObjectSection::CreateFromResponse($responseArray);
+        $requestParams = $mySection->toRequestParams();
+        $this->assertEquals('{"name":"Contact Information","description":null,"fields":[[{"alias":"My New Field","required":0,"unique":0,"type":"text","options":{"replace":["second"]},"id":2,"field":"yes"}]]}', json_encode($requestParams));
+
+    }
+
 
 }
