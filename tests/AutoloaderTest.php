@@ -16,4 +16,16 @@ class AutoloaderTest extends TestCase
         $bool = \OntraportAPI\APIAutoloader::loader("OntraportAPI\Ontraport");
         $this->assertEquals(true, $bool);
     }
+
+    function testLoaderStartsWithBacks()
+    {
+        $bool = \OntraportAPI\APIAutoloader::loader("\\OntraportAPI\Ontraport");
+        $this->assertEquals(true, $bool);
+    }
+
+    function testLoaderWithClassComponents()
+    {
+        $bool = \OntraportAPI\APIAutoloader::loader("OntraportAPI\\Exceptions\\OntraportAPIException");
+        $this->assertEquals(true, $bool);
+    }
 }
