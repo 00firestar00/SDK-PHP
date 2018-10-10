@@ -43,6 +43,15 @@ class ObjectSection implements Request
     }
 
     /**
+     * @brief Gets fields
+     *
+     */
+    public function getFields()
+    {
+        return $this->_fields;
+    }
+
+    /**
      * @brief Adds a description
      *
      * @param string $description The description you want to add.
@@ -74,7 +83,9 @@ class ObjectSection implements Request
         {
             if (!is_array($fields))
             {
+                //@codeCoverageIgnoreStart
                 continue;
+                //@codeCoverageIgnoreEnd
             }
             foreach ($fields as $field)
             {

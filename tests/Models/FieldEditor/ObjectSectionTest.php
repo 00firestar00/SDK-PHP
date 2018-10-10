@@ -108,30 +108,30 @@ class ObjectSectionTest extends TestCase
         $this->assertEquals('{"name":"Contact Information","description":null,"fields":[[{"alias":"My New Field","required":0,"unique":0,"type":"text","options":{"replace":["second"]},"id":2,"field":"yes"}]]}', json_encode($requestParams));
     }
 
-//    //tests if fields is not an array
-//    function testCreateFromResponse3()
-//    {
-//        $responseArray = json_decode('{
-//  "code": 0,
-//  "data": {
-//    "name":"Contact Information",
-//    "description":null,
-//    "fields": "My New Field",
-//    "error": []
-//  },
-//  "account_id": "12345"
-//}', true);
-//        $mySection = ObjectSection::CreateFromResponse($responseArray);
-//
-//        //toRequestParams() does not work if fields is not an array, so using var_export()
-//        $this->assertEquals('OntraportAPI\Models\FieldEditor\ObjectSection::__set_state(array(
-//   \'_name\' => \'Contact Information\',
-//   \'_description\' => NULL,
-//   \'_fields\' =>
-//  array (
-//  ),
-//))', var_export($mySection, true));
-//    }
+    //tests if fields is not an array
+    function testCreateFromResponse3()
+    {
+        $responseArray = json_decode('{
+  "code": 0,
+  "data": {
+    "name":"Contact Information",
+    "description":null,
+    "fields": "My New Field",
+    "error": []
+  },
+  "account_id": "12345"
+}', true);
+        $mySection = ObjectSection::CreateFromResponse($responseArray);
+
+        $myField2 = new ObjectField("My New Field", ObjectField::TYPE_TEXT);
+        $mySection2 = new ObjectSection("Contact Information", array($myField2));
+
+        //Check CreateFromResponse created an instance of the correct class
+        $this->assertInstanceOf(get_class($mySection2), $mySection);
+
+        //Check the instance has no fields
+        $this->assertEquals('[]', json_encode($mySection->getFields()));
+    }
 
 //    function testCreateFromResponse4()
 //    {
