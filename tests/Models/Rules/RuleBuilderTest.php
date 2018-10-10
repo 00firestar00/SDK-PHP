@@ -149,22 +149,22 @@ class ruleBuilderTest extends TestCase
 }', true));
         $this->assertEquals('{"object_type_id":"0","name":"Create Me!","events":"Contact_added_to_campaign(1)","conditions":"Is_subscribed_to_drip(1)","actions":"Add_contact_to_category(1)","id":"1"}', json_encode($myRule->toRequestParams()));
     }
-
+//
 //    function testCreateFromResponse2()
 //    {
 //        $myRule = \OntraportAPI\Models\Rules\RuleBuilder::CreateFromResponse(json_decode('{
-//      "id": "3",
-//      "drip_id": null,
-//      "events": "Contact_added_to_my_database()",
-//      "conditions": "campaignbuilder_subscription_date_is_val(0,2,1538420400);been_on_campaignbuilder_for_timeframe(0,7,0)",
-//      "actions": "Add_contact_to_category(2)",
-//      "name": "My Rule",
-//      "pause": "0",
-//      "last_action": "0",
-//      "object_type_id": "0",
-//      "date": "1539204147",
-//      "dlm": "1539204147"}', true));
-//        $this->assertEquals('{"object_type_id":"0","name":"Create Me!","events":"Contact_added_to_campaign(1)","conditions":"Is_subscribed_to_drip(1)","actions":"Add_contact_to_category(1)","id":"1"}', json_encode($myRule->toRequestParams()));
+//    "id": "4",
+//    "drip_id": null,
+//    "events": "Contact_added_to_my_database();field_is_updated(1)",
+//    "conditions": "Is_in_category(2)|Is_subscribed_to_productsub(1)",
+//    "actions": "Add_contact_to_category(2);campaign_builder_action_change(0,1)",
+//    "name": "rule2",
+//    "pause": "0",
+//    "last_action": "0",
+//    "object_type_id": "0",
+//    "date": "1539209032",
+//    "dlm": "1539209072"}', true));
+//        $this->assertEquals('', json_encode($myRule->toRequestParams()));
 //    }
 
     /**
@@ -175,6 +175,17 @@ class ruleBuilderTest extends TestCase
     {
         $builder = new Builder("Building my Rule!", -1); // object_type_id = INVALID!
         $builder->validateRule('Actions', Actions::ADD_LEAD_ROUTER);
+
+    }
+
+    /**
+     * @expectedException \OntraportAPI\Exceptions\OntraportAPIException
+     * @expectedExceptionMessage nonsense is not a valid rule type.
+     */
+    function testValidateRule2()
+    {
+        $builder = new Builder("Building my Rule!", -1); // object_type_id = INVALID!
+        $builder->validateRule('Actions', 'nonsense');
 
     }
 
@@ -276,7 +287,7 @@ class ruleBuilderTest extends TestCase
     function test_CheckParamsEmptyArray()
     {
         // Add action
-        $actionParams = array(); // parameter '2' for task id
+        $actionParams = array();
         $this->builder->addAction(Actions::ADD_TASK, $actionParams);
 
         // Convert RuleBuilder object to request parameters
@@ -292,7 +303,7 @@ class ruleBuilderTest extends TestCase
     function test_CheckParamsTooMany()
     {
         // Add action
-        $actionParams = array(1,2,3,4); // parameter '2' for task id
+        $actionParams = array(1,2,3,4);
         $this->builder->addAction(Actions::ADD_TASK, $actionParams);
 
         // Convert RuleBuilder object to request parameters

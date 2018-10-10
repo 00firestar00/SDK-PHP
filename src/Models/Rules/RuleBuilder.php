@@ -378,7 +378,7 @@ class RuleBuilder implements Request
                 $parsed = self::_parseParams($condition);
 
                 if (in_array($condition, $end_rule)) {
-                    $builder->addCondition($parsed["name"], $parsed["params"]);
+                    $builder->addCondition($parsed["name"], $parsed["params"], "");
                 } else if (in_array($condition, $or_rule)) {
                     $builder->addCondition($parsed["name"], $parsed["params"], "OR");
                 } else if (in_array($condition, $and_rule)) {
