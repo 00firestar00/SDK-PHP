@@ -182,14 +182,23 @@ class ruleBuilderTest extends TestCase
 
     }
 
+    function dataProviderRuleType()
+    {
+        return array(
+            array("Actions"),
+            array("Conditions"),
+            array("Events"),
+        );
+    }
     /**
+     * @dataProvider dataProviderRuleType
      * @expectedException \OntraportAPI\Exceptions\OntraportAPIException
      * @expectedExceptionMessage nonsense is not a valid rule type.
      */
-    function testValidateRule2()
+    function testValidateRuleAll($type)
     {
         $builder = new Builder("Building my Rule!", -1); // object_type_id = INVALID!
-        $builder->validateRule('Actions', 'nonsense');
+        $builder->validateRule($type, 'nonsense');
 
     }
 
