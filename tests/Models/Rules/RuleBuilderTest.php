@@ -325,4 +325,27 @@ class ruleBuilderTest extends TestCase
         $this->assertEquals('{"object_type_id":0,"name":"Building my Rule!","events":"Contact_subscribed_to_fulfillment(1)","conditions":"","actions":"Send_contact_a_task(1)"}', json_encode($requestParams));
     }
 
+    function test_ParseParamsEmptyString()
+    {
+        $method = new \ReflectionMethod("\OntraportAPI\Models\Rules\RuleBuilder", "_parseParams");
+        $method->setAccessible(true);
+        $response = $method->invoke($this->builder, 'events" => "relative_date_field()');
+        $this->assertEquals("[]", json_encode($response["params"]));
+    }
+
+    public function testOperatorClassifier()
+    {
+        $method = new \ReflectionMethod("\OntraportAPI\Models\Rules\RuleBuilder", "_operatorClassifier");
+        $method->setAccessible(true);
+        $builder = new Builder("Classify this", 0);
+        $init_rule = "Classify;This|Or|That";
+        $parsed_array = array(
+            "or_rules" => array("This", "Or"),
+            "and_rules" => array("Classify"),
+            "end_rule" => array("That")
+        );
+        $response = $method->invoke($builder, $init_rule);
+        $this->assertEquals($parsed_array, $response);
+    }
+
 }
