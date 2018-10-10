@@ -53,15 +53,19 @@ class ruleBuilderTest extends TestCase
         $this->assertEquals('{"object_type_id":0,"name":"Building my Rule!","events":"Contact_subscribed_to_fulfillment(1)","conditions":"","actions":"Send_contact_a_task(2);Ping_APIURL(http:\/\/ontraport.com[First Name]::some&post&data::1)"}', json_encode($requestParams));
     }
 
+    /**
+     * @expectedException \OntraportAPI\Exceptions\OntraportAPIException
+     * @expectedExceptionMessage Invalid number of parameters for rule. Refer to the API Doc to make sure you have the correct inputs.
+     */
     function testAddPINGAction2()
     {
         // Add conditions
-        $ping_url = array("http://ontraport.com[First Name]", "some&post&data", true);
+        $ping_url = array();
         $this->builder->addAction(Actions::PING_URL, $ping_url);
 
         // Convert RuleBuilder object to request parameters
         $requestParams = $this->builder->toRequestParams();
-        $this->assertEquals('{"object_type_id":0,"name":"Building my Rule!","events":"Contact_subscribed_to_fulfillment(1)","conditions":"","actions":"Send_contact_a_task(2);Ping_APIURL(http:\/\/ontraport.com[First Name]::some&post&data::1)"}', json_encode($requestParams));
+        $this->assertEquals('', json_encode($requestParams));
     }
 
     function testAddConditionAND()
