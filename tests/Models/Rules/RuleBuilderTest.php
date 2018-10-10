@@ -53,6 +53,17 @@ class ruleBuilderTest extends TestCase
         $this->assertEquals('{"object_type_id":0,"name":"Building my Rule!","events":"Contact_subscribed_to_fulfillment(1)","conditions":"","actions":"Send_contact_a_task(2);Ping_APIURL(http:\/\/ontraport.com[First Name]::some&post&data::1)"}', json_encode($requestParams));
     }
 
+    function testAddPINGAction2()
+    {
+        // Add conditions
+        $ping_url = array("http://ontraport.com[First Name]", "some&post&data", true);
+        $this->builder->addAction(Actions::PING_URL, $ping_url);
+
+        // Convert RuleBuilder object to request parameters
+        $requestParams = $this->builder->toRequestParams();
+        $this->assertEquals('{"object_type_id":0,"name":"Building my Rule!","events":"Contact_subscribed_to_fulfillment(1)","conditions":"","actions":"Send_contact_a_task(2);Ping_APIURL(http:\/\/ontraport.com[First Name]::some&post&data::1)"}', json_encode($requestParams));
+    }
+
     function testAddConditionAND()
     {
         // Add conditions
@@ -137,6 +148,34 @@ class ruleBuilderTest extends TestCase
     "dlm": "1527179185"
 }', true));
         $this->assertEquals('{"object_type_id":"0","name":"Create Me!","events":"Contact_added_to_campaign(1)","conditions":"Is_subscribed_to_drip(1)","actions":"Add_contact_to_category(1)","id":"1"}', json_encode($myRule->toRequestParams()));
+    }
+
+//    function testCreateFromResponse2()
+//    {
+//        $myRule = \OntraportAPI\Models\Rules\RuleBuilder::CreateFromResponse(json_decode('{
+//      "id": "3",
+//      "drip_id": null,
+//      "events": "Contact_added_to_my_database()",
+//      "conditions": "campaignbuilder_subscription_date_is_val(0,2,1538420400);been_on_campaignbuilder_for_timeframe(0,7,0)",
+//      "actions": "Add_contact_to_category(2)",
+//      "name": "My Rule",
+//      "pause": "0",
+//      "last_action": "0",
+//      "object_type_id": "0",
+//      "date": "1539204147",
+//      "dlm": "1539204147"}', true));
+//        $this->assertEquals('{"object_type_id":"0","name":"Create Me!","events":"Contact_added_to_campaign(1)","conditions":"Is_subscribed_to_drip(1)","actions":"Add_contact_to_category(1)","id":"1"}', json_encode($myRule->toRequestParams()));
+//    }
+
+    /**
+     * @expectedException \OntraportAPI\Exceptions\OntraportAPIException
+     * @expectedExceptionMessage Add_to_leadrouter can only be used with Contacts object.
+     */
+    function testValidateRule()
+    {
+        $builder = new Builder("Building my Rule!", -1); // object_type_id = INVALID!
+        $builder->validateRule('Actions', Actions::ADD_LEAD_ROUTER);
+
     }
 
     /**
