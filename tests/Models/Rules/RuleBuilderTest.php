@@ -269,4 +269,36 @@ class ruleBuilderTest extends TestCase
         $this->assertEquals('{"object_type_id":0,"name":"Building my Rule!","events":"Contact_subscribed_to_fulfillment(1)","conditions":"","actions":"Send_contact_a_task(1)"}', json_encode($requestParams));
     }
 
+    /**
+     * @expectedException \OntraportAPI\Exceptions\OntraportAPIException
+     * @expectedExceptionMessage Invalid number of parameters for rule. Refer to the API Doc to make sure you have the correct inputs.
+     */
+    function test_CheckParamsEmptyArray()
+    {
+        // Add action
+        $actionParams = array(); // parameter '2' for task id
+        $this->builder->addAction(Actions::ADD_TASK, $actionParams);
+
+        // Convert RuleBuilder object to request parameters
+        $this->builder->removeActionByName('Send_contact_a_task(2)');
+        $requestParams = $this->builder->toRequestParams();
+        $this->assertEquals('{"object_type_id":0,"name":"Building my Rule!","events":"Contact_subscribed_to_fulfillment(1)","conditions":"","actions":"Send_contact_a_task(1)"}', json_encode($requestParams));
+    }
+
+    /**
+     * @expectedException \OntraportAPI\Exceptions\OntraportAPIException
+     * @expectedExceptionMessage Invalid number of parameters for rule. Refer to the API Doc to make sure you have the correct inputs.
+     */
+    function test_CheckParamsTooMany()
+    {
+        // Add action
+        $actionParams = array(1,2,3,4); // parameter '2' for task id
+        $this->builder->addAction(Actions::ADD_TASK, $actionParams);
+
+        // Convert RuleBuilder object to request parameters
+        $this->builder->removeActionByName('Send_contact_a_task(2)');
+        $requestParams = $this->builder->toRequestParams();
+        $this->assertEquals('{"object_type_id":0,"name":"Building my Rule!","events":"Contact_subscribed_to_fulfillment(1)","conditions":"","actions":"Send_contact_a_task(1)"}', json_encode($requestParams));
+    }
+
 }
