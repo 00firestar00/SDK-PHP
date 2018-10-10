@@ -58,4 +58,17 @@ class CurlClientTest extends TestCase
         $response = $client->getHttpClient()->httpRequest($requestParams, "ontraport.com", 'get', $requiredParams, null);
     }
 
+    /**
+     * @expectedException \OntraportAPI\Exceptions\RequiredParamsException
+     * @expectedExceptionMessage Invalid input: missing required parameter(s): ids
+     */
+    public function testRequiredParamsGroupIDs()
+    {
+        $mock_curl = new MockCurlClient();
+        $client = new Ontraport("2_AppID_12345678", "Key5678", $mock_curl);
+        $requestParams = array();
+        $requiredParams = array("ids");
+        $response = $client->getHttpClient()->httpRequest($requestParams, "ontraport.com", 'get', $requiredParams, null);
+    }
+
 }

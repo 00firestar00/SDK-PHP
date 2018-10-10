@@ -90,7 +90,12 @@ class RequiredParamsException extends OntraportAPIException
 {
     public function __construct($params)
     {
-        parent::__construct("Invalid input: missing required parameter(s): $params", 400);
+        if(is_array($params)) {
+            $imploded = implode(',', $params);
+        } else {
+            $imploded = $params;
+        }
+        parent::__construct("Invalid input: missing required parameter(s): $imploded", 400);
     }
 }
 

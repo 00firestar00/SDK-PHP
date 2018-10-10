@@ -10,25 +10,9 @@ class CriteriaTest extends TestCase
 
     public function testBuildCondition()
     {
-        $condition = new Criteria("name", "=", "name");
-        $str_condition = var_export($condition, true);
-        $this->assertEquals('OntraportAPI\Criteria::__set_state(array(
-   \'_condition\' => 
-  array (
-    0 => 
-    array (
-      \'field\' => 
-      array (
-        \'field\' => \'name\',
-      ),
-      \'op\' => \'=\',
-      \'value\' => 
-      array (
-        \'value\' => \'name\',
-      ),
-    ),
-  ),
-))', $str_condition);
+        $condition = new Criteria("foo", "=", "bar");
+        $this->assertEquals('[{"field":{"field":"foo"},"op":"=","value":{"value":"bar"}}]', $condition->fromArray());
+
     }
 
     public function testBuildConditionWithArray()
@@ -38,34 +22,8 @@ class CriteriaTest extends TestCase
             "bar" => "foo",
         );
         $condition = new Criteria("foo", "IN", $arr);
-        $str_condition = var_export($condition, true);
-        $this->assertEquals('OntraportAPI\Criteria::__set_state(array(
-   \'_condition\' => 
-  array (
-    0 => 
-    array (
-      \'field\' => 
-      array (
-        \'field\' => \'foo\',
-      ),
-      \'op\' => \'IN\',
-      \'value\' => 
-      array (
-        \'list\' => 
-        array (
-          0 => 
-          array (
-            \'value\' => \'bar\',
-          ),
-          1 => 
-          array (
-            \'value\' => \'foo\',
-          ),
-        ),
-      ),
-    ),
-  ),
-))', $str_condition);
+        $str_condition = $condition->fromArray();
+        $this->assertEquals('[{"field":{"field":"foo"},"op":"IN","value":{"list":[{"value":"bar"},{"value":"foo"}]}}]', $condition->fromArray());
     }
 
     /**
@@ -84,74 +42,14 @@ class CriteriaTest extends TestCase
     {
         $condition = new Criteria("name", "=", "name");
         $condition->andCondition(1, "<", 3);
-        $str_condition = var_export($condition, true);
-        $this->assertEquals('OntraportAPI\Criteria::__set_state(array(
-   \'_condition\' => 
-  array (
-    0 => 
-    array (
-      \'field\' => 
-      array (
-        \'field\' => \'name\',
-      ),
-      \'op\' => \'=\',
-      \'value\' => 
-      array (
-        \'value\' => \'name\',
-      ),
-    ),
-    1 => \'AND\',
-    2 => 
-    array (
-      \'field\' => 
-      array (
-        \'field\' => 1,
-      ),
-      \'op\' => \'<\',
-      \'value\' => 
-      array (
-        \'value\' => 3,
-      ),
-    ),
-  ),
-))',$str_condition);
+        $this->assertEquals('[{"field":{"field":"name"},"op":"=","value":{"value":"name"}},"AND",{"field":{"field":1},"op":"<","value":{"value":3}}]',$condition->fromArray());
     }
 
     public function testOrCondition()
     {
         $condition = new Criteria("name", "=", "name");
         $condition->orCondition(1, "<", 3);
-        $str_condition = var_export($condition, true);
-        $this->assertEquals('OntraportAPI\Criteria::__set_state(array(
-   \'_condition\' => 
-  array (
-    0 => 
-    array (
-      \'field\' => 
-      array (
-        \'field\' => \'name\',
-      ),
-      \'op\' => \'=\',
-      \'value\' => 
-      array (
-        \'value\' => \'name\',
-      ),
-    ),
-    1 => \'OR\',
-    2 => 
-    array (
-      \'field\' => 
-      array (
-        \'field\' => 1,
-      ),
-      \'op\' => \'<\',
-      \'value\' => 
-      array (
-        \'value\' => 3,
-      ),
-    ),
-  ),
-))',$str_condition);
+        $this->assertEquals('[{"field":{"field":"name"},"op":"=","value":{"value":"name"}},"OR",{"field":{"field":1},"op":"<","value":{"value":3}}]', $condition->fromArray());
     }
 
     public function testFromArray()
@@ -172,6 +70,4 @@ class CriteriaTest extends TestCase
     {
         $condition = new Criteria("name", "`_:+", "name");
     }
-
-
 }

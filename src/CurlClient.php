@@ -117,8 +117,9 @@ class CurlClient
             $missingParams = implode(",",$missingParams);
             throw new Exceptions\RequiredParamsException($missingParams);
         }
-
+        //@codeCoverageIgnoreStart
         return true;
+        //@codeCoverageIgnoreEnd
     }
 
     /**
@@ -284,6 +285,7 @@ class CurlClient
      *
      * @param int $wait
      * @param $curlHandle
+     * @codeCoverageIgnore
      *
      * @return mixed
      */

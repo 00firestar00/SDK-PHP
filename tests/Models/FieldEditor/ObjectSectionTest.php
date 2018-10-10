@@ -46,6 +46,28 @@ class ObjectSectionTest extends TestCase
         $this->assertEquals('{"name":"Contact Information","description":null,"fields":[[{"alias":"My Updated Field","required":0,"unique":0,"type":"text","field":"some_field_here"}]]}', json_encode($requestParams));
     }
 
+    /**
+     * @expectedException \OntraportAPI\Exceptions\FieldEditorException
+     */
+    function testUpdateField2(){
+        $mySection = new ObjectSection("Contact Information");
+        $myUpdatedField = new ObjectField("My Updated Field", ObjectField::TYPE_TEXT);
+        $myUpdatedField->setField("some_field_here");
+        $mySection->updateField($myUpdatedField);
+        $requestParams = $mySection->toRequestParams();
+        $this->assertEquals('Should have thrown FieldEditorException.', json_encode($requestParams));
+    }
+
+    /**
+     * @expectedException \OntraportAPI\Exceptions\FieldEditorException
+     */
+    function testUpdateField3(){
+        $mySection = new ObjectSection("Contact Information");
+        $mySection->updateField('hello');
+        $requestParams = $mySection->toRequestParams();
+        $this->assertEquals('Should have thrown FieldEditorException.', json_encode($requestParams));
+    }
+
     function testPutFieldsInColumn()
     {
         $myField = new ObjectField("My New Field", ObjectField::TYPE_TEXT);
@@ -62,8 +84,7 @@ class ObjectSectionTest extends TestCase
      */
     function testInvalidColumnIndex()
     {
-        $myField = new ObjectField("My New Field", ObjectField::TYPE_TEXT);
-        $mySection = new ObjectSection("Contact Information", array($myField));
+        $mySection = new ObjectSection("Contact Information");
         $secondField = new ObjectField("My 2nd Field", ObjectField::TYPE_TEXT);
         $mySection->putFieldsInColumn(3, array($secondField));
         $requestParams = $mySection->toRequestParams();
@@ -79,4 +100,36 @@ class ObjectSectionTest extends TestCase
 
     }
 
+    function testCreateFromResponse2()
+    {
+        $responseArray = json_decode('{"data":{"name":"Contact Information","description":null,"fields":[[{"alias":"My New Field","required":0,"field":"yes","id":2,"unique":0,"type":"text","options":{"replace":["second"]}}]]}}', true);
+        $mySection = ObjectSection::CreateFromResponse($responseArray);
+        $requestParams = $mySection->toRequestParams();
+        $this->assertEquals('{"name":"Contact Information","description":null,"fields":[[{"alias":"My New Field","required":0,"unique":0,"type":"text","options":{"replace":["second"]},"id":2,"field":"yes"}]]}', json_encode($requestParams));
+    }
+
+    //tests if fields is not an array
+    function testCreateFromResponse3()
+    {
+        $responseArray = json_decode('{
+  "code": 0,
+  "data": {
+    "name":"Contact Information",
+    "description":null,
+    "fields": "My New Field",
+    "error": []
+  },
+  "account_id": "12345"
+}', true);
+        $mySection = ObjectSection::CreateFromResponse($responseArray);
+
+        $myField2 = new ObjectField("My New Field", ObjectField::TYPE_TEXT);
+        $mySection2 = new ObjectSection("Contact Information", array($myField2));
+
+        //Check CreateFromResponse created an instance of the correct class
+        $this->assertInstanceOf(get_class($mySection2), $mySection);
+
+        //Check the instance has no fields
+        $this->assertEquals('[]', json_encode($mySection->getFields()));
+    }
 }

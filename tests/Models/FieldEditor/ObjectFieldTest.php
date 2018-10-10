@@ -71,9 +71,17 @@ class ObjectFieldTest extends TestCase
     }
 
     //id, field != 0
-    function testCreateFromResponseV2()
+    function testCreateFromResponse2()
     {
         $responseArray = json_decode('{"alias":"My New Field","required":0,"field":"yes","id":2,"unique":0,"type":"text","options":{"replace":["second"]}}', true);
+        $myDropDown = ObjectField::CreateFromResponse($responseArray);
+        $requestParams = $myDropDown->toRequestParams();
+        $this->assertEquals('{"alias":"My New Field","required":0,"unique":0,"type":"text","options":{"replace":["second"]},"id":2,"field":"yes"}', json_encode($requestParams));
+    }
+
+    function testCreateFromResponse3()
+    {
+        $responseArray = json_decode('{"data":{"alias":"My New Field","required":0,"field":"yes","id":2,"unique":0,"type":"text","options":{"replace":["second"]}}}', true);
         $myDropDown = ObjectField::CreateFromResponse($responseArray);
         $requestParams = $myDropDown->toRequestParams();
         $this->assertEquals('{"alias":"My New Field","required":0,"unique":0,"type":"text","options":{"replace":["second"]},"id":2,"field":"yes"}', json_encode($requestParams));
@@ -87,12 +95,22 @@ class ObjectFieldTest extends TestCase
         $myField = new ObjectField("My New Field", 12345);
     }
 
+    /**
+     * @expectedException  \OntraportAPI\Exceptions\FieldTypeException
+     */
+    function testExceptionInExpandTextType()
+    {
+        $myField = new ObjectField("My New Field", ObjectField::TYPE_DROP);
+        $myField->expandTextType();
+        $requestParams = $myField->toRequestParams();
+        $this->assertEquals('{"alias":"My New Field","required":0,"unique":0,"type":"longtext"}' , json_encode($requestParams));
+    }
+
     function testExpandTextType()
     {
         $myField = new ObjectField("My New Field", ObjectField::TYPE_TEXT);
         $myField->expandTextType();
         $requestParams = $myField->toRequestParams();
-        echo json_encode($requestParams);
         $this->assertEquals('{"alias":"My New Field","required":0,"unique":0,"type":"longtext"}' , json_encode($requestParams));
     }
 
