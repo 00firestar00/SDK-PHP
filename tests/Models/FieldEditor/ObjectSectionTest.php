@@ -132,14 +132,4 @@ class ObjectSectionTest extends TestCase
         //Check the instance has no fields
         $this->assertEquals('[]', json_encode($mySection->getFields()));
     }
-
-//    function testCreateFromResponse4()
-//    {
-//        $responseArray = json_decode('{"name":"Contact Information","description":null,"fields":[{"alias":"My 3rd Field","required":0,"unique":0,"type":"text","options":{"replace":["second"]},"id":2,"field":"yes"}]}
-//', true);
-//        $mySection = ObjectSection::CreateFromResponse($responseArray);
-//
-//        //toRequestParams() does not work if fields is not an array, so using var_export()
-//        $this->assertEquals('', json_encode($mySection->toRequestParams()));
-//    }
 }

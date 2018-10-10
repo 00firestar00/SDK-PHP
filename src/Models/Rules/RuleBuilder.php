@@ -156,8 +156,7 @@ class RuleBuilder implements Request
         // checking for missing and invalid types for each parameter
         $check_params = $this->_checkParams($requiredParams, $eventParams);
         // if no missing or invalid rule parameters
-        if ($check_params)
-        {
+        if ($check_params) {
             $value = $this->_formatParams($eventParams);
             $rule = $event . "(" . $value . ")";
             $this->_events[] = $rule;
@@ -188,44 +187,30 @@ class RuleBuilder implements Request
         // get required parameters for specific rule
         $requiredParams = Conditions::GetRequiredParams($condition);
         // checking for missing and invalid parameters
-        $check_params = $this->_checkParams($requiredParams, $conditionParams);
+        $this->_checkParams($requiredParams, $conditionParams);
 
         // determine operator
-        if (empty($this->_conditions))
-        {
+        if (empty($this->_conditions)) {
             $operator = NULL;
-        }
-        else if (!empty($this->_conditions))
-        {
-            if ($operator == "AND")
-            {
+        } else if (!empty($this->_conditions)) {
+            if ($operator == "AND") {
                 $operator = ";";
-            }
-            else if ($operator == "OR")
-            {
+            } else if ($operator == "OR") {
                 $operator = "|";
-            }
-            else if ($operator == NULL)
-            {
+            } else if ($operator == NULL) {
                 throw new Exceptions\RequiredParamsException(array("operator"));
-            }
-            else
-            {
+            } else {
                 throw new Exceptions\OntraportAPIException("Invalid operator. Must be AND or OR.");
             }
         }
         $rule = $operator . $condition;
 
         // if no missing or invalid rule parameters
-        if ($check_params)
-        {
-            $value = $this->_formatParams($conditionParams);
-            $formatted = "(" . $value . ")";
-            $this->_conditions[] = $rule . $formatted;
+        $value = $this->_formatParams($conditionParams);
+        $formatted = "(" . $value . ")";
+        $this->_conditions[] = $rule . $formatted;
 
-            return $this->_conditions;
-        }
-        return false;
+        return $this->_conditions;
     }
 
     /**
@@ -234,8 +219,9 @@ class RuleBuilder implements Request
      * @param string $action Action type
      * @param array $actionParams Action parameters
      *
-     * @return boolean False if unsuccessful
+     *
      * @return array Array of currently stored actions in object
+     * @throws Exceptions\OntraportAPIException
      */
     public function addAction($action, $actionParams)
     {
@@ -245,31 +231,25 @@ class RuleBuilder implements Request
         $requiredParams = Actions::GetRequiredParams($action);
         // checking for missing and invalid parameters
         $exception = false;
-        if ($action == Actions::PING_URL)
-        {
+        if ($action == Actions::PING_URL) {
             $exception = true;
         }
-        $check_params = $this->_checkParams($requiredParams, $actionParams, $exception);
+        $this->_checkParams($requiredParams, $actionParams, $exception);
         // if no missing or invalid rule parameters
-        if ($check_params)
-        {
-            $rule = $action;
-            // special formatting for ping_url
-            if ($action == Actions::PING_URL)
-            {
-                $formatted = $this->_formatParams($actionParams, "::");
-                $this->_actions[] = $action . "(" . $formatted . ")";
-
-                return $this->_actions;
-            }
-            // general formatting for actions
-            $value = $this->_formatParams($actionParams);
-            $formatted = "(" . $value . ")";
-            $this->_actions[] = $rule . $formatted;
+        $rule = $action;
+        // special formatting for ping_url
+        if ($action == Actions::PING_URL) {
+            $formatted = $this->_formatParams($actionParams, "::");
+            $this->_actions[] = $action . "(" . $formatted . ")";
 
             return $this->_actions;
         }
-        return false;
+        // general formatting for actions
+        $value = $this->_formatParams($actionParams);
+        $formatted = "(" . $value . ")";
+        $this->_actions[] = $rule . $formatted;
+
+        return $this->_actions;
     }
 
     /**
@@ -314,10 +294,8 @@ class RuleBuilder implements Request
      */
     public function removeEventByName($event_name)
     {
-        foreach($this->_events as $key => $event)
-        {
-            if(strpos($event, $event_name) !== false)
-            {
+        foreach ($this->_events as $key => $event) {
+            if (strpos($event, $event_name) !== false) {
                 array_splice($this->_events, $key, 1);
             }
         }
@@ -331,17 +309,15 @@ class RuleBuilder implements Request
      *
      * @return array Array of conditions after removal
      */
-     public function removeConditionByName($condition_name)
-     {
-         foreach($this->_conditions as $key => $condition)
-         {
-             if(strpos($condition, $condition_name) !== false)
-             {
-                 array_splice($this->_conditions, $key, 1);
-             }
-         }
-         return $this->_conditions;
-     }
+    public function removeConditionByName($condition_name)
+    {
+        foreach ($this->_conditions as $key => $condition) {
+            if (strpos($condition, $condition_name) !== false) {
+                array_splice($this->_conditions, $key, 1);
+            }
+        }
+        return $this->_conditions;
+    }
 
     /**
      * @brief Removes one action.
@@ -352,10 +328,8 @@ class RuleBuilder implements Request
      */
     public function removeActionByName($action_name)
     {
-        foreach($this->_actions as $key => $action)
-        {
-            if(strpos($action, $action_name) !== false)
-            {
+        foreach ($this->_actions as $key => $action) {
+            if (strpos($action, $action_name) !== false) {
                 array_splice($this->_actions, $key, 1);
             }
         }
@@ -378,28 +352,23 @@ class RuleBuilder implements Request
 
         $events = self::_splitRule($data["events"]);
         $conditions = array();
-        if ($data["conditions"] != null)
-        {
+        if ($data["conditions"] != null) {
             $conditions = self::_splitRule($data["conditions"]);
         }
         $actions = self::_splitRule($data["actions"]);
 
-        foreach($events as $event)
-        {
+        foreach ($events as $event) {
             // separate rule and params
             $parsed = self::_parseParams($event);
             $builder->addEvent($parsed["name"], $parsed["params"]);
         }
-        foreach($actions as $action)
-        {
+        foreach ($actions as $action) {
             // separate rule and params
             $parsed = self::_parseParams($action);
             $builder->addAction($parsed["name"], $parsed["params"]);
         }
-        if (!empty($conditions))
-        {
-            foreach($conditions as $condition)
-            {
+        if (!empty($conditions)) {
+            foreach ($conditions as $condition) {
                 // determine operators
                 $operators = self::_operatorClassifier($data["conditions"]);
                 $or_rule = $operators["or_rules"];
@@ -408,16 +377,11 @@ class RuleBuilder implements Request
                 // separate rule and param
                 $parsed = self::_parseParams($condition);
 
-                if (in_array($condition, $end_rule))
-                {
+                if (in_array($condition, $end_rule)) {
                     $builder->addCondition($parsed["name"], $parsed["params"]);
-                }
-                else if (in_array($condition, $or_rule))
-                {
+                } else if (in_array($condition, $or_rule)) {
                     $builder->addCondition($parsed["name"], $parsed["params"], "OR");
-                }
-                else if (in_array($condition, $and_rule))
-                {
+                } else if (in_array($condition, $and_rule)) {
                     $builder->addCondition($parsed["name"], $parsed["params"], "AND");
                 }
             }
@@ -433,33 +397,28 @@ class RuleBuilder implements Request
      */
     public function toRequestParams()
     {
-        if (empty($this->_events) || empty($this->_actions))
-        {
+        if (empty($this->_events) || empty($this->_actions)) {
             throw new Exceptions\OntraportAPIException("Events and Actions must be added to create rule.");
         }
 
         $events = implode(";", $this->_events);
         $actions = implode(";", $this->_actions);
 
-        if (!empty($this->_conditions))
-        {
+        if (!empty($this->_conditions)) {
             $conditions = implode($this->_conditions);
             $conditions = trim($conditions, ";");
             $conditions = trim($conditions, "|");
-        }
-        else if (empty($this->_conditions))
-        {
+        } else if (empty($this->_conditions)) {
             $conditions = "";
         }
         $requestParams = array(
             "object_type_id" => $this->_object_type_id,
             "name" => $this->_name,
-            "events" =>  $events,
+            "events" => $events,
             "conditions" => $conditions,
             "actions" => $actions
         );
-        if (!empty($this->_id))
-        {
+        if (!empty($this->_id)) {
             $requestParams["id"] = $this->_id;
         }
         return $requestParams;
@@ -477,13 +436,11 @@ class RuleBuilder implements Request
     {
         $requiredParams = call_user_func(__NAMESPACE__ . "\\" . $type . "::GetRequiredParams", $rule);
         // check if rule is valid
-        if ($requiredParams == null && !is_array($requiredParams))
-        {
+        if ($requiredParams == null && !is_array($requiredParams)) {
             throw new Exceptions\OntraportAPIException($rule . " is not a valid rule type.");
         }
         // validate rule is used for correct object
-        if (call_user_func(__NAMESPACE__ . "\\" . $type . "::CheckRestricted", $rule) && ($this->_object_type_id != 0))
-        {
+        if (call_user_func(__NAMESPACE__ . "\\" . $type . "::CheckRestricted", $rule) && ($this->_object_type_id != 0)) {
             throw new Exceptions\OntraportAPIException($rule . " can only be used with Contacts object.");
         }
         return true;
@@ -501,20 +458,14 @@ class RuleBuilder implements Request
     private function _checkParams($requiredParams, $requestParams, $exception = false)
     {
         // exceptions for parameter length for ping url
-        if ($exception == true)
-        {
-            if (count($requestParams) == 0)
-            {
+        if ($exception == true) {
+            if (count($requestParams) == 0) {
                 throw new Exceptions\OntraportAPIException("Invalid number of parameters for rule. " .
-                "Refer to the API Doc to make sure you have the correct inputs.");
-                return false;
+                    "Refer to the API Doc to make sure you have the correct inputs.");
             }
-        }
-        else if (count($requiredParams) != count($requestParams))
-        {
+        } else if (count($requiredParams) != count($requestParams)) {
             throw new Exceptions\OntraportAPIException("Invalid number of parameters for rule. " .
-            "Refer to the API Doc to make sure you have the correct inputs.");
-            return false;
+                "Refer to the API Doc to make sure you have the correct inputs.");
         }
         $invalid_params = array();
         $units = array(self::DAYS, self::WEEKS, self::MONTHS);
@@ -535,32 +486,26 @@ class RuleBuilder implements Request
         );
 
         $i = 0;
-        foreach($requiredParams as $param)
-        {
+        foreach ($requiredParams as $param) {
             $value = $requestParams[$i];
-            if(($param == "conditional") && !in_array($value, $conditional))
-            {
+            if (($param == "conditional") && !in_array($value, $conditional)) {
                 $invalid_params[] = $param;
             }
-            if(($param == "units") && !in_array($value, $units))
-            {
+            if (($param == "units") && !in_array($value, $units)) {
                 $invalid_params[] = $param;
             }
-            if(($param == "option") && (!is_numeric($value) || (($value < 0) || ($value > 3))))
-            {
+            if (($param == "option") && (!is_numeric($value) || (($value < 0) || ($value > 3)))) {
                 $invalid_params[] = $param;
             }
-            if(($param == "outcome") && (!is_numeric($value) || (($value < 0) || ($value > 1))))
-            {
+            if (($param == "outcome") && (!is_numeric($value) || (($value < 0) || ($value > 1)))) {
                 $invalid_params[] = $param;
             }
             $i++;
         }
-        if (!empty($invalid_params))
-        {
+        if (!empty($invalid_params)) {
             $invalid_params = implode(", ", $invalid_params);
             throw new Exceptions\OntraportAPIException("Invalid inputs for $invalid_params. " .
-            "Refer to the API Doc to make sure your rule parameters are valid and in the correct order.");
+                "Refer to the API Doc to make sure your rule parameters are valid and in the correct order.");
         }
         return true;
     }
@@ -577,8 +522,7 @@ class RuleBuilder implements Request
     private function _formatParams($requestParams, $delimiter = ",")
     {
         $formatted = "";
-        foreach($requestParams as $param)
-        {
+        foreach ($requestParams as $param) {
             $formatted = $formatted . $param . $delimiter;
         }
         $formatted = rtrim($formatted, $delimiter);
@@ -599,12 +543,9 @@ class RuleBuilder implements Request
         $name = $split[0];
         $str_params = rtrim($split[1], ")");
         // if empty string
-        if ($str_params == '')
-        {
+        if ($str_params == '') {
             $parsed_params = array();
-        }
-        else
-        {
+        } else {
             $parsed_params = explode(",", $str_params);
         }
         $parsed["params"] = $parsed_params;
@@ -624,8 +565,7 @@ class RuleBuilder implements Request
         $rules = array();
         $init_rule = str_replace("|", ";", $init_rule);
         $rules = explode(";", $init_rule);
-        foreach($rules as $key => $rule)
-        {
+        foreach ($rules as $key => $rule) {
             $rules[$key] = trim($rule);
         }
         return $rules;
@@ -646,24 +586,17 @@ class RuleBuilder implements Request
         $strlen = strlen($init_conditions);
         $counter = 0;
 
-        for($i = 0; $i <= $strlen; $i++)
-        {
+        for ($i = 0; $i <= $strlen; $i++) {
             $char = substr($init_conditions, $i, 1);
 
-            if ($char == "|" || $char == ";"|| $i == ($strlen - 1))
-            {
+            if ($char == "|" || $char == ";" || $i == ($strlen - 1)) {
                 $rule = substr($init_conditions, $counter, $i - $counter);
                 $rule = trim($rule);
-                if ($char == "|")
-                {
+                if ($char == "|") {
                     $or_rules[] = $rule;
-                }
-                else if ($char == ";")
-                {
+                } else if ($char == ";") {
                     $and_rules[] = $rule;
-                }
-                else if ($i == ($strlen - 1))
-                {
+                } else if ($i == ($strlen - 1)) {
                     $rule = substr($init_conditions, $counter, $strlen - $counter);
                     $end_rule[] = $rule;
                 }
