@@ -8,24 +8,24 @@ class AutoloaderTest extends TestCase
     function testLoaderBadName()
     {
         $bool = \OntraportAPI\APIAutoloader::loader("some other string");
-        $this->assertEquals(false, $bool);
+        $this->assertFalse($bool);
     }
 
     function testLoaderGoodName()
     {
         $bool = \OntraportAPI\APIAutoloader::loader("OntraportAPI\Ontraport");
-        $this->assertEquals(true, $bool);
+        $this->assertTrue($bool);
     }
 
     function testLoaderStartsWithBacks()
     {
         $bool = \OntraportAPI\APIAutoloader::loader("\\OntraportAPI\Ontraport");
-        $this->assertEquals(true, $bool);
+        $this->assertTrue($bool);
     }
 
     function testLoaderWithClassComponents()
     {
         $bool = \OntraportAPI\APIAutoloader::loader("OntraportAPI\\Exceptions\\OntraportAPIException");
-        $this->assertEquals(true, $bool);
+        $this->assertTrue($bool);
     }
 }
