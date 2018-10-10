@@ -10,92 +10,66 @@ use OntraportAPI\ObjectType;
 
 class testRuleBuilder extends TestCase
 {
-    function testToRequestParams()
-    {
-        $builder = new Builder("Building my Rule!", ObjectType::CONTACT); // object_type_id = 0;
+    private $builder;
+
+    protected function setUp(){
+        $this->builder = new Builder("Building my Rule!", ObjectType::CONTACT); // object_type_id = 0;
 
         // Add an event if we only want the url.
         $eventParams = array(1); // parameter '1' for fulfillment id
-        $builder->addEvent(Events::OBJECT_ADDED_TO_FULFILLMENT, $eventParams);
+        $this->builder->addEvent(Events::OBJECT_ADDED_TO_FULFILLMENT, $eventParams);
 
         // Add action
         $actionParams = array(2); // parameter '2' for task id
-        $builder->addAction(Actions::ADD_TASK, $actionParams);
+        $this->builder->addAction(Actions::ADD_TASK, $actionParams);
 
-        // Convert RuleBuilder object to request parameters
-        $requestParams = $builder->toRequestParams();
+    }
+
+    function testToRequestParams()
+    {
+        $requestParams = $this->builder->toRequestParams();
         $this->assertEquals('{"object_type_id":0,"name":"Building my Rule!","events":"Contact_subscribed_to_fulfillment(1)","conditions":"","actions":"Send_contact_a_task(2)"}', json_encode($requestParams));
     }
 
     function testAddCondition()
     {
-        $builder = new Builder("Building my Rule!", ObjectType::CONTACT); // object_type_id = 0;
-
-        // Add an event if we only want the url.
-        $eventParams = array(1); // parameter '1' for fulfillment id
-        $builder->addEvent(Events::OBJECT_ADDED_TO_FULFILLMENT, $eventParams);
-
         // Add conditions
         $conditionParams = array(1); // parameter '1' for sequence id
-        $builder->addCondition(Conditions::OBJECT_SUBSCRIBED_SEQUENCE, $conditionParams);
-
-        // Add action
-        $actionParams = array(2); // parameter '2' for task id
-        $builder->addAction(Actions::ADD_TASK, $actionParams);
+        $this->builder->addCondition(Conditions::OBJECT_SUBSCRIBED_SEQUENCE, $conditionParams);
 
         // Convert RuleBuilder object to request parameters
-        $requestParams = $builder->toRequestParams();
+        $requestParams = $this->builder->toRequestParams();
         $this->assertEquals('{"object_type_id":0,"name":"Building my Rule!","events":"Contact_subscribed_to_fulfillment(1)","conditions":"Is_subscribed_to_drip(1)","actions":"Send_contact_a_task(2)"}', json_encode($requestParams));
     }
 
     function testAddConditionAND()
     {
-        $builder = new Builder("Building my Rule!", ObjectType::CONTACT); // object_type_id = 0;
-
-        // Add an event if we only want the url.
-        $eventParams = array(1); // parameter '1' for fulfillment id
-        $builder->addEvent(Events::OBJECT_ADDED_TO_FULFILLMENT, $eventParams);
-
         // Add conditions
         $conditionParams = array(1); // parameter '1' for sequence id
-        $builder->addCondition(Conditions::OBJECT_SUBSCRIBED_SEQUENCE, $conditionParams);
+        $this->builder->addCondition(Conditions::OBJECT_SUBSCRIBED_SEQUENCE, $conditionParams);
 
         // Add conditions
         $conditionParams = array(2); // parameter '2' for sequence id
-        $builder->addCondition(Conditions::OBJECT_SUBSCRIBED_SEQUENCE, $conditionParams,  "AND");
-
-        // Add action
-        $actionParams = array(2); // parameter '2' for task id
-        $builder->addAction(Actions::ADD_TASK, $actionParams);
+        $this->builder->addCondition(Conditions::OBJECT_SUBSCRIBED_SEQUENCE, $conditionParams,  "AND");
 
         // Convert RuleBuilder object to request parameters
-        $requestParams = $builder->toRequestParams();
+        $requestParams = $this->builder->toRequestParams();
         $this->assertEquals('{"object_type_id":0,"name":"Building my Rule!","events":"Contact_subscribed_to_fulfillment(1)","conditions":"Is_subscribed_to_drip(1);Is_subscribed_to_drip(2)","actions":"Send_contact_a_task(2)"}', json_encode($requestParams));
     }
 
 
     function testAddConditionOR()
     {
-        $builder = new Builder("Building my Rule!", ObjectType::CONTACT); // object_type_id = 0;
-
-        // Add an event if we only want the url.
-        $eventParams = array(1); // parameter '1' for fulfillment id
-        $builder->addEvent(Events::OBJECT_ADDED_TO_FULFILLMENT, $eventParams);
-
         // Add conditions
         $conditionParams = array(1); // parameter '1' for sequence id
-        $builder->addCondition(Conditions::OBJECT_SUBSCRIBED_SEQUENCE, $conditionParams);
+        $this->builder->addCondition(Conditions::OBJECT_SUBSCRIBED_SEQUENCE, $conditionParams);
 
         // Add conditions
         $conditionParams = array(2); // parameter '2' for sequence id
-        $builder->addCondition(Conditions::OBJECT_SUBSCRIBED_SEQUENCE, $conditionParams,  "OR");
-
-        // Add action
-        $actionParams = array(2); // parameter '2' for task id
-        $builder->addAction(Actions::ADD_TASK, $actionParams);
+        $this->builder->addCondition(Conditions::OBJECT_SUBSCRIBED_SEQUENCE, $conditionParams,  "OR");
 
         // Convert RuleBuilder object to request parameters
-        $requestParams = $builder->toRequestParams();
+        $requestParams = $this->builder->toRequestParams();
         $this->assertEquals('{"object_type_id":0,"name":"Building my Rule!","events":"Contact_subscribed_to_fulfillment(1)","conditions":"Is_subscribed_to_drip(1)|Is_subscribed_to_drip(2)","actions":"Send_contact_a_task(2)"}', json_encode($requestParams));
     }
 
@@ -105,26 +79,16 @@ class testRuleBuilder extends TestCase
      */
     function testAddConditionNULL()
     {
-        $builder = new Builder("Building my Rule!", ObjectType::CONTACT); // object_type_id = 0;
-
-        // Add an event if we only want the url.
-        $eventParams = array(1); // parameter '1' for fulfillment id
-        $builder->addEvent(Events::OBJECT_ADDED_TO_FULFILLMENT, $eventParams);
-
         // Add conditions
         $conditionParams = array(1); // parameter '1' for sequence id
-        $builder->addCondition(Conditions::OBJECT_SUBSCRIBED_SEQUENCE, $conditionParams);
+        $this->builder->addCondition(Conditions::OBJECT_SUBSCRIBED_SEQUENCE, $conditionParams);
 
         // Add conditions
         $conditionParams = array(2); // parameter '2' for sequence id
-        $builder->addCondition(Conditions::OBJECT_SUBSCRIBED_SEQUENCE, $conditionParams);
-
-        // Add action
-        $actionParams = array(2); // parameter '2' for task id
-        $builder->addAction(Actions::ADD_TASK, $actionParams);
+        $this->builder->addCondition(Conditions::OBJECT_SUBSCRIBED_SEQUENCE, $conditionParams);
 
         // Convert RuleBuilder object to request parameters
-        $requestParams = $builder->toRequestParams();
+        $requestParams = $this->builder->toRequestParams();
     }
 
     /**
@@ -133,31 +97,21 @@ class testRuleBuilder extends TestCase
      */
     function testAddConditionOTHER()
     {
-        $builder = new Builder("Building my Rule!", ObjectType::CONTACT); // object_type_id = 0;
-
-        // Add an event if we only want the url.
-        $eventParams = array(1); // parameter '1' for fulfillment id
-        $builder->addEvent(Events::OBJECT_ADDED_TO_FULFILLMENT, $eventParams);
-
         // Add conditions
         $conditionParams = array(1); // parameter '1' for sequence id
-        $builder->addCondition(Conditions::OBJECT_SUBSCRIBED_SEQUENCE, $conditionParams);
+        $this->builder->addCondition(Conditions::OBJECT_SUBSCRIBED_SEQUENCE, $conditionParams);
 
         // Add conditions
         $conditionParams = array(2); // parameter '2' for sequence id
-        $builder->addCondition(Conditions::OBJECT_SUBSCRIBED_SEQUENCE, $conditionParams, 'INVALID');
+        $this->builder->addCondition(Conditions::OBJECT_SUBSCRIBED_SEQUENCE, $conditionParams, 'INVALID');
 
-        // Add action
-        $actionParams = array(2); // parameter '2' for task id
-        $builder->addAction(Actions::ADD_TASK, $actionParams);
 
         // Convert RuleBuilder object to request parameters
-        $requestParams = $builder->toRequestParams();
+        $requestParams = $this->builder->toRequestParams();
     }
 
     function testCreateFromResponse()
     {
-        $myRule = new \OntraportAPI\Models\Rules\RuleBuilder('blank',0);
         $myRule = \OntraportAPI\Models\Rules\RuleBuilder::CreateFromResponse(json_decode('{
     "name": "Create Me!",
     "events": "Contact_added_to_campaign(1)",
@@ -180,19 +134,9 @@ class testRuleBuilder extends TestCase
      */
     function testClearEvents()
     {
-        $builder = new Builder("Building my Rule!", ObjectType::CONTACT); // object_type_id = 0;
-
-        // Add an event if we only want the url.
-        $eventParams = array(1); // parameter '1' for fulfillment id
-        $builder->addEvent(Events::OBJECT_ADDED_TO_FULFILLMENT, $eventParams);
-
-        // Add action
-        $actionParams = array(2); // parameter '2' for task id
-        $builder->addAction(Actions::ADD_TASK, $actionParams);
-
         // Convert RuleBuilder object to request parameters
-        $builder->clearEvents();
-        $requestParams = $builder->toRequestParams();
+        $this->builder->clearEvents();
+        $requestParams = $this->builder->toRequestParams();
     }
 
     /**
@@ -201,111 +145,62 @@ class testRuleBuilder extends TestCase
      */
     function testClearActions()
     {
-        $builder = new Builder("Building my Rule!", ObjectType::CONTACT); // object_type_id = 0;
-
-        // Add an event if we only want the url.
-        $eventParams = array(1); // parameter '1' for fulfillment id
-        $builder->addEvent(Events::OBJECT_ADDED_TO_FULFILLMENT, $eventParams);
-
-        // Add action
-        $actionParams = array(2); // parameter '2' for task id
-        $builder->addAction(Actions::ADD_TASK, $actionParams);
-
         // Convert RuleBuilder object to request parameters
-        $builder->clearActions();
-        $requestParams = $builder->toRequestParams();
+        $this->builder->clearActions();
+        $requestParams = $this->builder->toRequestParams();
     }
 
     function testClearConditions()
     {
-        $builder = new Builder("Building my Rule!", ObjectType::CONTACT); // object_type_id = 0;
-
-        // Add an event if we only want the url.
-        $eventParams = array(1); // parameter '1' for fulfillment id
-        $builder->addEvent(Events::OBJECT_ADDED_TO_FULFILLMENT, $eventParams);
-
         // Add conditions
         $conditionParams = array(1); // parameter '1' for sequence id
-        $builder->addCondition(Conditions::OBJECT_SUBSCRIBED_SEQUENCE, $conditionParams);
+        $this->builder->addCondition(Conditions::OBJECT_SUBSCRIBED_SEQUENCE, $conditionParams);
 
-        // Add action
-        $actionParams = array(2); // parameter '2' for task id
-        $builder->addAction(Actions::ADD_TASK, $actionParams);
-
-
-        $builder->clearConditions();
+        $this->builder->clearConditions();
         // Convert RuleBuilder object to request parameters
-        $requestParams = $builder->toRequestParams();
+        $requestParams = $this->builder->toRequestParams();
         $this->assertEquals('{"object_type_id":0,"name":"Building my Rule!","events":"Contact_subscribed_to_fulfillment(1)","conditions":"","actions":"Send_contact_a_task(2)"}', json_encode($requestParams));
     }
 
     function testRemoveConditionByName()
     {
-        $builder = new Builder("Building my Rule!", ObjectType::CONTACT); // object_type_id = 0;
-
-        // Add an event if we only want the url.
-        $eventParams = array(1); // parameter '1' for fulfillment id
-        $builder->addEvent(Events::OBJECT_ADDED_TO_FULFILLMENT, $eventParams);
-
         // Add conditions
         $conditionParams = array(1); // parameter '1' for sequence id
-        $builder->addCondition(Conditions::OBJECT_SUBSCRIBED_SEQUENCE, $conditionParams);
+        $this->builder->addCondition(Conditions::OBJECT_SUBSCRIBED_SEQUENCE, $conditionParams);
 
         // Add conditions
         $conditionParams = array(2); // parameter '2' for sequence id
-        $builder->addCondition(Conditions::OBJECT_SUBSCRIBED_SEQUENCE, $conditionParams,  "AND");
-
-        // Add action
-        $actionParams = array(2); // parameter '2' for task id
-        $builder->addAction(Actions::ADD_TASK, $actionParams);
+        $this->builder->addCondition(Conditions::OBJECT_SUBSCRIBED_SEQUENCE, $conditionParams,  "AND");
 
         // Convert RuleBuilder object to request parameters
-        $builder->removeConditionByName('Is_subscribed_to_drip(1)');
-        $requestParams = $builder->toRequestParams();
+        $this->builder->removeConditionByName('Is_subscribed_to_drip(1)');
+        $requestParams = $this->builder->toRequestParams();
         $this->assertEquals('{"object_type_id":0,"name":"Building my Rule!","events":"Contact_subscribed_to_fulfillment(1)","conditions":"Is_subscribed_to_drip(2)","actions":"Send_contact_a_task(2)"}', json_encode($requestParams));
     }
 
     function testRemoveEventByName()
     {
-        $builder = new Builder("Building my Rule!", ObjectType::CONTACT); // object_type_id = 0;
-
         // Add an event if we only want the url.
         $eventParams = array(1); // parameter '1' for fulfillment id
-        $builder->addEvent(Events::OBJECT_ADDED_TO_FULFILLMENT, $eventParams);
+        $this->builder->addEvent(Events::OBJECT_ADDED_TO_FULFILLMENT, $eventParams);
 
-        $builder->addEvent(Events::OBJECT_ADDED_TO_FULFILLMENT, $eventParams);
-
-        // Add action
-        $actionParams = array(2); // parameter '2' for task id
-        $builder->addAction(Actions::ADD_TASK, $actionParams);
 
         // Convert RuleBuilder object to request parameters
-        $builder->removeEventByName('Contact_subscribed_to_fulfillment(1)');
-        $requestParams = $builder->toRequestParams();
+        $this->builder->removeEventByName('Contact_subscribed_to_fulfillment(1)');
+        $requestParams = $this->builder->toRequestParams();
         $this->assertEquals('{"object_type_id":0,"name":"Building my Rule!","events":"Contact_subscribed_to_fulfillment(1)","conditions":"","actions":"Send_contact_a_task(2)"}', json_encode($requestParams));
     }
 
 
     function testRemoveActionByName()
     {
-        $builder = new Builder("Building my Rule!", ObjectType::CONTACT); // object_type_id = 0;
-
-        // Add an event if we only want the url.
-        $eventParams = array(1); // parameter '1' for fulfillment id
-        $builder->addEvent(Events::OBJECT_ADDED_TO_FULFILLMENT, $eventParams);
-
         // Add action
-        $actionParams = array(2); // parameter '2' for task id
-        $builder->addAction(Actions::ADD_TASK, $actionParams);
-
-        // Add action
-        $actionParams = array(1);
-        $builder->addAction(Actions::ADD_TASK, $actionParams);
-
+        $actionParams = array(1); // parameter '2' for task id
+        $this->builder->addAction(Actions::ADD_TASK, $actionParams);
 
         // Convert RuleBuilder object to request parameters
-        $builder->removeActionByName('Send_contact_a_task(2)');
-        $requestParams = $builder->toRequestParams();
+        $this->builder->removeActionByName('Send_contact_a_task(2)');
+        $requestParams = $this->builder->toRequestParams();
         $this->assertEquals('{"object_type_id":0,"name":"Building my Rule!","events":"Contact_subscribed_to_fulfillment(1)","conditions":"","actions":"Send_contact_a_task(1)"}', json_encode($requestParams));
     }
 

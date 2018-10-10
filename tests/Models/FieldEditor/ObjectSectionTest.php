@@ -108,10 +108,14 @@ class ObjectSectionTest extends TestCase
         $this->assertEquals('{"name":"Contact Information","description":null,"fields":[[{"alias":"My New Field","required":0,"unique":0,"type":"text","options":{"replace":["second"]},"id":2,"field":"yes"}]]}', json_encode($requestParams));
     }
 
-//    function testCreateFromResponse3()
+//    function testCreateFromResponse4()
 //    {
-//        $responseArray = json_decode('{"name":"name_here","description":null,"fields":"not_an_array"}', true);
+//        $responseArray = json_decode('{"name":"Contact Information","description":null,"fields":"hi"}', true);
 //        $mySection = ObjectSection::CreateFromResponse($responseArray);
-//        $this->assertEquals('{"name":"name_here","description":null,"fields":null}', json_encode(json_decode($mySection)));
+//        $mockToRequestParams = $this->getMock('toRequestParams');
+//        $mockToRequestParams->method('toRequestParams')->will($this->returnValue('hello'));
+//        $requestParams = new request
+//
+//        $this->assertEquals('', var_dump($mySection));
 //    }
 }
