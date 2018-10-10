@@ -297,7 +297,7 @@ class ruleBuilderTest extends TestCase
      * @expectedException \OntraportAPI\Exceptions\OntraportAPIException
      * @expectedExceptionMessage Invalid number of parameters for rule. Refer to the API Doc to make sure you have the correct inputs.
      */
-    function test_CheckParamsEmptyArray()
+    function testCheckParamsEmptyArray()
     {
         // Add action
         $actionParams = array();
@@ -313,7 +313,7 @@ class ruleBuilderTest extends TestCase
      * @expectedException \OntraportAPI\Exceptions\OntraportAPIException
      * @expectedExceptionMessage Invalid number of parameters for rule. Refer to the API Doc to make sure you have the correct inputs.
      */
-    function test_CheckParamsTooMany()
+    function testCheckParamsTooMany()
     {
         // Add action
         $actionParams = array(1,2,3,4);
@@ -325,7 +325,7 @@ class ruleBuilderTest extends TestCase
         $this->assertEquals('{"object_type_id":0,"name":"Building my Rule!","events":"Contact_subscribed_to_fulfillment(1)","conditions":"","actions":"Send_contact_a_task(1)"}', json_encode($requestParams));
     }
 
-    function test_ParseParamsEmptyString()
+    function testParseParamsEmptyString()
     {
         $method = new \ReflectionMethod("\OntraportAPI\Models\Rules\RuleBuilder", "_parseParams");
         $method->setAccessible(true);
@@ -337,15 +337,51 @@ class ruleBuilderTest extends TestCase
     {
         $method = new \ReflectionMethod("\OntraportAPI\Models\Rules\RuleBuilder", "_operatorClassifier");
         $method->setAccessible(true);
-        $builder = new Builder("Classify this", 0);
         $init_rule = "Classify;This|Or|That";
         $parsed_array = array(
             "or_rules" => array("This", "Or"),
             "and_rules" => array("Classify"),
             "end_rule" => array("That")
         );
-        $response = $method->invoke($builder, $init_rule);
+        $response = $method->invoke($this->builder, $init_rule);
         $this->assertEquals($parsed_array, $response);
+    }
+
+    function paramProvider()
+    {
+        return array(
+            array(Conditions::FIELD_HAS_VALUE),
+            array(Conditions::BEEN_ON_SEQUENCE_FOR_TIMEFRAME),
+            array(Conditions::OBJECT_PAUSED_RESUMED_ON_CAMPAIGN),
+        );
+    }
+
+    /**
+     * @dataProvider paramProvider
+     *
+     * @expectedException \OntraportAPI\Exceptions\OntraportAPIException
+     */
+    public function testCheckConditionsParams($requiredParam)
+    {
+        $method = new \ReflectionMethod("\OntraportAPI\Models\Rules\RuleBuilder", "_checkParams");
+        $method->setAccessible(true);
+        $requiredParams = Conditions::GetRequiredParams($requiredParam);
+        $requestParams = Conditions::GetRequiredParams($requiredParam);
+        $response = $method->invoke($this->builder, $requiredParams, $requestParams);
+//        $this->assertEquals($parsed_array, $response);
+    }
+
+    /**
+     *
+     * @expectedException \OntraportAPI\Exceptions\OntraportAPIException
+     */
+    public function testCheckEventsParams()
+    {
+        $method = new \ReflectionMethod("\OntraportAPI\Models\Rules\RuleBuilder", "_checkParams");
+        $method->setAccessible(true);
+        $requiredParams = Events::GetRequiredParams(Events::OBJECT_SUBMITS_FORM);
+        $requestParams = Events::GetRequiredParams(Events::OBJECT_SUBMITS_FORM);
+        $response = $method->invoke($this->builder, $requiredParams, $requestParams);
     }
 
 }
