@@ -108,29 +108,38 @@ class ObjectSectionTest extends TestCase
         $this->assertEquals('{"name":"Contact Information","description":null,"fields":[[{"alias":"My New Field","required":0,"unique":0,"type":"text","options":{"replace":["second"]},"id":2,"field":"yes"}]]}', json_encode($requestParams));
     }
 
-    //tests if fields is not an array
-    function testCreateFromResponse3()
-    {
-        $responseArray = json_decode('{
-  "code": 0,
-  "data": {
-    "name":"Contact Information",
-    "description":null,
-    "fields": "My New Field",
-    "error": []
-  },
-  "account_id": "12345"
-}', true);
-        $mySection = ObjectSection::CreateFromResponse($responseArray);
+//    //tests if fields is not an array
+//    function testCreateFromResponse3()
+//    {
+//        $responseArray = json_decode('{
+//  "code": 0,
+//  "data": {
+//    "name":"Contact Information",
+//    "description":null,
+//    "fields": "My New Field",
+//    "error": []
+//  },
+//  "account_id": "12345"
+//}', true);
+//        $mySection = ObjectSection::CreateFromResponse($responseArray);
+//
+//        //toRequestParams() does not work if fields is not an array, so using var_export()
+//        $this->assertEquals('OntraportAPI\Models\FieldEditor\ObjectSection::__set_state(array(
+//   \'_name\' => \'Contact Information\',
+//   \'_description\' => NULL,
+//   \'_fields\' =>
+//  array (
+//  ),
+//))', var_export($mySection, true));
+//    }
 
-        //toRequestParams() does not work if fields is not an array, so using var_export()
-        $this->assertEquals('OntraportAPI\Models\FieldEditor\ObjectSection::__set_state(array(
-   \'_name\' => \'Contact Information\',
-   \'_description\' => NULL,
-   \'_fields\' => 
-  array (
-  ),
-))', var_export($mySection, true));
-    }
-
+//    function testCreateFromResponse4()
+//    {
+//        $responseArray = json_decode('{"name":"Contact Information","description":null,"fields":[{"alias":"My 3rd Field","required":0,"unique":0,"type":"text","options":{"replace":["second"]},"id":2,"field":"yes"}]}
+//', true);
+//        $mySection = ObjectSection::CreateFromResponse($responseArray);
+//
+//        //toRequestParams() does not work if fields is not an array, so using var_export()
+//        $this->assertEquals('', json_encode($mySection->toRequestParams()));
+//    }
 }
