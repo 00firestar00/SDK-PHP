@@ -178,6 +178,21 @@ class ruleBuilderTest extends TestCase
 
     }
 
+
+    function testCheckRestrictedConditions()
+    {
+        $builder = new Builder("Building my Rule!", 0); // object_type_id = INVALID!
+        $this->assertEquals(1, $builder->validateRule('Conditions', Conditions::SPENT_N_AMOUNT_ON_PRODUCT));
+
+    }
+
+    function testCheckRestrictedEvents()
+    {
+        $builder = new Builder("Building my Rule!", 0); // object_type_id = INVALID!
+        $this->assertEquals(1, $builder->validateRule('Events', Events::OBJECT_PURCHASES_PRODUCT));
+
+    }
+
     /**
      * @expectedException  \OntraportAPI\Exceptions\OntraportAPIException
      * @expectedExceptionMessage Events and Actions must be added to create rule.
