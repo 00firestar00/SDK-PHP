@@ -146,6 +146,7 @@ class RuleBuilder implements Request
      * @param array $eventParams Event parameters
      *
      * @return array Array of currently stored events in object
+     * @throws Exceptions\OntraportAPIException
      */
     public function addEvent($event, $eventParams)
     {
@@ -154,16 +155,15 @@ class RuleBuilder implements Request
         // get required parameters for specific rule
         $requiredParams = Events::GetRequiredParams($event);
         // checking for missing and invalid types for each parameter
-        $check_params = $this->_checkParams($requiredParams, $eventParams);
+        $this->_checkParams($requiredParams, $eventParams);
         // if no missing or invalid rule parameters
-        if ($check_params) {
-            $value = $this->_formatParams($eventParams);
-            $rule = $event . "(" . $value . ")";
-            $this->_events[] = $rule;
 
-            return $this->_events;
-        }
-        return false;
+        $value = $this->_formatParams($eventParams);
+        $rule = $event . "(" . $value . ")";
+        $this->_events[] = $rule;
+
+        return $this->_events;
+
     }
 
     /**

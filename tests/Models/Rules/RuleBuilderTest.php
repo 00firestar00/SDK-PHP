@@ -8,7 +8,7 @@ use OntraportAPI\Models\Rules\Conditions;
 use OntraportAPI\Models\Rules\Actions;
 use OntraportAPI\ObjectType;
 
-class testRuleBuilder extends TestCase
+class ruleBuilderTest extends TestCase
 {
     private $builder;
 
@@ -40,6 +40,17 @@ class testRuleBuilder extends TestCase
         // Convert RuleBuilder object to request parameters
         $requestParams = $this->builder->toRequestParams();
         $this->assertEquals('{"object_type_id":0,"name":"Building my Rule!","events":"Contact_subscribed_to_fulfillment(1)","conditions":"Is_subscribed_to_drip(1)","actions":"Send_contact_a_task(2)"}', json_encode($requestParams));
+    }
+
+    function testAddPINGAction()
+    {
+        // Add conditions
+        $ping_url = array("http://ontraport.com[First Name]", "some&post&data", true);
+        $this->builder->addAction(Actions::PING_URL, $ping_url);
+
+        // Convert RuleBuilder object to request parameters
+        $requestParams = $this->builder->toRequestParams();
+        $this->assertEquals('{"object_type_id":0,"name":"Building my Rule!","events":"Contact_subscribed_to_fulfillment(1)","conditions":"","actions":"Send_contact_a_task(2);Ping_APIURL(http:\/\/ontraport.com[First Name]::some&post&data::1)"}', json_encode($requestParams));
     }
 
     function testAddConditionAND()
