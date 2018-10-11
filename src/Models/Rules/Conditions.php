@@ -84,7 +84,10 @@ class Conditions
             self::HAS_ACCESS_TO_WPMEMBERSHIPLVL => array('wpMembership_id'),
             self::NO_ACCESS_TO_WPMEMBERSHIPLVL => array('wpMembership_id')
         );
-        return $requiredParams[$rule];
+        if(array_key_exists($rule, $requiredParams)) {
+            return $requiredParams[$rule];
+        }
+        return null;
 
     }
 

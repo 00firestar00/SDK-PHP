@@ -91,7 +91,10 @@ class Events
             self::ACCESS_TO_WPMEMBERSHIPLVL_GIVEN => array('wpMembership_id'),
             self::LOSES_ACCESS_TO_WPMEMBERSHIPLVL => array('wpMembership_id')
         );
-        return $requiredParams[$rule];
+        if(array_key_exists($rule, $requiredParams)) {
+            return $requiredParams[$rule];
+        }
+        return null;
     }
 
     public static function CheckRestricted($rule)

@@ -53,15 +53,19 @@ class ruleBuilderTest extends TestCase
         $this->assertEquals('{"object_type_id":0,"name":"Building my Rule!","events":"Contact_subscribed_to_fulfillment(1)","conditions":"","actions":"Send_contact_a_task(2);Ping_APIURL(http:\/\/ontraport.com[First Name]::some&post&data::1)"}', json_encode($requestParams));
     }
 
+    /**
+     * @expectedException \OntraportAPI\Exceptions\OntraportAPIException
+     * @expectedExceptionMessage Invalid number of parameters for rule. Refer to the API Doc to make sure you have the correct inputs.
+     */
     function testAddPINGAction2()
     {
         // Add conditions
-        $ping_url = array("http://ontraport.com[First Name]", "some&post&data", true);
+        $ping_url = array();
         $this->builder->addAction(Actions::PING_URL, $ping_url);
 
         // Convert RuleBuilder object to request parameters
         $requestParams = $this->builder->toRequestParams();
-        $this->assertEquals('{"object_type_id":0,"name":"Building my Rule!","events":"Contact_subscribed_to_fulfillment(1)","conditions":"","actions":"Send_contact_a_task(2);Ping_APIURL(http:\/\/ontraport.com[First Name]::some&post&data::1)"}', json_encode($requestParams));
+        $this->assertEquals('', json_encode($requestParams));
     }
 
     function testAddConditionAND()
@@ -149,22 +153,22 @@ class ruleBuilderTest extends TestCase
 }', true));
         $this->assertEquals('{"object_type_id":"0","name":"Create Me!","events":"Contact_added_to_campaign(1)","conditions":"Is_subscribed_to_drip(1)","actions":"Add_contact_to_category(1)","id":"1"}', json_encode($myRule->toRequestParams()));
     }
-
+//
 //    function testCreateFromResponse2()
 //    {
 //        $myRule = \OntraportAPI\Models\Rules\RuleBuilder::CreateFromResponse(json_decode('{
-//      "id": "3",
-//      "drip_id": null,
-//      "events": "Contact_added_to_my_database()",
-//      "conditions": "campaignbuilder_subscription_date_is_val(0,2,1538420400);been_on_campaignbuilder_for_timeframe(0,7,0)",
-//      "actions": "Add_contact_to_category(2)",
-//      "name": "My Rule",
-//      "pause": "0",
-//      "last_action": "0",
-//      "object_type_id": "0",
-//      "date": "1539204147",
-//      "dlm": "1539204147"}', true));
-//        $this->assertEquals('{"object_type_id":"0","name":"Create Me!","events":"Contact_added_to_campaign(1)","conditions":"Is_subscribed_to_drip(1)","actions":"Add_contact_to_category(1)","id":"1"}', json_encode($myRule->toRequestParams()));
+//    "id": "4",
+//    "drip_id": null,
+//    "events": "Contact_added_to_my_database();field_is_updated(1)",
+//    "conditions": "Is_in_category(2)|Is_subscribed_to_productsub(1)",
+//    "actions": "Add_contact_to_category(2);campaign_builder_action_change(0,1)",
+//    "name": "rule2",
+//    "pause": "0",
+//    "last_action": "0",
+//    "object_type_id": "0",
+//    "date": "1539209032",
+//    "dlm": "1539209072"}', true));
+//        $this->assertEquals('', json_encode($myRule->toRequestParams()));
 //    }
 
     /**
@@ -175,6 +179,26 @@ class ruleBuilderTest extends TestCase
     {
         $builder = new Builder("Building my Rule!", -1); // object_type_id = INVALID!
         $builder->validateRule('Actions', Actions::ADD_LEAD_ROUTER);
+
+    }
+
+    function dataProviderRuleType()
+    {
+        return array(
+            array("Actions"),
+            array("Conditions"),
+            array("Events"),
+        );
+    }
+    /**
+     * @dataProvider dataProviderRuleType
+     * @expectedException \OntraportAPI\Exceptions\OntraportAPIException
+     * @expectedExceptionMessage nonsense is not a valid rule type.
+     */
+    function testValidateRuleAll($type)
+    {
+        $builder = new Builder("Building my Rule!", -1); // object_type_id = INVALID!
+        $builder->validateRule($type, 'nonsense');
 
     }
 
@@ -273,10 +297,10 @@ class ruleBuilderTest extends TestCase
      * @expectedException \OntraportAPI\Exceptions\OntraportAPIException
      * @expectedExceptionMessage Invalid number of parameters for rule. Refer to the API Doc to make sure you have the correct inputs.
      */
-    function test_CheckParamsEmptyArray()
+    function testCheckParamsEmptyArray()
     {
         // Add action
-        $actionParams = array(); // parameter '2' for task id
+        $actionParams = array();
         $this->builder->addAction(Actions::ADD_TASK, $actionParams);
 
         // Convert RuleBuilder object to request parameters
@@ -289,16 +313,75 @@ class ruleBuilderTest extends TestCase
      * @expectedException \OntraportAPI\Exceptions\OntraportAPIException
      * @expectedExceptionMessage Invalid number of parameters for rule. Refer to the API Doc to make sure you have the correct inputs.
      */
-    function test_CheckParamsTooMany()
+    function testCheckParamsTooMany()
     {
         // Add action
-        $actionParams = array(1,2,3,4); // parameter '2' for task id
+        $actionParams = array(1,2,3,4);
         $this->builder->addAction(Actions::ADD_TASK, $actionParams);
 
         // Convert RuleBuilder object to request parameters
         $this->builder->removeActionByName('Send_contact_a_task(2)');
         $requestParams = $this->builder->toRequestParams();
         $this->assertEquals('{"object_type_id":0,"name":"Building my Rule!","events":"Contact_subscribed_to_fulfillment(1)","conditions":"","actions":"Send_contact_a_task(1)"}', json_encode($requestParams));
+    }
+
+    function testParseParamsEmptyString()
+    {
+        $method = new \ReflectionMethod("\OntraportAPI\Models\Rules\RuleBuilder", "_parseParams");
+        $method->setAccessible(true);
+        $response = $method->invoke($this->builder, 'events" => "relative_date_field()');
+        $this->assertEquals("[]", json_encode($response["params"]));
+    }
+
+    public function testOperatorClassifier()
+    {
+        $method = new \ReflectionMethod("\OntraportAPI\Models\Rules\RuleBuilder", "_operatorClassifier");
+        $method->setAccessible(true);
+        $init_rule = "Classify;This|Or|That";
+        $parsed_array = array(
+            "or_rules" => array("This", "Or"),
+            "and_rules" => array("Classify"),
+            "end_rule" => array("That")
+        );
+        $response = $method->invoke($this->builder, $init_rule);
+        $this->assertEquals($parsed_array, $response);
+    }
+
+    function paramProvider()
+    {
+        return array(
+            array(Conditions::FIELD_HAS_VALUE),
+            array(Conditions::BEEN_ON_SEQUENCE_FOR_TIMEFRAME),
+            array(Conditions::OBJECT_PAUSED_RESUMED_ON_CAMPAIGN),
+        );
+    }
+
+    /**
+     * @dataProvider paramProvider
+     *
+     * @expectedException \OntraportAPI\Exceptions\OntraportAPIException
+     */
+    public function testCheckConditionsParams($requiredParam)
+    {
+        $method = new \ReflectionMethod("\OntraportAPI\Models\Rules\RuleBuilder", "_checkParams");
+        $method->setAccessible(true);
+        $requiredParams = Conditions::GetRequiredParams($requiredParam);
+        $requestParams = Conditions::GetRequiredParams($requiredParam);
+        $response = $method->invoke($this->builder, $requiredParams, $requestParams);
+//        $this->assertEquals($parsed_array, $response);
+    }
+
+    /**
+     *
+     * @expectedException \OntraportAPI\Exceptions\OntraportAPIException
+     */
+    public function testCheckEventsParams()
+    {
+        $method = new \ReflectionMethod("\OntraportAPI\Models\Rules\RuleBuilder", "_checkParams");
+        $method->setAccessible(true);
+        $requiredParams = Events::GetRequiredParams(Events::OBJECT_SUBMITS_FORM);
+        $requestParams = Events::GetRequiredParams(Events::OBJECT_SUBMITS_FORM);
+        $response = $method->invoke($this->builder, $requiredParams, $requestParams);
     }
 
 }

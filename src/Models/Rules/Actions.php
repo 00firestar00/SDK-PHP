@@ -82,7 +82,10 @@ class Actions
             self::UPDATE_FB_CUSTOM_AUDIENCE => array('add_remove', 'custom_audience_id'),
             self::NOTIFY_WITH_SMS => array('user_id', 'sms_id', 'number_id')
         );
-        return $requiredParams[$rule];
+        if(array_key_exists($rule, $requiredParams)) {
+            return $requiredParams[$rule];
+        }
+        return null;
     }
 
     public static function CheckRestricted($rule)
