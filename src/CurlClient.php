@@ -297,6 +297,9 @@ class CurlClient
         return $result;
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
     private function _sendCurl($setopts, $headers)
     {
         $curlHandle = curl_init();
